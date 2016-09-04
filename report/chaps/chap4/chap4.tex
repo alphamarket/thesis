@@ -1,0 +1,14 @@
+\فصل{روش پیشنهادی}
+\برچسب{chap:proposed_method}
+
+\bgroup
+
+\def\chapno{4}
+
+\def\curdir{chaps/chap\chapno}
+
+\foreach \SecNumber in {1, ..., 20} {
+	\IfFileExists{\curdir/sec\chapno-\SecNumber.tex} { \subimport{\curdir/}{sec\chapno-\SecNumber} } { }
+}
+
+\egroup

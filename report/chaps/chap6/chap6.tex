@@ -1,0 +1,14 @@
+\فصل{نتیجه‌گیری و جمع‌بندی}
+\برچسب{chap:conclusion}
+
+\bgroup
+
+\def\chapno{6}
+
+\def\curdir{chaps/chap\chapno}
+
+\foreach \SecNumber in {1, ..., 20} {
+	\IfFileExists{\curdir/sec\chapno-\SecNumber.tex} { \subimport{\curdir/}{sec\chapno-\SecNumber} } { }
+}
+
+\egroup

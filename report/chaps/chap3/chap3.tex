@@ -1,0 +1,14 @@
+\فصل{مفاهیم علمی پیش‌نیاز پایان‌نامه}
+\برچسب{chap:background}
+
+\bgroup
+
+\def\chapno{3}
+
+\def\curdir{chaps/chap\chapno}
+
+\foreach \SecNumber in {1, ..., 20} {
+	\IfFileExists{\curdir/sec\chapno-\SecNumber.tex} { \subimport{\curdir/}{sec\chapno-\SecNumber} } { }
+}
+
+\egroup

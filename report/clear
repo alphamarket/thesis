@@ -1,2 +1,2 @@
 #!/bin/bash
-find . pages chaps -type f ! '(' -name '*.bib' -o -name '*.tex' -o -name '*.pdf' -o -name 'clear' ')' -delete
+find . pages chaps -type f ! '(' -name '*.bib' -o -name '*.tex' -o -name '*.pdf' -o -name 'clear' -o -name '*.git*' -o -name '*.png' -o -name '*.jpg' -o -name '*.gif' ')' -delete

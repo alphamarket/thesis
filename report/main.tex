@@ -1,27 +1,17 @@
-%*************************************************
-% A template for PhD and MSc thesis. V1.0.
-% Please see "guideline.pdf" first.
-%*************************************************
-% Iman Izadi, 1394
-% Dept. of Electrical and Computer Engineering, IUT
-%*************************************************
-% این قالب بر اساس "شیوه‌نامه تدوین پایان‌نامه‌ها و رساله‌های 
-%تحصیلات تکمیلی" دانشگاه صنعتی اصفهان تهیه شده است
-%*************************************************
-
 \documentclass[a4paper,fleqn]{report} 
 %\usepackage{refcheck}
 
 % All the packages and general definitions are included in this file: preamble.tex
-\include{pages/0.preamble}							
+\include{pages/0.preamble}
+
 
 \begin{document}
 
 % The first pages (before abstract) are included in this file: firstpages.tex
-\include{pages/1.firstpages}							
+\import{pages/}{1.firstpages}							
 
 % The abstract of the paper goes here: abstract.tex
-\include{pages/2.abstract}								
+\import{pages/}{2.abstract}								
 
 %*****************************************************************
 %% تنظیم مناسب صفحه و فونت برای متن اصلی پایان‌نامه
@@ -35,16 +25,19 @@
 %*****************************************************************
 
 % Main chapters
-\include{pages/3.chap1}
-\include{pages/3.chap2}
+\foreach \ChapterNumber in {1, ..., 6} {
+  	\InputIfFileExists{chaps/chap\ChapterNumber/chap\ChapterNumber.tex}{}{}
+}
 
 % Appendices
 \appendix
 
-\include{pages/5.references}
+\def\refchaps{chaps/chap1/ref1,chaps/chap2/ref2,chaps/chap3/ref3,chaps/chap4/ref4,chaps/chap5/ref5}
 
-\include{pages/6.abstract_english}
+\import{pages/}{5.references}
 
-\include{pages/7.lastpages}
+\import{pages/}{6.abstract_english}
+
+\import{pages/}{7.lastpages}
 
 \end{document}
