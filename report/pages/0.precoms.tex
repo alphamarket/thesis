@@ -1,3 +1,16 @@
 \renewcommand{\سال}[1]{سال \the\numexpr#1-621 (#1 م.)}
 \renewcommand*{\تاریخ}[1]{\the\numexpr#1-621 (#1 م.)}
 \newcommand{\مق}{\lr}
+
+\newcommand{\fig}[3][0.5]{\begin{figure}
+\centering
+\includegraphics[scale=#1]{#2}
+\caption{#3}
+\end{figure}}
+
+\newcommand{\lfig}[4][0.5]{\begin{figure}
+\centering
+\includegraphics[scale=#1]{#2}
+\caption{#3}
+\label{#4}
+\end{figure}}
