@@ -25,7 +25,7 @@
 \graphicspath{{images/}}
 
 \usepackage{xepersian}										% Persian
-\settextfont{XB Zar}											% Persian font
+\settextfont{XB Zar}										% Persian font
 
 % Use English digits in equations
 \DefaultMathsDigits
@@ -43,7 +43,7 @@
 \makeatother
 
 % Use dash instead of dot in section numbers
-\SepMark{-}										
+\SepMark{-}
 
 % Change fonts and margins of section and subsection titles
 % For chapters please see firstpages.tex
@@ -54,9 +54,9 @@
 \titlespacing*{\subsection}{0pt}{.8cm}{0cm}
 \titleformat{\subsection}
   {\fontsize{11}{6}\scshape\bfseries}{\thesubsection}{1em}{}
-  
+
 % Fix table of contents for chapters
-\makeatletter 
+\makeatletter
 \def\@chapter[#1]#2{\ifnum \c@secnumdepth >\m@ne
      \refstepcounter{chapter}%
      \typeout{\@chapapp\space\thechapter.}%
