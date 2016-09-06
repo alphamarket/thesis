@@ -6,23 +6,26 @@
 % Dept. of Electrical and Computer Engineering, IUT
 %*************************************************
 
-\usepackage{amsthm,amssymb,amsmath}			% Writing math
-\usepackage{epsf,graphicx}									% Including graphics
-\usepackage[a4paper]{geometry}							% Fixing page layout and margins
-\usepackage{titlesec}											% Change chapter and section titles
-\usepackage{setspace}											% Change line spacing
+\usepackage{amsthm,amssymb,amsmath}					% Writing math
+\usepackage{epsf,graphicx}							% Including graphics
+\usepackage[a4paper]{geometry}						% Fixing page layout and margins
+\usepackage{titlesec}								% Change chapter and section titles
+\usepackage{setspace}								% Change line spacing
 \usepackage[stable,bottom]{footmisc}					% Move footnotes to the bottom of page
 
-\usepackage{zref-perpage}									% Reset footnote counter in each page
+\usepackage{zref-perpage}							% Reset footnote counter in each page
 \zmakeperpage[1]{footnote}
 
 \usepackage{currfile, tikz, import, url}
 \usepackage[justification=centering]{caption}
 
-\usepackage{xepersian}										% Persian
-\settextfont{XB Zar}												% Persian font
+\usepackage[hidelinks]{hyperref}
+\usepackage[numbered]{bookmark}
 
 \graphicspath{{images/}}
+
+\usepackage{xepersian}										% Persian
+\settextfont{XB Zar}											% Persian font
 
 % Use English digits in equations
 \DefaultMathsDigits
