@@ -1,6 +1,11 @@
 \قسمت{مرور کارهای پیشین}
-در این قسمت بلاح بلاح بلاح
-\زیرقسمت{روش‌های عمومی}
-در این قسمت بلاح بلاح بلاح
-\زیرقسمت{اجتناب از مانع در ربات‌های چندپره}
-در این قسمت بلاح بلاح بلاح
+
+\bgroup
+
+\def\clustdir{sec2-3-clusters}
+
+\foreach \ClustNumber in {1, ..., 100} {
+	\IfFileExists{\curdir/\clustdir/clust-\ClustNumber.tex} { \subimport{\clustdir/}{clust-\ClustNumber.tex}\par } { }
+}
+
+\egroup
