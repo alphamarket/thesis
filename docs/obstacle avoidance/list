@@ -1,69 +1,80 @@
-Adaptive neural tracking and obstacle avoidance of uncertainmobile robots with unknown skidding and slipping.pdf
-A Dynamical System Approach to Realtime Obstacle Avoidance.pdf
-A Generalized Neural Network Approach to Mobile Robot Navigation and Obstacle Avoidance.pdf
-Aggressive moving obstacle avoidance using a stochastic reachable set based potential field.pdf
-A Laser Obstacle Avoidance System for Mannedand Unmanned Aircraft Detect and Avoid.pdf
-A Laser Obstacle Detection and Avoidance Systemfor Manned and Unmanned Aircraft Applications.pdf
-A Laser Obstacle Warning and Avoidance System forManned and Unmanned Aircraft.pdf
-A Laser Obstacle Warning and Avoidance System forUnmanned Aircraft Sense and Avoid.pdf
-A local obstacle avoidance method for mobile robots in partially knownenvironment.pdf
-A Novel Potential Field Method for Obstacle Avoidance and Path Planning ofMobile Robot.pdf
-Applying the self-tuning fuzzy control with the image detection technique on the obstacle-avoidance for autonomous underwater vehicles.pdf
-A Reactive Approach to Obstacle Avoidance inAutonomous Sailing.pdf
-A Redundancy-Based Approach to Obstacle Avoidance Applied to Mobile Robot Navigation.pdf
-A Simple Reactive Obstacle Avoidance Algorithm and Its
-Application in Singapore Harbor.pdf
-Autonomous Obstacle Avoidance and Maneuvering on a Vision GuidedMAV Using On Board Processing.pdf
-Autonomous Visual Navigation and Laser based MovingObstacle Avoidance.pdf
-[control] Obstacle avoidance and active disturbance rejection control for a quadrotor.pdf
-Control Strategies for Mobile Robot With Obstacle Avoidance.pdf
-Cushioned extended-periphery avoidance- A reactive obstacle avoidance plugin.pdf
-Fuzzy Logic Navigation and ObstacleAvoidance by a Mobile Robot inan Unknown Dynamic Environment.pdf
-LIDAR Obstacle Warning and Avoidance System for Unmanned Aircraft.pdf
-list
-MAV Navigation through Indoor Corridors UsingOptical Flow.pdf
-Mobile Robot Obstacle Avoidance By Using FuzzyLogic Technique.pdf
-Modified Vector Field Histogram with a Neural Network Learning Modelfor Mobile Robot Path Planning and Obstacle Avoidance.pdf
-Monocular Visual Mapping for Obstacle Avoidance on UAVs.pdf
-Multi agent Consensus Algorithm with Obstacle Avoidance viaOptimal Control Approach.pdf
-Navigation and Obstacle Avoidance Help (NOAH) for Older Adults with Cognitive Impairment: A Pilot Study.pdf
-Neural Control System in Obstacle Avoidance in Mobile Robots Using Ultrasonic Sensors.pdf
-Obstacle avoidance and formation regrouping strategy and controlfor UAV formation flight.pdf
-Obstacle Avoidance and Path Planning Schemes for Autonomous Navigation of a Mobile Robot: A
-Review.pdf
-Obstacle avoidance approaches for quadrotor UAV based onbackstepping technique.pdf
-Obstacle avoidance during online corrections.pdf
-Obstacle Avoidance Fuzzy System for Mobile Robot with IR Sensors.pdf
-Obstacle Avoidance in Mobile Robot using Neural Network.pdf
-Obstacle Avoidance of mobile robot using PSO basedNeuro Fuzzy Technique.pdf
-Obstacle Avoidance Path Planning ofPlanar Redundant Manipulators usingWorkspace Density.pdf
-Obstacle Avoidance to Elicit Freezing of Gait during Treadmill Walking.pdf
-Obstacle Detection and Avoidance for an Autonomous Surface Vehicleusing a Profiling Sonar.pdf
-Online obstacle avoidance at high speeds.pdf
-Online UAS local path-planning algorithm for outdoors obstacle avoidance based on attractive and repulsive potential fields.pdf
-Path planning with obstacle avoidance based on visibility binarytree algorithm.pdf
-Persistent self-supervised learning principle: from stereo to monocular vision for obstacle avoidance.pdf
-Position and Obstacle Avoidance Algorithm in Robot Soccer.pdf
-Pushbroom Stereo for High Speed Navigation in ClutteredEnvironments.pdf
-Reactive Avoidance Using Embedded Stereo Vision for MAV Flight.pdf
-Reactive_obstacle_avoidance_for_Rotorcraft_UAVs.pdf
-Reactive Obstacle Avoidance for Rotorcraft UAVs.pdf
-Real time Obstacle AvoidanceUsing Potential Field for aNonholonomic Vehicle.pdf
-Real-Time Obstacle Detection and Avoidance in the Presence of Specular Surfaces Using an Active 3D Sensor.pdf
-Real-time path planning of unmanned aerial vehicle for target tracking and obstacle avoidance in complex dynamic environment.pdf
-Self-organized adaptation of a simple neural circuit enables complex robot behaviour.pdf
-Sensor Fusion of Laser & Stereo Vision Camera forDepth Estimation and Obstacle Avoidance.pdf
-Shared Control for Obstacle Avoidance in IntelligentWheelchairs.pdf
-Shared steering control using safe envelopes for obstacle avoidance and vehicle stability.pdf
-Sky Segmentation Approach to Obstacle Avoidance.pdf
-Stereo Vision based indoor-outdoor Navigation for Flying Robots.pdf
-Stereo vision-based obstacle avoidance for micro air vehicles using disparity space.pdf
-[syco] Slow maturation of planning in obstacle avoidance in humans.pdf
-The obstacle avoidance motion planning problem for autonomous vehicles  alow demanding receding horizon control scheme.pdf
-UAV formation control design with obstacle avoidance in dynamic three-dimensional environment.pdf
-UAV Path Planning withTangent plus Lyapunov VectorField Guidance and ObstacleAvoidance.pdf
-VFH*TDT (VFH* with Time Dependent Tree): A new laser rangefinder based obstacle avoidance method designed for environment with non-static obstacles.pdf
-Vision-Based Obstacle-Avoidance Techniques.pdf
-Vision-based topological mapping and localization methods: A survey.pdf
-Visual Navigation With Obstacle Avoidance.pdf
-Wearable Obstacle Avoidance Electronic Travel Aidsfor Blind  A Survey.pdf
+[01;34m.[00m
+├── [01;34mapp[00m
+│   ├── Applying the self-tuning fuzzy control with the image detection technique on the obstacle-avoidance for autonomous underwater vehicles.pdf
+│   ├── A Reactive Approach to Obstacle Avoidance inAutonomous Sailing.pdf
+│   ├── A Simple Reactive Obstacle Avoidance Algorithm and Its\012Application in Singapore Harbor.pdf
+│   ├── Navigation and Obstacle Avoidance Help (NOAH) for Older Adults with Cognitive Impairment: A Pilot Study.pdf
+│   ├── Obstacle Avoidance to Elicit Freezing of Gait during Treadmill Walking.pdf
+│   ├── Obstacle Detection and Avoidance for an Autonomous Surface Vehicleusing a Profiling Sonar.pdf
+│   ├── Position and Obstacle Avoidance Algorithm in Robot Soccer.pdf
+│   ├── Real time Obstacle AvoidanceUsing Potential Field for aNonholonomic Vehicle.pdf
+│   ├── Shared Control for Obstacle Avoidance in IntelligentWheelchairs.pdf
+│   └── Wearable Obstacle Avoidance Electronic Travel Aidsfor Blind  A Survey.pdf
+├── [01;34mcontrol[00m
+│   ├── Adaptive neural tracking and obstacle avoidance of uncertainmobile robots with unknown skidding and slipping.pdf
+│   ├── A Dynamical System Approach to Realtime Obstacle Avoidance.pdf
+│   ├── A Redundancy-Based Approach to Obstacle Avoidance Applied to Mobile Robot Navigation.pdf
+│   ├── Multi agent Consensus Algorithm with Obstacle Avoidance viaOptimal Control Approach.pdf
+│   ├── Obstacle avoidance and active disturbance rejection control for a quadrotor.pdf
+│   ├── Obstacle avoidance approaches for quadrotor UAV based onbackstepping technique.pdf
+│   ├── Obstacle Avoidance Path Planning ofPlanar Redundant Manipulators usingWorkspace Density.pdf
+│   ├── Real-time path planning of unmanned aerial vehicle for target tracking and obstacle avoidance in complex dynamic environment.pdf
+│   └── UAV formation control design with obstacle avoidance in dynamic three-dimensional environment.pdf
+├── [01;34mcopters[00m
+│   ├── Autonomous Obstacle Avoidance and Maneuvering on a Vision GuidedMAV Using On Board Processing.pdf
+│   ├── MAV Navigation through Indoor Corridors UsingOptical Flow.pdf
+│   └── Reactive Obstacle Avoidance for Rotorcraft UAVs.pdf
+├── [01;34mgnd[00m
+│   ├── Fuzzy Logic Navigation and ObstacleAvoidance by a Mobile Robot inan Unknown Dynamic Environment.pdf
+│   ├── Mobile Robot Obstacle Avoidance By Using FuzzyLogic Technique.pdf
+│   ├── Obstacle Avoidance Fuzzy System for Mobile Robot with IR Sensors.pdf
+│   └── Obstacle Avoidance of mobile robot using PSO basedNeuro Fuzzy Technique.pdf
+├── [01;34mlegacy[00m
+│   ├── Path-planning strategies for a point mobile automaton moving amidst unknown obstacles of arbitrary shape.pdf
+│   ├── The vector field histogram-fast obstacle avoidance for mobile robots.pdf
+│   └── VFH+: Reliable Obstacle Avoidance for Fast Mobile Robots.pdf
+├── [01;34mnn[00m
+│   ├── A Generalized Neural Network Approach to Mobile Robot Navigation and Obstacle Avoidance.pdf
+│   ├── Neural Control System in Obstacle Avoidance in Mobile Robots Using Ultrasonic Sensors.pdf
+│   └── Obstacle Avoidance in Mobile Robot using Neural Network.pdf
+├── [01;34mpf[00m
+│   ├── Aggressive moving obstacle avoidance using a stochastic reachable set based potential field.pdf
+│   ├── A Novel Potential Field Method for Obstacle Avoidance and Path Planning ofMobile Robot.pdf
+│   └── Online UAS local path-planning algorithm for outdoors obstacle avoidance based on attractive and repulsive potential fields.pdf
+├── [01;34muav[00m
+│   ├── A Laser Obstacle Avoidance System for Mannedand Unmanned Aircraft Detect and Avoid.pdf
+│   ├── A Laser Obstacle Warning and Avoidance System forManned and Unmanned Aircraft.pdf
+│   ├── A Laser Obstacle Warning and Avoidance System forUnmanned Aircraft Sense and Avoid.pdf
+│   ├── Cushioned extended-periphery avoidance- A reactive obstacle avoidance plugin.pdf
+│   ├── LIDAR Obstacle Warning and Avoidance System for Unmanned Aircraft.pdf
+│   ├── Monocular Visual Mapping for Obstacle Avoidance on UAVs.pdf
+│   └── Obstacle avoidance and formation regrouping strategy and controlfor UAV formation flight.pdf
+├── [01;34muncat[00m
+│   ├── A local obstacle avoidance method for mobile robots in partially knownenvironment.pdf
+│   ├── Control Strategies for Mobile Robot With Obstacle Avoidance.pdf
+│   ├── Obstacle Avoidance and Path Planning Schemes for Autonomous Navigation of a Mobile Robot: A\012Review.pdf
+│   ├── Obstacle avoidance during online corrections.pdf
+│   ├── Online obstacle avoidance at high speeds.pdf
+│   ├── Path planning with obstacle avoidance based on visibility binarytree algorithm.pdf
+│   ├── Shared steering control using safe envelopes for obstacle avoidance and vehicle stability.pdf
+│   ├── [syco] Slow maturation of planning in obstacle avoidance in humans.pdf
+│   ├── The obstacle avoidance motion planning problem for autonomous vehicles  alow demanding receding horizon control scheme.pdf
+│   └── UAV Path Planning withTangent plus Lyapunov VectorField Guidance and ObstacleAvoidance.pdf
+├── [01;34mvfh[00m
+│   ├── Modified Vector Field Histogram with a Neural Network Learning Modelfor Mobile Robot Path Planning and Obstacle Avoidance.pdf
+│   └── VFH*TDT (VFH* with Time Dependent Tree): A new laser rangefinder based obstacle avoidance method designed for environment with non-static obstacles.pdf
+├── [01;34mvis[00m
+│   ├── Autonomous Visual Navigation and Laser based MovingObstacle Avoidance.pdf
+│   ├── Persistent self-supervised learning principle: from stereo to monocular vision for obstacle avoidance.pdf
+│   ├── Pushbroom Stereo for High Speed Navigation in ClutteredEnvironments.pdf
+│   ├── Reactive Avoidance Using Embedded Stereo Vision for MAV Flight.pdf
+│   ├── Real-Time Obstacle Detection and Avoidance in the Presence of Specular Surfaces Using an Active 3D Sensor.pdf
+│   ├── Sensor Fusion of Laser & Stereo Vision Camera forDepth Estimation and Obstacle Avoidance.pdf
+│   ├── Stereo Vision based indoor-outdoor Navigation for Flying Robots.pdf
+│   ├── Stereo vision-based obstacle avoidance for micro air vehicles using disparity space.pdf
+│   ├── Vision-Based Obstacle-Avoidance Techniques.pdf
+│   ├── Vision-based topological mapping and localization methods: A survey.pdf
+│   └── Visual Navigation With Obstacle Avoidance.pdf
+└── list
+
+11 directories, 66 files
