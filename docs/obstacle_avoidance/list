@@ -31,15 +31,24 @@
 │   └── Obstacle Avoidance of mobile robot using PSO basedNeuro Fuzzy Technique.pdf
 ├── [01;34mlegacy[00m
 │   ├── [01;34mmodern-pf[00m
+│   │   ├── Adaptive artificial potential field approach for obstacle avoidance of unmanned aircrafts.pdf
+│   │   ├── A Decentralized Cooperative Control Scheme With Obstacle Avoidance for a Team of Mobile Robots.pdf
 │   │   ├── Aggressive moving obstacle avoidance using a stochastic reachable set based potential field.pdf
+│   │   ├── A novel obstacle avoidance algorithm: Follow the Gap Method.pdf
 │   │   ├── A Novel Potential Field Method for Obstacle Avoidance and Path Planning ofMobile Robot.pdf
-│   │   └── Online UAS local path-planning algorithm for outdoors obstacle avoidance based on attractive and repulsive potential fields.pdf
+│   │   ├── A Potential Field Method based Extension of the DynamicMovement Primitive Algorithm for Imitation Learningwith Obstacle Avoidance.pdf
+│   │   ├── Mobile robots cooperative control and obstacle avoidance using potential field.pdf
+│   │   ├── Navigation of mobile robots in the presence of obstacles.pdf
+│   │   ├── Online UAS local path-planning algorithm for outdoors obstacle avoidance based on attractive and repulsive potential fields.pdf
+│   │   └── Potential-Field Based navigation in StarCraft.pdf
 │   ├── [01;34mmodern-vfh[00m
 │   │   ├── Modified Vector Field Histogram with a Neural Network Learning Modelfor Mobile Robot Path Planning and Obstacle Avoidance.pdf
+│   │   ├── Path Planning of Mobile Robot Based on Modification of Vector Field Histogram using Neuro-Fuzzy Algorithm.pdf
 │   │   └── VFH*TDT (VFH* with Time Dependent Tree): A new laser rangefinder based obstacle avoidance method designed for environment with non-static obstacles.pdf
 │   ├── Path-planning strategies for a point mobile automaton moving amidst unknown obstacles of arbitrary shape.pdf
 │   ├── The vector field histogram-fast obstacle avoidance for mobile robots.pdf
 │   └── VFH+: Reliable Obstacle Avoidance for Fast Mobile Robots.pdf
+├── list
 ├── [01;34mnn[00m
 │   ├── A Generalized Neural Network Approach to Mobile Robot Navigation and Obstacle Avoidance.pdf
 │   ├── Neural Control System in Obstacle Avoidance in Mobile Robots Using Ultrasonic Sensors.pdf
@@ -63,18 +72,17 @@
 │   ├── [syco] Slow maturation of planning in obstacle avoidance in humans.pdf
 │   ├── The obstacle avoidance motion planning problem for autonomous vehicles  alow demanding receding horizon control scheme.pdf
 │   └── UAV Path Planning withTangent plus Lyapunov VectorField Guidance and ObstacleAvoidance.pdf
-├── [01;34mvis[00m
-│   ├── Autonomous Visual Navigation and Laser based MovingObstacle Avoidance.pdf
-│   ├── Persistent self-supervised learning principle: from stereo to monocular vision for obstacle avoidance.pdf
-│   ├── Pushbroom Stereo for High Speed Navigation in ClutteredEnvironments.pdf
-│   ├── Reactive Avoidance Using Embedded Stereo Vision for MAV Flight.pdf
-│   ├── Real-Time Obstacle Detection and Avoidance in the Presence of Specular Surfaces Using an Active 3D Sensor.pdf
-│   ├── Sensor Fusion of Laser & Stereo Vision Camera forDepth Estimation and Obstacle Avoidance.pdf
-│   ├── Stereo Vision based indoor-outdoor Navigation for Flying Robots.pdf
-│   ├── Stereo vision-based obstacle avoidance for micro air vehicles using disparity space.pdf
-│   ├── Vision-Based Obstacle-Avoidance Techniques.pdf
-│   ├── Vision-based topological mapping and localization methods: A survey.pdf
-│   └── Visual Navigation With Obstacle Avoidance.pdf
-└── list
+└── [01;34mvis[00m
+    ├── Autonomous Visual Navigation and Laser based MovingObstacle Avoidance.pdf
+    ├── Persistent self-supervised learning principle: from stereo to monocular vision for obstacle avoidance.pdf
+    ├── Pushbroom Stereo for High Speed Navigation in ClutteredEnvironments.pdf
+    ├── Reactive Avoidance Using Embedded Stereo Vision for MAV Flight.pdf
+    ├── Real-Time Obstacle Detection and Avoidance in the Presence of Specular Surfaces Using an Active 3D Sensor.pdf
+    ├── Sensor Fusion of Laser & Stereo Vision Camera forDepth Estimation and Obstacle Avoidance.pdf
+    ├── Stereo Vision based indoor-outdoor Navigation for Flying Robots.pdf
+    ├── Stereo vision-based obstacle avoidance for micro air vehicles using disparity space.pdf
+    ├── Vision-Based Obstacle-Avoidance Techniques.pdf
+    ├── Vision-based topological mapping and localization methods: A survey.pdf
+    └── Visual Navigation With Obstacle Avoidance.pdf
 
-11 directories, 66 files
+11 directories, 74 files
