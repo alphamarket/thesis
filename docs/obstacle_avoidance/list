@@ -52,7 +52,10 @@
 ├── [01;34mnn[00m
 │   ├── A Generalized Neural Network Approach to Mobile Robot Navigation and Obstacle Avoidance.pdf
 │   ├── Neural Control System in Obstacle Avoidance in Mobile Robots Using Ultrasonic Sensors.pdf
-│   └── Obstacle Avoidance in Mobile Robot using Neural Network.pdf
+│   ├── Neural networks based reinforcement learning for mobile robots obstacle avoidance.pdf
+│   ├── Obstacle Avoidance in Mobile Robot using Neural Network.pdf
+│   ├── Obstacle Avoidance Method for Wheeled Mobile Robots Using Interval Type-2 Fuzzy Neural Network.pdf
+│   └── Obstacle avoidance of redundant manipulators using neural networks based reinforcement learning.pdf
 ├── [01;34muav[00m
 │   ├── A Laser Obstacle Avoidance System for Mannedand Unmanned Aircraft Detect and Avoid.pdf
 │   ├── A Laser Obstacle Warning and Avoidance System forManned and Unmanned Aircraft.pdf
@@ -87,4 +90,4 @@
 ├── list
 └── [01;32mmklist[00m
 
-11 directories, 76 files
+11 directories, 80 files
