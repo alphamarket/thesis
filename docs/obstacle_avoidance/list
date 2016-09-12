@@ -43,17 +43,17 @@
 │   ├── [DONE] Real-time obstacle avoidance for manipulators and mobile robots.pdf
 │   ├── [DONE] The vector field histogram-fast obstacle avoidance for mobile robots.pdf
 │   └── [DONE] VFH+: Reliable Obstacle Avoidance for Fast Mobile Robots.pdf
+├── [01;34m[DONE] nn[00m
+│   ├── [DONE] A Generalized Neural Network Approach to Mobile Robot Navigation and Obstacle Avoidance.pdf
+│   ├── [DONE] Neural networks based reinforcement learning for mobile robots obstacle avoidance.pdf
+│   ├── [DONE] Obstacle Avoidance in Mobile Robot using Neural Network.pdf
+│   └── [DONE] Obstacle Avoidance Method for Wheeled Mobile Robots Using Interval Type-2 Fuzzy Neural Network.pdf
 ├── [01;34mgnd[00m
 │   ├── A novel obstacle avoidance algorithm: Follow the Gap Method.pdf
 │   ├── Fuzzy Logic Navigation and ObstacleAvoidance by a Mobile Robot inan Unknown Dynamic Environment.pdf
 │   ├── Mobile Robot Obstacle Avoidance By Using FuzzyLogic Technique.pdf
 │   ├── Obstacle Avoidance Fuzzy System for Mobile Robot with IR Sensors.pdf
 │   └── Obstacle Avoidance of mobile robot using PSO basedNeuro Fuzzy Technique.pdf
-├── [01;34mnn[00m
-│   ├── [DONE] A Generalized Neural Network Approach to Mobile Robot Navigation and Obstacle Avoidance.pdf
-│   ├── [DONE] Neural networks based reinforcement learning for mobile robots obstacle avoidance.pdf
-│   ├── [DONE] Obstacle Avoidance in Mobile Robot using Neural Network.pdf
-│   └── [DONE] Obstacle Avoidance Method for Wheeled Mobile Robots Using Interval Type-2 Fuzzy Neural Network.pdf
 ├── [01;34muav[00m
 │   ├── A Laser Obstacle Avoidance System for Mannedand Unmanned Aircraft Detect and Avoid.pdf
 │   ├── A Laser Obstacle Warning and Avoidance System forManned and Unmanned Aircraft.pdf
