@@ -21,6 +21,15 @@
 │   ├── Obstacle Avoidance Path Planning ofPlanar Redundant Manipulators usingWorkspace Density.pdf
 │   ├── Real-time path planning of unmanned aerial vehicle for target tracking and obstacle avoidance in complex dynamic environment.pdf
 │   └── UAV formation control design with obstacle avoidance in dynamic three-dimensional environment.pdf
+├── [01;34m[DONE] fuzzy[00m
+│   ├── [DONE] Obstacle Avoidance Fuzzy System for Mobile Robot with IR Sensors.pdf
+│   ├── [DONE] Obstacle Avoidance of Mobile Robot using PSO-based Neuro Fuzzy Technique.pdf
+│   ├── [IGNORE] Advanced fuzzy potential field method for mobile robot obstacle avoidance.pdf
+│   ├── [IGNORE] A Robot Manipulator with Adaptive Fuzzy Controller in Obstacle Avoidance.pdf
+│   ├── [IGNORE] Fuzzy Logic Navigation and ObstacleAvoidance by a Mobile Robot inan Unknown Dynamic Environment.pdf
+│   ├── [IGNORE] Mobile Robot Obstacle Avoidance By Using FuzzyLogic Technique.pdf
+│   ├── [IGNORE] Trajectory tracking with obstacle avoidance of redundant manipulator based on fuzzy inference systems.pdf
+│   └── [IGNORE] Ultrasonic sensor based two-wheeled self-balancing robot obstacle avoidance control system.pdf
 ├── [01;34m[DONE] legacy[00m
 │   ├── [01;34m[DONE] modern-pf[00m
 │   │   ├── [DONE] Adaptive artificial potential field approach for obstacle avoidance of unmanned aircrafts.pdf
@@ -57,16 +66,6 @@
 │   ├── [IGNORE] Vision-Based Obstacle-Avoidance Techniques.pdf
 │   ├── [IGNORE] Vision-based topological mapping and localization methods: A survey.pdf
 │   └── [IGNORE] Visual Navigation With Obstacle Avoidance.pdf
-├── [01;34mfuzzy[00m
-│   ├── Advanced fuzzy potential field method for mobile robot obstacle avoidance.pdf
-│   ├── A Robot Manipulator with Adaptive Fuzzy Controller in Obstacle.pdf
-│   ├── [DONE] Obstacle Avoidance Fuzzy System for Mobile Robot with IR Sensors.pdf
-│   ├── [DONE] Obstacle Avoidance of Mobile Robot using PSO-based Neuro Fuzzy Technique.pdf
-│   ├── Fuzzy Logic Navigation and ObstacleAvoidance by a Mobile Robot inan Unknown Dynamic Environment.pdf
-│   ├── Mobile Robot Obstacle Avoidance By Using FuzzyLogic Technique.pdf
-│   ├── Trajectory tracking with obstacle avoidance of redundant manipulator based on fuzzy inference systems.pdf
-│   ├── Type-2 fuzzy ontology-based semantic knowledge for collision avoidance of autonomous underwater vehicles.pdf
-│   └── Ultrasonic sensor based two-wheeled self-balancing robot obstacle avoidance control system.pdf
 ├── [01;34muav[00m
 │   ├── [01;34mcopters[00m
 │   │   ├── Autonomous Obstacle Avoidance and Maneuvering on a Vision GuidedMAV Using On Board Processing.pdf
@@ -93,4 +92,4 @@
 ├── list
 └── [01;32mmklist[00m
 
-11 directories, 82 files
+11 directories, 81 files
