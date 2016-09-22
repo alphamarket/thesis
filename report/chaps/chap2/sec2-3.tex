@@ -5,8 +5,8 @@
 \bgroup
 
 \def\clustdir{sec2-3-clusters}
-\renewcommand{\بخش}{\subsection*}
-\newcommand{\زیربخش}{\subsubsection*}
+\renewcommand{\بخش}{\subsection}
+\newcommand{\زیربخش}{\subsubsection}
 
 \foreach \ClustNumber in {1, ..., 100} {
 	\IfFileExists{\curdir/\clustdir/clust-\ClustNumber.tex} { \subimport{\clustdir/}{clust-\ClustNumber.tex}\par } { }

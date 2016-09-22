@@ -21,9 +21,17 @@
 \usepackage[numbers,sort&compress]{natbib}
 
 \usepackage[hidelinks]{hyperref}
-\usepackage[numbered,depth=section]{bookmark}
+\usepackage[numbered,depth=subsection]{bookmark}
 
 \graphicspath{{images/}}
+
+% Set depth of TOC:
+% 	0: chapter, 1: section, 2: subsection
+\bgroup
+\def\itocdepth{2}
+\setcounter{tocdepth}{\itocdepth}
+\setcounter{secnumdepth}{\itocdepth}
+\egroup
 
 \usepackage{xepersian}								% Persian
 \settextfont{XB Zar}									% Persian font
