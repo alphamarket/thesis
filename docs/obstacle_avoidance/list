@@ -10,18 +10,18 @@
 │   ├── Real time Obstacle AvoidanceUsing Potential Field for aNonholonomic Vehicle.pdf
 │   ├── Shared Control for Obstacle Avoidance in IntelligentWheelchairs.pdf
 │   └── Wearable Obstacle Avoidance Electronic Travel Aidsfor Blind  A Survey.pdf
-├── [01;34mcontrol[00m
-│   ├── Adaptive neural tracking and obstacle avoidance of uncertainmobile robots with unknown skidding and slipping.pdf
-│   ├── A Dynamical System Approach to Realtime Obstacle Avoidance.pdf
-│   ├── A Redundancy-Based Approach to Obstacle Avoidance Applied to Mobile Robot Navigation.pdf
-│   ├── Multi agent Consensus Algorithm with Obstacle Avoidance viaOptimal Control Approach.pdf
-│   ├── Nonlinear Control for Tracking and Obstacle Avoidance of a Wheeled Mobile Robot With Nonholonomic Constraint.pdf
-│   ├── Obstacle avoidance and active disturbance rejection control for a quadrotor.pdf
-│   ├── Obstacle avoidance and formation regrouping strategy and controlfor UAV formation flight.pdf
-│   ├── Obstacle avoidance approaches for quadrotor UAV based onbackstepping technique.pdf
-│   ├── Obstacle Avoidance Path Planning ofPlanar Redundant Manipulators usingWorkspace Density.pdf
-│   ├── Real-time path planning of unmanned aerial vehicle for target tracking and obstacle avoidance in complex dynamic environment.pdf
-│   └── UAV formation control design with obstacle avoidance in dynamic three-dimensional environment.pdf
+├── [01;34m[DONE] control[00m
+│   ├── [DONE] Nonlinear Control for Tracking and Obstacle Avoidance of a Wheeled Mobile Robot With Nonholonomic Constraint.pdf
+│   ├── [DONE] Obstacle avoidance approaches for quadrotor UAV based onbackstepping technique.pdf
+│   ├── [DONE] Obstacle Avoidance Path Planning ofPlanar Redundant Manipulators usingWorkspace Density.pdf
+│   ├── [DONE] Real-time path planning of unmanned aerial vehicle for target tracking and obstacle avoidance in complex dynamic environment.pdf
+│   ├── [IGNORE] Adaptive neural tracking and obstacle avoidance of uncertainmobile robots with unknown skidding and slipping.pdf
+│   ├── [IGNORE] A Dynamical System Approach to Realtime Obstacle Avoidance.pdf
+│   ├── [IGNORE] A Redundancy-Based Approach to Obstacle Avoidance Applied to Mobile Robot Navigation.pdf
+│   ├── [IGNORE] Multi agent Consensus Algorithm with Obstacle Avoidance viaOptimal Control Approach.pdf
+│   ├── [IGNORE] Obstacle avoidance and active disturbance rejection control for a quadrotor.pdf
+│   ├── [IGNORE] Obstacle avoidance and formation regrouping strategy and controlfor UAV formation flight.pdf
+│   └── [IGNORE] UAV formation control design with obstacle avoidance in dynamic three-dimensional environment.pdf
 ├── [01;34m[DONE] fuzzy[00m
 │   ├── [DONE] Obstacle Avoidance Fuzzy System for Mobile Robot with IR Sensors.pdf
 │   ├── [DONE] Obstacle Avoidance of Mobile Robot using PSO-based Neuro Fuzzy Technique.pdf
