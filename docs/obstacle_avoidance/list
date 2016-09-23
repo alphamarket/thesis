@@ -17,6 +17,7 @@
 │   ├── Multi agent Consensus Algorithm with Obstacle Avoidance viaOptimal Control Approach.pdf
 │   ├── Nonlinear Control for Tracking and Obstacle Avoidance of a Wheeled Mobile Robot With Nonholonomic Constraint.pdf
 │   ├── Obstacle avoidance and active disturbance rejection control for a quadrotor.pdf
+│   ├── Obstacle avoidance and formation regrouping strategy and controlfor UAV formation flight.pdf
 │   ├── Obstacle avoidance approaches for quadrotor UAV based onbackstepping technique.pdf
 │   ├── Obstacle Avoidance Path Planning ofPlanar Redundant Manipulators usingWorkspace Density.pdf
 │   ├── Real-time path planning of unmanned aerial vehicle for target tracking and obstacle avoidance in complex dynamic environment.pdf
@@ -67,11 +68,10 @@
 │   ├── [IGNORE] Vision-based topological mapping and localization methods: A survey.pdf
 │   └── [IGNORE] Visual Navigation With Obstacle Avoidance.pdf
 ├── [01;34muav[00m
-│   ├── 2013.Obstacle avoidance and formation regrouping strategy and controlfor UAV formation flight.pdf
-│   ├── 2014.LIDAR Obstacle Warning and Avoidance System for Unmanned Aircraft.pdf
 │   ├── 2014.Monocular Visual Mapping for Obstacle Avoidance on UAVs.pdf
 │   ├── 2016.Cushioned extended-periphery avoidance- A reactive obstacle avoidance plugin.pdf
 │   ├── [DONE] Autonomous Obstacle Avoidance and Maneuvering on a Vision GuidedMAV Using On Board Processing.pdf
+│   ├── [DONE] LIDAR Obstacle Warning and Avoidance System for Unmanned Aircraft.pdf
 │   ├── [DONE] MAV Navigation through Indoor Corridors UsingOptical Flow.pdf
 │   ├── [DONE] Reactive Obstacle Avoidance for Rotorcraft UAVs.pdf
 │   └── [IGNORE] A Laser Obstacle Avoidance System for Mannedand Unmanned Aircraft Detect and Avoid.pdf
