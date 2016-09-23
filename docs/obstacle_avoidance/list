@@ -75,17 +75,17 @@
 │   ├── [IGNORE] Vision-Based Obstacle-Avoidance Techniques.pdf
 │   ├── [IGNORE] Vision-based topological mapping and localization methods: A survey.pdf
 │   └── [IGNORE] Visual Navigation With Obstacle Avoidance.pdf
-├── [01;34muncat[00m
-│   ├── A local obstacle avoidance method for mobile robots in partially knownenvironment.pdf
-│   ├── Control Strategies for Mobile Robot With Obstacle Avoidance.pdf
-│   ├── Obstacle Avoidance and Path Planning Schemes for Autonomous Navigation of a Mobile Robot: A Review.pdf
-│   ├── Obstacle avoidance during online corrections.pdf
-│   ├── Online obstacle avoidance at high speeds.pdf
-│   ├── Path planning with obstacle avoidance based on visibility binarytree algorithm.pdf
-│   ├── Shared steering control using safe envelopes for obstacle avoidance and vehicle stability.pdf
-│   ├── [syco] Slow maturation of planning in obstacle avoidance in humans.pdf
-│   ├── The obstacle avoidance motion planning problem for autonomous vehicles  alow demanding receding horizon control scheme.pdf
-│   └── UAV Path Planning withTangent plus Lyapunov VectorField Guidance and ObstacleAvoidance.pdf
+├── [01;34m[IGNORE] uncat[00m
+│   ├── [IGNORE] A local obstacle avoidance method for mobile robots in partially knownenvironment.pdf
+│   ├── [IGNORE] Control Strategies for Mobile Robot With Obstacle Avoidance.pdf
+│   ├── [IGNORE] Obstacle Avoidance and Path Planning Schemes for Autonomous Navigation of a Mobile Robot: A Review.pdf
+│   ├── [IGNORE] Obstacle avoidance during online corrections.pdf
+│   ├── [IGNORE] Online obstacle avoidance at high speeds.pdf
+│   ├── [IGNORE] Path planning with obstacle avoidance based on visibility binarytree algorithm.pdf
+│   ├── [IGNORE] Shared steering control using safe envelopes for obstacle avoidance and vehicle stability.pdf
+│   ├── [IGNORE] [syco] Slow maturation of planning in obstacle avoidance in humans.pdf
+│   ├── [IGNORE] The obstacle avoidance motion planning problem for autonomous vehicles  alow demanding receding horizon control scheme.pdf
+│   └── [IGNORE] UAV Path Planning withTangent plus Lyapunov VectorField Guidance and ObstacleAvoidance.pdf
 ├── list
 └── [01;32mmklist[00m
 
