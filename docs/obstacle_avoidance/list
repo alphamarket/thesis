@@ -55,6 +55,14 @@
 │   ├── [DONE] Neural networks based reinforcement learning for mobile robots obstacle avoidance.pdf
 │   ├── [DONE] Obstacle Avoidance in Mobile Robot using Neural Network.pdf
 │   └── [DONE] Obstacle Avoidance Method for Wheeled Mobile Robots Using Interval Type-2 Fuzzy Neural Network.pdf
+├── [01;34m[DONE] uav[00m
+│   ├── [DONE] Autonomous Obstacle Avoidance and Maneuvering on a Vision GuidedMAV Using On Board Processing.pdf
+│   ├── [DONE] Cushioned extended-periphery avoidance- A reactive obstacle avoidance plugin.pdf
+│   ├── [DONE] LIDAR Obstacle Warning and Avoidance System for Unmanned Aircraft.pdf
+│   ├── [DONE] MAV Navigation through Indoor Corridors UsingOptical Flow.pdf
+│   ├── [DONE] Reactive Obstacle Avoidance for Rotorcraft UAVs.pdf
+│   ├── [IGNORE] A Laser Obstacle Avoidance System for Mannedand Unmanned Aircraft Detect and Avoid.pdf
+│   └── [IGNORE] Monocular Visual Mapping for Obstacle Avoidance on UAVs.pdf
 ├── [01;34m[DONE] vis[00m
 │   ├── [DONE] Persistent self-supervised learning principle: from stereo to monocular vision for obstacle avoidance.pdf
 │   ├── [DONE] Pushbroom Stereo for High Speed Navigation in ClutteredEnvironments.pdf
@@ -67,14 +75,6 @@
 │   ├── [IGNORE] Vision-Based Obstacle-Avoidance Techniques.pdf
 │   ├── [IGNORE] Vision-based topological mapping and localization methods: A survey.pdf
 │   └── [IGNORE] Visual Navigation With Obstacle Avoidance.pdf
-├── [01;34muav[00m
-│   ├── 2014.Monocular Visual Mapping for Obstacle Avoidance on UAVs.pdf
-│   ├── 2016.Cushioned extended-periphery avoidance- A reactive obstacle avoidance plugin.pdf
-│   ├── [DONE] Autonomous Obstacle Avoidance and Maneuvering on a Vision GuidedMAV Using On Board Processing.pdf
-│   ├── [DONE] LIDAR Obstacle Warning and Avoidance System for Unmanned Aircraft.pdf
-│   ├── [DONE] MAV Navigation through Indoor Corridors UsingOptical Flow.pdf
-│   ├── [DONE] Reactive Obstacle Avoidance for Rotorcraft UAVs.pdf
-│   └── [IGNORE] A Laser Obstacle Avoidance System for Mannedand Unmanned Aircraft Detect and Avoid.pdf
 ├── [01;34muncat[00m
 │   ├── A local obstacle avoidance method for mobile robots in partially knownenvironment.pdf
 │   ├── Control Strategies for Mobile Robot With Obstacle Avoidance.pdf
