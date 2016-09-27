@@ -25,7 +25,7 @@ class Headup(object):
         half_width = 5;
         top        = int(c[0] + (frame.shape[0] - c[0]) * self.__margin_rate);
         bottom     = int(c[0] - (frame.shape[0] - c[0]) * self.__margin_rate);
-        right      = int(c[1] + (frame.shape[1] - c[1]) * self.__margin_rate) + 25;
+        right      = int(c[1] + (frame.shape[1] - c[1]) * self.__margin_rate) + 10;
 
         if(top < bottom): top, bottom = bottom, top;
 
@@ -40,22 +40,65 @@ class Headup(object):
 
         for i in xrange(bottom, top, 10):
             w = half_width;
+            blockify = False
             # show between alt. flag
             if(alts[alt_counter] < float(data['alt']) < alts[alt_counter - 1] and alt_plotted_rate > 0):
-                if(alt_plotted_rate - .2 < (data['alt'] - alts[alt_counter]) <= alt_plotted_rate):
-                    # dis-allow to mark again
-                    alt_plotted_rate = -1;
-                    cv2.putText(frame, "<", (right + w * 9, i + w / 2), cv2.FONT_HERSHEY_COMPLEX, .7, color, 2)
+                blockify = (alt_plotted_rate - .2 < (data['alt'] - alts[alt_counter]) <= alt_plotted_rate)
                 alt_plotted_rate -= .2
             # plot the numbers
             if(counter % 6 == 0):
                 w *= 2
                 alt = str(alts[alt_counter])
-                if(abs(float(data['alt'] - alts[alt_counter])) <= 1e-1 and alt_plotted_rate > 0) : alt += ' <'; alt_plotted_rate = -1;
-                cv2.putText(frame, alt, (right + w * 2, i + w / 2), cv2.FONT_HERSHEY_COMPLEX, .7, color, 2)
+                if(abs(float(data['alt'] - alts[alt_counter])) <= 1e-1 and alt_plotted_rate > 0) : blockify = True
+                cv2.putText(frame, alt, (right + w * 4, i + w / 2), cv2.FONT_HERSHEY_COMPLEX, .7, color, 2)
                 alt_counter += 1;
             # plot the horizontal step indicators
             frame[i-1:i+1, right-w:right+w] = color;
+            # display block indicator
+            if(blockify):
+                # dis-allow to mark again
+                alt_plotted_rate = -1;
+                frame[i-10:i+10, right-10:right+10] = color;
             counter += 1;
 
+    def __apply_speed_bar(self, frame, c, data, color):
+        vu.validate_hash(data, ['speed']);
 
+        half_width = 5;
+        top        = int(c[0] + (frame.shape[0] - c[0]) * self.__margin_rate);
+        bottom     = int(c[0] - (frame.shape[0] - c[0]) * self.__margin_rate);
+        right      = int(c[1] - (frame.shape[1] - c[1]) * self.__margin_rate)-10;
+
+        if(top < bottom): top, bottom = bottom, top;
+
+        # create label
+        frame[bottom-35:bottom-15,right - 10 * half_width:right + 10] = color;
+        cv2.putText(frame,"SPEED", (right - 47, bottom-20), cv2.FONT_HERSHEY_COMPLEX, .5, 0, 1)
+
+        # draw vertical lines
+        counter, speed_counter, speed_plotted_rate = 1, 1, 1;
+        # create speed range list, with data['speed'] in middel
+        speeds = list(reversed(range(int(int(data['speed']) - 3), int(int(data['speed']) + 4))));
+
+        for i in xrange(bottom, top, 10):
+            w = half_width;
+            blockify = False
+            # show between speed. flag
+            if(speeds[speed_counter] < float(data['speed']) < speeds[speed_counter - 1] and speed_plotted_rate > 0):
+                blockify = (speed_plotted_rate - .2 < (data['speed'] - speeds[speed_counter]) <= speed_plotted_rate)
+                speed_plotted_rate -= .2
+            # plot the numbers
+            if(counter % 6 == 0):
+                w *= 2
+                speed = str(speeds[speed_counter])
+                cv2.putText(frame, speed, (right - w * 5, i + w / 2), cv2.FONT_HERSHEY_COMPLEX, .7, color, 2)
+                if(abs(float(data['speed'] - speeds[speed_counter])) <= 1e-1 and speed_plotted_rate > 0) : blockify = True
+                speed_counter += 1;
+            # plot the horizontal step indicators
+            frame[i-1:i+1, right-w:right+w] = color;
+            # display block indicator
+            if(blockify):
+                # dis-allow to mark again
+                speed_plotted_rate = -1;
+                frame[i-10:i+10, right-10:right+10] = color;
+            counter += 1;

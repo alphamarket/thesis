@@ -10,7 +10,7 @@ class Webcam(luxury.Headup):
         while(True):
             ret, frame = cap.read()
             # Capture frame-by-frame
-            self.lux_apply_HUD(frame, {'alt': alt})
+            self.lux_apply_HUD(frame, {'alt': alt, 'speed': 0})
             alt += .15
             # Our operations on the frame come here
             # Display the resulting frame
