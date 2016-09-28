@@ -13,10 +13,10 @@ class Webcam(luxury.Headup):
         while(True):
             # Capture frame-by-frame
             ret, frame = cap.read()
-            self.lux_apply_HUD(frame, {'alt': alt, 'speed': speed, 'heading': head, 'pitch': 0, 'roll': 30})
+            self.lux_apply_HUD(frame, {'alt': alt, 'speed': speed, 'heading': head, 'pitch': 0, 'roll': 0})
             alt += .15
-            speed += 1
-            head += 3
+            speed += .1
+            head += .3
             # Our operations on the frame come here
             # Display the resulting frame
             cv2.imshow('frame',frame)
