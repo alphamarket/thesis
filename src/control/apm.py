@@ -5,6 +5,7 @@ runable = True;
 
 # Connect to the Vehicle (in this case a UDP endpoint)
 vehicle = connect('/dev/ttyUSB0', baud=57600, wait_ready=True)
+#vehicle = connect('/dev/ttyACM0', baud=115200, wait_ready=True)
 
 vehicle.mode = VehicleMode("GUIDED")
 vehicle.armed = True
