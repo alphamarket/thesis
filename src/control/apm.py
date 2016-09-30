@@ -31,12 +31,6 @@ def heading_listener(self, attr_name, value):
 def velocity_listener(self, attr_name, value):
     print "Velocity: %s" %value
 
-while runable: time.sleep(.5)
-
-while not vehicle.mode.name=='GUIDED' and not vehicle.armed:
-    print " Getting ready to take off ..."
-    time.sleep(1)
-
 print "Autopilot Firmware version: %s" % vehicle.version
 # print "Autopilot capabilities (supports ftp): %s" % vehicle.capabilities.ftp
 print "Global Location: %s" % vehicle.location.global_frame
@@ -59,6 +53,12 @@ print "Is Armable?: %s" % vehicle.is_armable
 print "System status: %s" % vehicle.system_status.state
 print "Mode: %s" % vehicle.mode.name    # settable
 print "Armed: %s" % vehicle.armed    # settable
+
+print "-------------------------------------------------------"
+print "PRINTING ALL PARAMS"
+for k, v in vehicle.parameters.iteritems():
+	print "[%s] = %s" %(k, v)
+print "-------------------------------------------------------"
 
 #Close vehicle object before exiting script
 print "Close vehicle object"
