@@ -1,3 +1,4 @@
+from math import *
 import vision_utils as vu
 from inspect import ismethod
 import cv2, numpy as np, threading
@@ -20,6 +21,7 @@ class Headup(object):
             attribute = getattr(self, name)
             if ismethod(attribute) and name.startswith('_Headup__apply_'):
                 threads.append(threading.Thread(target = attribute, args=[frame, c, data, color, half_width]));
+                threads[-1].daemon = True
                 threads[-1].start()
 
         for t in threads: t.join();
@@ -156,29 +158,75 @@ class Headup(object):
         frame[c[0]-1:c[0]+1,left:left+20] = color;
         frame[c[0]-1:c[0]+1,right-20:right] = color;
 
-    def __apply_pitch_angle(self, frame, c, data, color, half_width):
+    def __apply_roll_pitch_angle(self, frame, c, data, color, half_width):
         vu.validate_hash(data, ['pitch','roll']);
         top        = int(c[0] + (frame.shape[0] - c[0]) * self.__margin_rate);
         bottom     = int(c[0] - (frame.shape[0] - c[0]) * self.__margin_rate);
         left       = int(c[1] - (frame.shape[1] - c[1]) * self.__margin_rate) + 20;
         right      = int(c[1] + (frame.shape[1] - c[1]) * self.__margin_rate) - 20;
 
-        pitch_range = [int((data['pitch']-10)), int((data['pitch']+10+1))]
-        pitches = list(reversed(range(pitch_range[0], pitch_range[1], 5)));
-        length = 25 * half_width;
-        for p in pitches:
-            p1 = [c[0] + 15 * p - 1, c[1] - half_width * 20]
-            p2 = [int(p1[0] - length * np.cos(data['roll'] * np.pi / 180.)), int(p1[1] - length * np.sin(data['roll'] * np.pi / 180.))]
-            print p1, p2
-            frame[p1[1]:p2[1],p1[0]:p2[0]] = 0
-            break;
+        def draw_circle(im, c, r):
+            for i in xrange(0, 360):
+                x = c[0] + r * np.cos(i * np.pi / 180);
+                y = c[1] + r * np.sin(i * np.pi / 180);
+                im[x-1:x+1, y-1:y+1] = [0, 255, 0]
 
-            # frame[c[0]+15*p-1:c[0]+15*p+1, c[1] - half_width * 20:c[1] - half_width * 5] = color;
-            # frame[c[0]+15*p-1:c[0]+15*p+1, c[1] + half_width * 5:c[1] + half_width * 20] = color;
-            # if(p < 0):
-            #     frame[c[0]+10*p-1:c[0]+15*p+1, c[1] + half_width * 20:c[1] + half_width * 20+1] = color;
-            # else:
-            #     frame[c[0]+15*p-1:c[0]+10*p+1, c[1] + half_width * 20:c[1] + half_width * 20+1] = color;
-        # center line
-        # frame[c[0]-1:c[0]+1,c[1] - half_width * 30:c[1] + half_width * 30] = color;
+        def tangent2(c, roll, r, x):
+            theta = roll * np.pi / 180;
+            x0 = c[0] - r * np.sin(theta);
+            y0 = c[1] + r * np.cos(theta);
+            f = (c[0]**2 + c[1]**2 - r**2);
+            y = ((c[0]-x0) * x + c[0]*x0 + c[1]*y0 - f)/((y0 - c[1]) if roll not in [90, 270] else 1)
+            return y
+
+        def make_point(im, p, t = 2, color = [0,0,255]):
+            im[p[1]-t:p[1]+t, p[0]-t:p[0]+t] = color
+
+        def normdegree(angle):
+            # reduce the angle
+            angle =  angle % 360;
+            # force it to be the positive remainder, so that 0 <= angle < 360
+            angle = (angle + 360) % 360;
+             # force into the minimum absolute value residue class, so that -180 < angle <= 180
+            if (angle > 180): angle -= 360;
+            return angle
+
+        def location(p, w, theta):
+            return (int(p[1] + w * sin(theta)), int(p[0] + w * cos(theta)))
+
+        roll = normdegree(data['roll'])
+
+        pitch_step_size = 5;
+        pitch = normdegree(data['pitch'])
+        pitch_step = int(pitch_step_size * round( pitch / pitch_step_size ));
+
+        theta = roll * pi / 180 + pi / 2;
+
+        counter = 0;
+        width = 30 * half_width
+        radius = 30 * half_width;
+        for r in xrange(0, int(c[1]/2), radius):
+            # draw_circle(frame, c, r)
+            # loop for droving above/below from circle line
+            for section, offset, sign in (['UP', 0, -1], ['DOWN', -pi, +1]):
+                theta += offset
+                p0 = np.asarray([c[0] - r * np.sin(theta) + 50 * ((pitch - pitch_step) / pitch_step_size), c[1] + r * np.cos(theta)]);
+                # make_point(frame, p0, 3)
+
+                point_sets = {
+                    'start': location(p0, -width, theta),
+                    'start_mid': location(p0, -width/4, theta),
+                    'end_mid': location(p0, +width/4, theta),
+                    'end': location(p0, +width, theta)
+                }
+                for s, e in [('start', 'start_mid'), ('end_mid', 'end')]:
+                    cv2.line(frame,
+                        point_sets[s],
+                        point_sets[e],
+                        color,
+                        2);
+                cv2.putText(frame,"%d" %(pitch_step + counter * pitch_step_size * sign) , (point_sets['end'][0]-10, point_sets['end'][1]+20), cv2.FONT_HERSHEY_COMPLEX, .5, color, 1)
+                cv2.putText(frame,"%d" %(pitch_step + counter * pitch_step_size * sign) , (point_sets['start'][0]-10, point_sets['start'][1]+20), cv2.FONT_HERSHEY_COMPLEX, .5, color, 1)
+            counter += 1
+
 

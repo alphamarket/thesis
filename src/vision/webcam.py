@@ -9,17 +9,21 @@ class Webcam(luxury.Headup):
 
         cap = cv2.VideoCapture(0)
         alt, speed, head = 0, 0, 0
+        roll, pitch = 0, 0
 
         while(True):
             # Capture frame-by-frame
             ret, frame = cap.read()
-            self.lux_apply_HUD(frame, {'alt': alt, 'speed': speed, 'heading': head, 'pitch': 0, 'roll': 0})
             alt += .15
             speed += .1
             head += .3
+            roll += .1
+            pitch -= .1
             # Our operations on the frame come here
             # Display the resulting frame
-            cv2.imshow('frame',frame)
+            hud = frame.copy()
+            self.lux_apply_HUD(hud, {'alt': alt, 'speed': speed, 'heading': head, 'pitch': pitch, 'roll': roll})
+            cv2.imshow('frame2',np.hstack((frame, hud)))
             # break;
             if cv2.waitKey(100) & 0xFF == ord('q'):
                 break
