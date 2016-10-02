@@ -124,7 +124,7 @@ class Headup(object):
         frame[top + 4 * half_width:top + 8 * half_width, 0:80] = color;
         cv2.putText(frame,"HEADING: ", (0, top + 7 * half_width), cv2.FONT_HERSHEY_COMPLEX, .5, 0, 1)
 
-        direction = " ";
+        direction = "";
 
         for k in [
                     (0, 45, 'N', 'NE'), (45, 90, 'NE', 'E'),
@@ -133,10 +133,10 @@ class Headup(object):
                     (270, 315, 'W', 'NW'), (315, 360, 'NW', 'N'),
                 ]:
             if(k[0] < data['heading'] < k[1]):
-                direction += '%s/%s [%s:%d]' %(k[2], k[3], k[2], (round(data['heading'] % 45)))
+                direction += '%s/%s' %(k[2], k[3])
                 break;
 
-        cv2.putText(frame,str(data['heading']) + direction, (85, top + 7 * half_width), cv2.FONT_HERSHEY_COMPLEX, .5, color, 1)
+        cv2.putText(frame, "%.2f %s" %(data['heading'], direction), (85, top + 7 * half_width), cv2.FONT_HERSHEY_COMPLEX, .5, color, 1)
 
 
     def __apply_focus_area(self, frame, c, data, color, half_width):
@@ -159,7 +159,7 @@ class Headup(object):
         frame[c[0]-1:c[0]+1,right-20:right] = color;
 
     def __apply_roll_pitch_angle(self, frame, c, data, color, half_width):
-        vu.validate_hash(data, ['pitch','roll']);
+        vu.validate_hash(data, ['pitch','roll', 'yaw', 'headup']);
         top        = int(c[0] + (frame.shape[0] - c[0]) * self.__margin_rate);
         bottom     = int(c[0] - (frame.shape[0] - c[0]) * self.__margin_rate);
         left       = int(c[1] - (frame.shape[1] - c[1]) * self.__margin_rate) + 20;
@@ -179,6 +179,13 @@ class Headup(object):
             y = ((c[0]-x0) * x + c[0]*x0 + c[1]*y0 - f)/((y0 - c[1]) if roll not in [90, 270] else 1)
             return y
 
+        def location(p, w, theta):
+            return (int(p[1] + w * sin(theta)), int(p[0] + w * cos(theta)))
+
+        def location_perpendicular(p, w, theta):
+            m = pi / 2 + theta;
+            return (int(p[0] + w * sin(m)), int(p[1] + w * cos(m)))
+
         def make_point(im, p, t = 2, color = [0,0,255]):
             im[p[1]-t:p[1]+t, p[0]-t:p[0]+t] = color
 
@@ -191,10 +198,8 @@ class Headup(object):
             if (angle > 180): angle -= 360;
             return angle
 
-        def location(p, w, theta):
-            return (int(p[1] + w * sin(theta)), int(p[0] + w * cos(theta)))
-
         roll = normdegree(data['roll'])
+        yaw = normdegree(data['yaw'])
 
         pitch_step_size = 5;
         pitch = normdegree(data['pitch'])
@@ -205,28 +210,40 @@ class Headup(object):
         counter = 0;
         width = 30 * half_width
         radius = 30 * half_width;
-        for r in xrange(0, int(c[1]/2), radius):
-            # draw_circle(frame, c, r)
-            # loop for droving above/below from circle line
-            for section, offset, sign in (['UP', 0, -1], ['DOWN', -pi, +1]):
-                theta += offset
-                p0 = np.asarray([c[0] - r * np.sin(theta) + 50 * ((pitch - pitch_step) / pitch_step_size), c[1] + r * np.cos(theta)]);
-                # make_point(frame, p0, 3)
+        r = 0;
+        draw_circle(frame, c, 4 * half_width)
+        p0 = np.asarray([c[0] - r * np.sin(theta), c[1] + r * np.cos(theta)]);
 
-                point_sets = {
-                    'start': location(p0, -width, theta),
-                    'start_mid': location(p0, -width/4, theta),
-                    'end_mid': location(p0, +width/4, theta),
-                    'end': location(p0, +width, theta)
-                }
-                for s, e in [('start', 'start_mid'), ('end_mid', 'end')]:
-                    cv2.line(frame,
-                        point_sets[s],
-                        point_sets[e],
-                        color,
-                        2);
-                cv2.putText(frame,"%d" %(pitch_step + counter * pitch_step_size * sign) , (point_sets['end'][0]-10, point_sets['end'][1]+20), cv2.FONT_HERSHEY_COMPLEX, .5, color, 1)
-                cv2.putText(frame,"%d" %(pitch_step + counter * pitch_step_size * sign) , (point_sets['start'][0]-10, point_sets['start'][1]+20), cv2.FONT_HERSHEY_COMPLEX, .5, color, 1)
-            counter += 1
+        point_sets = {
+            'start': location(p0, -width, theta),
+            'start_mid': location(p0, -width/4, theta),
+            'end_mid': location(p0, +width/4, theta),
+            'end': location(p0, +width, theta),
+        }
 
+        for s, e in [('start', 'start_mid'), ('end_mid', 'end')]:
+            cv2.line(frame,
+                point_sets[s],
+                point_sets[e],
+                color,
+                2);
+        k = 5 * half_width;
+        for p in ['start', 'end']:
+            cv2.line(frame,
+                point_sets[p],
+                location_perpendicular(point_sets[p], np.sign(data['headup']) * k, theta),
+                color,
+                2);
+
+        frame[top + 4 * half_width:top + 8 * half_width, 200:250] = color;
+        cv2.putText(frame, "ROLL: ", (200, top + 7 * half_width), cv2.FONT_HERSHEY_COMPLEX, .5, 0, 1)
+        cv2.putText(frame, "%.1f" %roll, (255, top + 7 * half_width), cv2.FONT_HERSHEY_COMPLEX, .5, color, 1)
+
+        frame[top + 4 * half_width:top + 8 * half_width, 320:380] = color;
+        cv2.putText(frame, "PITCH: ", (320, top + 7 * half_width), cv2.FONT_HERSHEY_COMPLEX, .5, 0, 1)
+        cv2.putText(frame, "%.1f" %pitch, (385, top + 7 * half_width), cv2.FONT_HERSHEY_COMPLEX, .5, color, 1)
+
+        frame[top + 4 * half_width:top + 8 * half_width, 450:495] = color;
+        cv2.putText(frame, "YAW: ", (450, top + 7 * half_width), cv2.FONT_HERSHEY_COMPLEX, .5, 0, 1)
+        cv2.putText(frame, "%.1f" %yaw, (500, top + 7 * half_width), cv2.FONT_HERSHEY_COMPLEX, .5, color, 1)
 
