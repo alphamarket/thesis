@@ -12,7 +12,6 @@ def arm_and_takeoff(aTargetAltitude):
         print " Waiting for vehicle to initialise..."
         time.sleep(1)
 
-
     print "Arming motors"
     # Copter should arm in GUIDED mode
     vehicle.mode = VehicleMode("GUIDED")
@@ -51,6 +50,12 @@ def signal_handler(signal, frame):
 vehicle = connect('/dev/ttyUSB0', baud=57600, wait_ready=True)
 
 signal.signal(signal.SIGINT, signal_handler)
+
+print "-------------------------------------------------------"
+print "PRINTING ALL PARAMS"
+for k, v in vehicle.parameters.iteritems():
+    print "[%s] = %s" %(k, v)
+print "-------------------------------------------------------"
 
 arm_and_takeoff(1)
 
