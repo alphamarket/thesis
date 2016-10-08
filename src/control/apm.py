@@ -3,10 +3,11 @@ import signal, os, time, numpy as np
 
 runable = True;
 
-# Connect to the Vehicle (in this case a UDP endpoint)
-# vehicle = connect('/dev/ttyUSB0', baud=57600, wait_ready=True)
-#vehicle = connect('/dev/ttyACM0', baud=115200, wait_ready=True
-# Connect to the Vehicle (in this case a simulator running the same computer)
+# Connect to the Vehicle: TELEMTRY -> APM
+vehicle = connect('/dev/ttyUSB0', baud=57600, wait_ready=True)
+# Connect to the Vehicle: USB -> APM
+# vehicle = connect('/dev/ttyACM0', baud=115200, wait_ready=True
+# Connect to the Vehicle: LOCALHOST -> SIMULATION
 #vehicle = connect('tcp:127.0.0.1:5762', wait_ready=True)
 
 @vehicle.on_attribute('last_heartbeat')
