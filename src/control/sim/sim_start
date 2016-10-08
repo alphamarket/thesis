@@ -1,4 +1,4 @@
 #!/bin/bash
 cd ~/Desktop/ardupilot/Tools/autotest
 bash fg_quad_view.sh&
-./sim_vehicle.py -Nj4 -L KSFO -v ArduCopte
+./sim_vehicle.py -Nj4 -L KSFO -v ArduCopter
