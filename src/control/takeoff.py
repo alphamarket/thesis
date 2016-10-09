@@ -31,7 +31,6 @@ def velocity_listener(self, attr_name, value):
     pass; #print "Velocity: %s" %value
 
 print "Autopilot Firmware version: %s" % vehicle.version
-# print "Autopilot capabilities (supports ftp): %s" % vehicle.capabilities.ftp
 print "Global Location: %s" % vehicle.location.global_frame
 print "Global Location (relative altitude): %s" % vehicle.location.global_relative_frame
 print "Local Location: %s" % vehicle.location.local_frame    #NED
@@ -55,7 +54,7 @@ print "Armed: %s" % vehicle.armed    # settable
 
 def is_armable():
     global vehicle
-    return vehicle.mode != 'INITIALISING' and vehicle.gps_0.fix_type > 1
+    return vehicle.mode != 'INITIALISING' and vehicle.gps_0.fix_type > 2
 
 def confirm(string):
     while True:
