@@ -1,7 +1,7 @@
 import cv2, numpy as np
 from stereo import Stereo
 
-s = Stereo([0, 1])
+s = Stereo([1, 2])
 
 while(True):
 #     # Capture frame-by-frame
