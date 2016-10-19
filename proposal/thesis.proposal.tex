@@ -1,0 +1,72 @@
+\documentclass[12pt,a4paper]{article}
+% for margining standards
+\usepackage[left=3cm,right=3cm,top=3cm,bottom=3cm]{geometry}
+% for counting references as a section
+\usepackage[numbib,notlof,notlot,nottoc]{tocbibind}
+% useful packages
+\usepackage{
+                graphicx, setspace, fontspec, caption,
+                subcaption, float, polyglossia, rotating,
+                lscape, pdflscape, indentfirst, tocloft,
+                multirow, mathtools, currfile, lscape,
+                cite, color
+            }
+% paragraph related package
+\usepackage[parfill]{parskip}
+% use bzar font(THIS MUST BE LOADED BEFORE XePerian PACKAGE)
+\setmainfont{BZar.ttf}
+% the dear XePersian package
+\usepackage{xepersian}
+%
+% General settings goes here.
+%
+% lines space
+\renewcommand{\baselinestretch}{1.5}
+% paragraph first line indention
+\setlength{\parindent}{1cm}
+% paragraph spacing
+\setlength{\parskip}{1em}
+% set graphics' path
+\graphicspath{ {images/} }
+% make table of content dotted
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+% define a new command as {half-space} in english
+\newcommand{\halfspace}{\hspace{0pt}}
+% define a new command as {half-space} in persian
+\newcommand{\نیمفاصله}{\halfspace}
+% define a shortcut for half-space in general
+\renewcommand{\ }{\halfspace}
+% define a new command for ease of use for rendering reference
+\newcommand{\renderref}[1] { \begingroup \let\clearpage\relax \include{#1} \endgroup }
+\newcommand\Wider[2][3em]{%
+\makebox[\linewidth][c]{%
+  \begin{minipage}{\dimexpr\textwidth+#1\relax}
+  \raggedright#2
+  \end{minipage}%
+  }%
+}
+\newcommand{\فوتنت}[1]{\footnote{\lr{#1}}}
+
+\definecolor{lightgray}{gray}{0.6}
+
+\begin{document}
+%\input{sec/title}
+\begin{center}\LARGE\textbf{
+متن گزارش
+}\vspace{-2em}\end{center}
+\input{sec/abstract}
+\vspace{-1em}
+\input{sec/research_feild}
+\vspace{-3em}
+\input{sec/previous_works}
+\vspace{-2em}
+\input{sec/why_this}
+\vspace{-2em}
+\input{sec/eval}
+\input{sec/timings}
+\input{sec/hardwares}
+\newpage
+\section{فهرست مراجع اصلی}
+%\nocite{*}
+\renderref{reference}
+\end{document}

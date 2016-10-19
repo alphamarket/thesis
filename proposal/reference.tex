@@ -1,0 +1,18 @@
+\begingroup
+    \small
+    % bibliography style
+    \bibliographystyle{ieeetr}
+    % backup the current \section command
+    \let\oldsection\section
+    % backup the current \addcontentsline command
+    \let\oldaddcontentsline\addcontentsline
+    % remove the english "reference" section title
+    \renewcommand{\section}[2]{}
+    % remove functionality of \addcontentsline
+    \renewcommand{\addcontentsline}[3]{}
+    % render bibliographies in latin culture
+    \begin{latin}
+        % inlcude the bibliography file
+        \bibliography{\currfilebase}
+    \end{latin}
+\endgroup
