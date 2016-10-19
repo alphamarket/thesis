@@ -1,1 +1,0 @@
-class BlockedMove(Exception): pass
