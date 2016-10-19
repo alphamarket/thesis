@@ -1,0 +1,251 @@
+%*************************************************
+% In this file the first few pages are typeset.
+% Make the changes accordingly
+%*************************************************
+
+% شماره صفحات با حروف
+\pagenumbering{adadi}
+
+%***************************
+% 1st page: Blank
+%***************************
+\thispagestyle{empty}
+\mbox{}
+\pagebreak
+
+%***************************
+% 2nd page: Besmelah
+%***************************
+\thispagestyle{empty}
+\begin{center}
+	~\vfill
+	\includegraphics[scale=1]{besm.jpg}
+	~\vfill
+\end{center}
+\pagebreak
+
+%***************************
+% 3rd page: Title
+%***************************
+\thispagestyle{empty}
+%\pagenumbering{gobble}
+\newgeometry{left=3cm,right=3cm,top=2cm}
+\begin{center}
+\includegraphics[height=3cm]{iut_logo.png}
+\vspace{0.4cm}
+
+\textbf{دانشگاه صنعتی اصفهان}\\
+\vspace{0.4cm}
+
+{\large
+
+	دانشکده مهندسی برق و کامپیوتر
+}
+\vspace{3.5cm}
+
+{\Large
+	\textbf{پیاده‌سازی سامانه‌ی اجتناب از مانع بروی ربات شش‌پره}\\
+}
+\vspace{3.5cm}
+
+{\Large
+	پایان‌نامه کارشناسی ارشد مهندسی کامپیوتر -- هوش‌مصنوعی و رباتیک\\
+}
+\vspace{1cm}
+
+{\large
+	\textbf{داریوش حسن‌پور آده}\\
+}
+\vspace{3.5cm}
+
+{\large
+	استاد راهنما\\
+}
+\vspace{0.5cm}
+
+{\large
+	\textbf{دکتر مازیار پالهنگ}\\
+}
+\vspace{4cm}
+
+\textbf{1395}
+
+\end{center}
+\restoregeometry
+\pagebreak
+
+%***************************
+% 4th page: Signatures
+%***************************
+\thispagestyle{empty}
+\newgeometry{left=3cm,right=3cm,top=2cm}
+\begin{center}
+\includegraphics[height=3cm]{iut_logo.png}
+\vspace{0.4cm}
+
+\textbf{دانشگاه صنعتی اصفهان}\\
+\vspace{0.4cm}
+
+{\large
+	دانشکده مهندسی برق و کامپیوتر
+}
+\vspace{1.8cm}
+
+\vfill
+
+{\Large
+	پایان‌نامه کارشناسی ارشد رشته مهندسی کامپیوتر -- هوش‌مصنوعی و رباتیک آقای داریوش حسن‌پور آده\\
+	\vspace{.3cm}
+	تحت عنوان\\
+}
+
+
+\end{center}
+\vfill
+\vspace{2.5cm}
+
+{\large
+	\textbf{پیاده‌سازی سامانه‌ی اجتناب از مانع بروی ربات شش‌پره}
+}
+
+\vspace*{2cm}
+
+در تاریخ ... توسط کمیته تخصصی زیر مورد بررسی و تصویب نهایی قرار گرفت:\\
+\vspace{0.8cm}
+
+{\normalsize
+	
+	\begin{tabular}{rr}
+	\vspace*{.8cm}
+	1- استاد راهنمای پایان‌نامه  & \hspace{2cm} دکتر مازیار پالهنگ \\
+	\vspace{.8cm}
+	3-استاد داور (اختیاری) &\hspace{2cm} دکتر ... \\
+	\vspace{.8cm}
+	۴-استاد داور (اختیاری) &\hspace{2cm} دکتر ... \\
+	\vspace{.8cm}
+	سرپرست تحصیلات تکمیلی دانشکده &\hspace{2cm} دکتر محمد رضا تابان \\
+	\end{tabular}
+}
+\restoregeometry
+\pagebreak
+
+%***************************
+% 5th page: Acknowledgment
+%***************************
+\thispagestyle{empty}
+\newgeometry{left=3cm,right=4cm,top=4cm}
+\vspace*{1.5cm}
+
+{\large
+	\textbf{تشکر و قدردانی}\\
+
+	
+پروردگار منّان را سپاسگزارم ......
+
+}
+\restoregeometry
+\pagebreak
+
+%***************************
+% 6th page: Rights
+%***************************
+\thispagestyle{empty}
+\newgeometry{left=6cm,right=6cm}
+
+\begin{spacing}{3}
+\leavevmode
+\vfill
+\parbox{8 cm}{
+
+\textbf{\Large کلیه حقوق مادی مترتب بر نتایج مطالعات، ابتکارات و نوآوری‌های ناشی از تحقیق موضوع این پایان‌نامه  متعلق به دانشگاه صنعتی اصفهان است.}
+
+}
+\vfill
+\end{spacing}
+\restoregeometry
+\pagebreak
+
+%***************************
+% 7th page: Dedication
+%***************************
+\thispagestyle{empty}
+\newgeometry{left=4.5cm,right=4.5cm,top=0cm,bottom=0cm}
+
+%{\LARGE
+%\centering
+%\textbf{تقدیم به \\ پدر و مادر عزیزم }
+%
+%}
+\bgroup\vspace*{\fill}
+\renewcommand{\\}{\vspace{.65em}\newline\relax}
+\newcommand{\تب}[1][.5]{\hspace*{#1cm}}
+\noindent
+دلتنگی‌های آدمی را باد ترانه‌ای می‌خواند\\
+\تب روياهايش را آسمان پر ستاره ناديده می‌گيرد\\
+\تب[1] و هر دانه‌ی برفی به اشكی نريخته می‌ماند.\\
+\تب[1.5] سكوت سرشار از سخنان ناگفته ا‌ست؛\\
+\تب[2] از حركات نا‌كرده،\\
+\تب[2.5] اعتراف به عشق‌های نهان،\\
+\تب[3] و شگفتی‌های به زبان نيامده،\\
+\تب[3.5] دراين سكوت حقيقت ما نهفته است؛\\
+\تب[6] حقيقت تو و من.\\
+\noindent
+برای تو و خويش\\
+\تب چشمانی آرزو می‌كنم،\\
+\تب[1] كه چراغ‌ها و نشانه‌ها را در ظلمات‌مان ببيند.\\
+\تب[1.5] گوشی،\\\تب[2] كه صداها و شناسه‌ها را در بيهوشی‌مان بشنود.\\
+برای تو و خويش،\\
+\تب[1.5] روحی،\\\تب[2] كه اين‌همه را در خود گيرد و بپذيرد.\\
+\تب[1.5] و زبانی\\\تب[2] كه در صداقت خود ما را از خاموشی خويش بيرون كشد،\\
+\تب[3] و بگذارد از آن‌چيزها كه در بندمان كشيده‌ است، سخن بگوييم.\\
+\\
+پنجه درافکنده‌ایم با دست‌هایمان\\
+\تب به جای رها شدن\\
+\تب[1] سنگین سنگین بر دوش می‌کشیم\\
+\تب[1.5] بار دیگران را\\
+\تب[2] به جای همراهی کردن‌شان!\\
+\تب[2.5] عشق ما نیازمند رهایی است نه تصاحب\\
+ \تب[3] در راه خویش ایثار باید نه انجام وظیفه...\\
+\\
+\تب[3] بی‌اعتمادی دری است\\
+ \تب[2.4] خودستایی، چفت و بست غرور است\\
+\تب[1.8] و تهی دستی، دیوار است و لولاست\\
+\تب[1.2] زندانی را که در آن محبوس رآی خویش‌ایم\\
+\تب[.6] دلتنگی‌مان را برای آزادی و دلخواه دیگران بودن\\
+از رخنه‌هایش تنفس می‌کنیم...\\
+\begin{flushleft}\textit{
+- مارگوت بیگل
+}\end{flushleft}
+\vspace*{\fill}\egroup
+\pagebreak
+
+%***************************
+% 8th page: Table of contents
+%***************************
+
+\titleformat{\chapter}[display]
+	{\normalfont\LARGE\bfseries\centering}{\chaptertitlename ~ \tartibi{chapter}}{20pt}{\LARGE}
+\newgeometry{left=2.5cm,right=3cm,top=3cm,bottom=2.5cm,includehead=false,headsep=1cm,footnotesep=.5cm}
+\baselineskip=.7cm
+
+\addtocontents{toc}{\textbf{\underline{عنوان}}}
+\addtocontents{toc}{\hfill\textbf{\underline{صفحه}}\par}
+\addcontentsline{toc}{section}{فهرست مطالب}
+\tableofcontents
+\pagebreak
+
+\addcontentsline{toc}{section}{فهرست تصاویر}
+\listoffigures
+\pagebreak
+
+%\addcontentsline{toc}{section}{فهرست جداول}
+%\listoftables
+%\pagebreak
+
+% change the font and margins of a chapter title
+\titlespacing*{\chapter}{0pt}{3.5cm}{6cm}
+\titleformat{\chapter}[display]
+	{\normalfont\LARGE\bfseries\raggedright}{\chaptertitlename ~ \tartibi{chapter}}{20pt}{\LARGE}
+
+% No page numbers on the first page of a chapter
+\assignpagestyle{\chapter}{empty}

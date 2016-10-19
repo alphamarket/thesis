@@ -1,0 +1,16 @@
+\renewcommand{\سال}[1]{\کادربی{سال \the\numexpr#1-621 (#1 م.)}}
+\renewcommand*{\تاریخ}[1]{\mbox{\the\numexpr#1-621 (#1 م.)}}
+\newcommand{\دهه}[1]{\کادربی{دهه‌ی \the\numexpr#1-621 (#1 م.)}}
+\newcommand{\مق}{\lr}
+
+% add space before citation
+\renewcommand{\مرجع}[1]{ \cite{#1}\relax}
+
+\def\جام{اجتناب از مانع }
+
+\newcommand{\fig}[3][0.5]{\begin{figure}
+\centering
+\includegraphics[scale=#1]{#2}
+\caption{#3}
+\label{fig:#2}
+\end{figure}}

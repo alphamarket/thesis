@@ -1,0 +1,16 @@
+\فصل{تاریخچه و مرور کارهای پیشین}
+\برچسب{chap:hist_relworks}
+
+\bgroup
+
+\def\chapno{2}
+
+\def\curdir{chaps/chap\chapno}
+
+\foreach \SecNumber in {1, ..., 20} {
+	\bookmarksetup{numbered=false}
+	\IfFileExists{\curdir/sec\chapno-\SecNumber.tex} { \subimport{\curdir/}{sec\chapno-\SecNumber} } { }
+	\bookmarksetup{numbered=true}
+}
+
+\egroup
