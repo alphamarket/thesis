@@ -42,11 +42,19 @@ int main(int, char**) {
     for_each_trial(_try) {
         // make them learn
         for_each_agent(tid)
-            threads[tid] = std::async(std::launch::async, execute_agent, m.clone(), action_list, qtable, AGENT_LEARNING_CYCLES, size_t(tid));
+            threads[tid] =
+                std::async(std::launch::async,
+                           execute_agent,
+                           m.clone(),
+                           action_list,
+                           qtable,
+                           AGENT_LEARNING_CYCLES,
+                           size_t(tid));
         // fetch the results
         for_each_agent(tid)
             results[tid] = threads[tid].get();
         // TODO: combine the intel
+        cout << "\r" << scalar(_try) / TRIAL_MAX;
     }
 
 	return 0;
