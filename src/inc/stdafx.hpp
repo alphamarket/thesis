@@ -64,6 +64,3 @@ typedef double scalar;
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 #include <Eigen/Core>
 #pragma GCC diagnostic pop
-
-typedef Eigen::Vector2d vec2f;
-typedef Eigen::Vector2d vec2i;

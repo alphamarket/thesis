@@ -1,6 +1,6 @@
 #include <iostream>
 #include <inc/worlds/maze.hpp>
-#include <inc/worlds/block.hpp>
+#include <inc/rl/qlearning.hpp>
 
 #define WALL_REWARD -1
 
@@ -71,7 +71,7 @@ maze create_maze(
         if(b.type() == b.EMPTY) {
             scalar _min = INFINITY;
             // the block's reward is the minimum of the distance of the block to the goals
-            for(auto g : goals) _min = min((g.first - s).norm(), _min);
+            for(auto g : goals) _min = min(scalar((g.first - s).norm()), _min);
             // set the block's reward
             b.reward(1 / _min);
         }

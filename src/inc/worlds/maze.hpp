@@ -12,7 +12,7 @@ class maze
      */
     vector<vector<block>> _matrix;
 public:
-    typedef vec2i state;
+    typedef Eigen::Vector2i state;
     /**
      * @brief _pos_agent The state of agent
      */
@@ -74,7 +74,7 @@ public:
      * @return Returns true of the state is valid in current world; otherwise false.
      */
     inline bool is_valid(const state& s) const
-    { return s[0] >= 0 && s[1] >= 0 && s[0] < this->width && s[1] < this->height; }
+    { return size_t(s[0]) >= 0 && size_t(s[1]) >= 0 && size_t(s[0]) < this->width && size_t(s[1]) < this->height; }
     /**
      * @brief ensure_state Ensures that the given state is valid; otherwise a runtime error will raise
      * @param s The target state
