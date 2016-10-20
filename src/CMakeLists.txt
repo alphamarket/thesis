@@ -14,7 +14,7 @@ foreach (_headerFile ${IHEADER})
 endforeach()
 list(REMOVE_DUPLICATES IINCLUDE_DIRS)
 
-include_directories(${IINCLUDE_DIRS} ".")
+include_directories(${IINCLUDE_DIRS} "." "/usr/include/eigen3")
 
 add_executable (thesis main.cpp ${ISOURCES})
 
