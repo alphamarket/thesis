@@ -11,11 +11,11 @@ void maze::foreach_block(std::function<bool(maze::state, block&)> callback) {
     }
 }
 
-void maze::add_agent(const state &s) {
+void maze::set_agent(const state &s) {
     this->ensure_state(s);
     if(this->_pos_agent[0] >= 0 && this->_pos_agent[1] >= 0)
-        this->operator ()(this->_pos_agent).remove_agent();
-    this->operator ()(s).add_agent();
+        this->operator ()(this->_pos_agent) -= Agent();
+    this->operator ()(s) += Agent();
     this->_pos_agent = s;
 }
 
@@ -39,7 +39,7 @@ maze& maze::operator = (const maze& m) {
     for(size_t i = 0; i < m.width; i++) {
         this->_matrix.push_back(vector<block>());
         for(size_t j = 0; j < m.height; j++)
-            this->_matrix[i].push_back(m(i, j));
+            this->_matrix[i].push_back(m({i, j}));
     }
     return *this;
 }
