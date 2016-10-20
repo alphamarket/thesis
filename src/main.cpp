@@ -1,45 +1,15 @@
-#include <iostream>
-#include <inc/worlds/maze.hpp>
-#include <inc/rl/maze_qlearning.hpp>
+#include "main.helper.hpp"
+#include <future>
 
-#define WALL_REWARD -1
+#define MULTI_AGENT_COUNT 3
+#define AGENT_LEARNING_CYCLES   10
+#define TRIAL_MAX               1000
 
-/**
- * @brief create_maze Creates a maze world
- * @param size The size of the world
- * @param goals The vector of pairs position and reward of goals
- * @param walls The position of walls
- * @return The created and initalized maze
- */
-maze create_maze(
-        const maze::state& size,
-        vector<pair<maze::state, scalar>> goals,
-        vector<maze::state> walls);
+#define for_each_agent(tid) for(auto tid = 0; tid < MULTI_AGENT_COUNT; tid++)
+#define for_each_trial(_try) for(auto _try = 0; _try < TRIAL_MAX; _try++)
 
-/**
- * @brief set_agent_random Sets the agent at valid random position
- * @param m The maze to act upon
- */
-inline void set_agent_random(maze& m);
+QLearningResult execute_agent(maze m, const vector<action> &action_list, const qtable_t& qtable, size_t iteration_max, size_t thread_id);
 
-/**
- * @brief action_picker Picks an action
- * @param mq The Maze QLearning instance
- * @param current_hop The current hop#
- * @param current_iter The current iter#
- * @return The picked action
- */
-Maze_QLearning::action action_picker(const Maze_QLearning& mq, const maze::state &state, size_t current_hop, size_t current_iter);
-/**
- * @brief action_handler The action handler
- * @param mq The Maze QLearning instance
- * @param state The current state
- * @param action The action to be taken
- * @return The transited state
- */
-maze::state action_handler(const Maze_QLearning& mq, const maze::state& state, Maze_QLearning::action action);
-
-QLearningOptions iteration_init_callback(maze& m, size_t iter);
 /**
  * @brief main The main entry of program
  * @return The exit flag
@@ -48,7 +18,7 @@ int main(int, char**) {
 
     maze m = create_maze(
                 // the size of maze
-                {6, 7},
+                {6, 6},
                 // define the goals positions and theirs rewards(since they can be variable!)
                 {
                     {{1, 5}, +10},
@@ -61,101 +31,30 @@ int main(int, char**) {
                     {2, 4}, {2, 5},
                     {4, 2}, {4, 3}, {4, 4}
                 });
-    set_agent_random(m);
-    Maze_QLearning mq(m, {maze::NONE, maze::TOP, maze::RIGHT, maze::DOWN, maze::LEFT});
-    cout << m << endl;
-    mq.execute(action_picker, action_handler, iteration_init_callback, 1000);
-    cout << m << endl;
 
 
-    Maze_QLearning::action** policy = mq.get_policy();
-    for(size_t i = 0; i < m.width; i++) {
-        for(size_t j = 0; j < m.height; j++) {
-            string s = m.action_tostring(maze::actions(policy[i][j]));
-            while(s.length() < 5) s += " ";
-            auto color = Color::Modifier(Color::Code::FG_DEFAULT);
-            if(m({i,j}).type() == block::WALL)
-                color = Color::Modifier(Color::Code::FG_RED);
-            else if(m({i,j}).type() == block::GOAL)
-                color = Color::Modifier(Color::Code::FG_YELLOW);
-            else if(m({i,j}) == Agent())
-                color = Color::Modifier(Color::Code::FG_GREEN);
-            cout << color << s << Color::Modifier(Color::Code::FG_DEFAULT) << " ";
-        }
-        cout << endl;
+    QLearningResult results[MULTI_AGENT_COUNT];
+    future<QLearningResult> threads[MULTI_AGENT_COUNT];
+
+    vector<action> action_list = {maze::NONE, maze::TOP, maze::RIGHT, maze::DOWN, maze::LEFT};
+    auto qtable = Maze_QLearning::init_Qtable(m.width, m.height, action_list);
+
+    for_each_trial(_try) {
+        // make them learn
+        for_each_agent(tid)
+            threads[tid] = std::async(std::launch::async, execute_agent, m.clone(), action_list, qtable, AGENT_LEARNING_CYCLES, size_t(tid));
+        // fetch the results
+        for_each_agent(tid)
+            results[tid] = threads[tid].get();
+        // TODO: combine the intel
     }
 
 	return 0;
 }
 
-maze create_maze(
-        const maze::state& size,
-        vector<pair<maze::state, scalar>> goals,
-        vector<maze::state> walls)
-{
-    maze m(size[0], size[1]);
-    // set the walls' reward
-    for(auto g : goals) m(g.first) = block(block::GOAL, g.second);
-    // set the walls' reward
-    for(auto w : walls) m(w) = block(block::WALL, WALL_REWARD);
-    // for every other empty blocks, the reward is
-    //  the minimum of the distance of the block to the goals
-    m.foreach_block([&goals](maze::state s, block& b) {
-        // only process the empty blocks
-        if(b.type() == b.EMPTY) {
-            scalar _min = INFINITY;
-            // the block's reward is the minimum of the distance of the block to the goals
-            for(auto g : goals) _min = min(scalar((g.first - s).norm()), _min);
-            // set the block's reward
-            b.reward(1 / _min);
-        }
-        return true;
-    });
-    return m;
-}
-
-void set_agent_random(maze& m) {
-    updateseed();
-    maze::state s;
-    do {
-        s = {get_rand(0, m.width), get_rand(0, m.height)};
-        m.agent_location(s);
-    } while(m(s).type() != block::EMPTY);
-}
-
-Maze_QLearning::action action_picker(const Maze_QLearning& mq, const maze::state& state, size_t __unused current_hop, size_t __unused current_iter) {
-    // with 20% explore
-    if(frand() < .2) return mq.actions_list().at(get_rand(0, mq.actions_list().size()));
-    // with 80% exploit
-    scalar qprim = -INFINITY;
-    Maze_QLearning::action out = 0;
-    // search over every action for find the maximum impact in next state
-    for(auto act : mq.actions_list()) { if(qprim < mq.Q(state, act)) { qprim = mq.Q(state, act); out = act; } }
-    // the argmax action
-    return out;
-}
-
-maze::state action_handler(const Maze_QLearning& mq, const maze::state& state, Maze_QLearning::action action) {
-    switch(action) {
-        case maze::TOP:
-            if(state[0] > 0) return {state[0] - 1, state[1]};
-            return maze::state(state);
-        case maze::RIGHT:
-            if(size_t(state[1]) < mq.get_maze().height - 1) return {state[0], state[1] + 1};
-            return maze::state(state);
-        case maze::DOWN:
-            if(size_t(state[0]) < mq.get_maze().width - 1) return {state[0] + 1, state[1]};
-            return maze::state(state);
-        case maze::LEFT:
-            if(state[1] > 0) return {state[0], state[1] - 1};
-            return maze::state(state);
-        case maze::NONE:
-            return maze::state(state);
-        default: throw runtime_error("Undefined action!");
-    }
-}
-
-QLearningOptions iteration_init_callback(maze& m, size_t __unused iter) {
+QLearningResult execute_agent(maze m, const vector<action>& action_list, const qtable_t& qtable, size_t iteration_max, size_t __unused thread_id) {
     set_agent_random(m);
-    return {.8, .2};
+    Maze_QLearning mq(qtable, m, action_list);
+    QLearningResult result = mq.execute(action_picker, action_handler, iteration_init_callback, iteration_max);
+    return result;
 }

@@ -1,27 +1,19 @@
 #include "rl/maze_qlearning.hpp"
 
 Maze_QLearning::Maze_QLearning(maze &m, const vector<action>& action_list)
-    : _m(&m), _actions_list(action_list)
+    : _Q(this->init_Qtable(m.width, m.height, action_list)), _m(&m), _actions_list(action_list)
 {
     if(!action_list.size())
         throw runtime_error("Expecting some action list, but got none!");
-    this->_Q = new scalar**[m.width];
-    for(size_t i = 0; i < m.width; i++) {
-        this->_Q[i] = new scalar*[m.height];
-        for(size_t j = 0; j < m.height; j++) {
-            this->_Q[i][j] = new scalar[action_list.size()]();
-        }
-    }
 }
 
-Maze_QLearning::~Maze_QLearning() {
-    for(size_t i = 0; i < this->_m->width; i++){
-        for(size_t j = 0; j < this->_m->height; j++)
-            delete[] this->_Q[i][j];
-        delete[] this->_Q[i];
-    }
-    delete[] this->_Q;
-}
+
+Maze_QLearning::Maze_QLearning(const qtable_t& q, maze& m, const vector<action>& action_list)
+    : _Q(q), _m(&m), _actions_list(action_list)
+{ }
+
+Maze_QLearning::~Maze_QLearning()
+{ }
 
 QLearningResult Maze_QLearning::execute(
         action_func action_picker,
@@ -67,20 +59,20 @@ QLearningResult Maze_QLearning::execute(
     }
     // fail-check
     assert(hops.size() == iteration_max);
-    return { hops, opts, iteration_max };
+    return { hops, opts, iteration_max, this->_Q, this->get_policy(), this->_m };
 }
 
-Maze_QLearning::action** Maze_QLearning::get_policy() const {
-    action** actions = new action*[this->_m->width]();
+policy_t Maze_QLearning::get_policy() const {
+    policy_t policy;
     for(size_t i = 0; i < this->_m->width; i++) {
-        actions[i] = new action[this->_m->height]();
+        policy.push_back(vector<action>());
         for(size_t j = 0; j < this->_m->height; j++) {
-            actions[i][j] = 0;
+            policy[i].push_back(0);
             scalar qprim = -INFINITY;
             maze::state state = {i,j};
             // search over every action for find the maximum impact in next state
-            for(auto act : this->actions_list()) { if(qprim < this->Q(state, act)) { qprim = this->Q(state, act); actions[i][j] = act; } }
+            for(auto act : this->actions_list()) { if(qprim < this->Q(state, act)) { qprim = this->Q(state, act); policy[i].back() = act; } }
         }
     }
-    return actions;
+    return policy;
 }

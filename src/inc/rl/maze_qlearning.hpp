@@ -10,7 +10,6 @@
 class Maze_QLearning
 {
 public:
-    typedef uint action;
     /**
      * @brief action_func The action picker interface
      * @param Maze_QLearning The learner handle
@@ -29,14 +28,15 @@ public:
      */
     typedef function<maze::state(const Maze_QLearning&, const maze::state&, action)> actor_func;
 protected:
+    qtable_t _Q;
     maze* const _m;
-    scalar*** _Q;
     vector<action> _actions_list;
 public:
     Maze_QLearning(maze& m, const vector<action>& action_list);
+    Maze_QLearning(const qtable_t& q, maze& m, const vector<action>& action_list);
     ~Maze_QLearning();
 
-    action** get_policy() const;
+    policy_t get_policy() const;
     QLearningResult execute(action_func action_picker, actor_func actor_handler, function<QLearningOptions(maze &, size_t)> iteration_init_callback, size_t iteration_max = 1);
 
     inline maze& get_maze() { return *this->_m; }
@@ -44,7 +44,22 @@ public:
     inline vector<action> actions_list() const { return this->_actions_list; }
     inline scalar& Q(const maze::state& s, const uint& action) { return this->_Q[s[0]][s[1]][action]; }
     inline scalar Q(const maze::state& s, const uint& action) const { return this->_Q[s[0]][s[1]][action]; }
+    inline qtable_t& QTable() { return this->_Q; }
+    inline qtable_t QTable() const { return this->_Q; }
 
+    static qtable_t init_Qtable(const size_t width, const size_t height, const vector<action>& action_list) {
+       auto q = vector<vector<vector<scalar>>>();
+       for(size_t i = 0; i < width; i++) {
+           q.push_back(vector<vector<scalar>>());
+           for(size_t j = 0; j < height; j++) {
+               q[i].push_back(vector<scalar>());
+               for(size_t k = 0; k < action_list.size(); k++) {
+                   q[i][j].push_back(0);
+               }
+           }
+       }
+       return q;
+    }
 };
 
 #endif // QLEARNING_H
