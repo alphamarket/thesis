@@ -29,16 +29,18 @@ public:
      */
     typedef function<maze::state(const Maze_QLearning&, const maze::state&, action)> actor_func;
 protected:
-    maze _m;
+    maze* const _m;
     scalar*** _Q;
     vector<action> _actions_list;
 public:
     Maze_QLearning(maze& m, const vector<action>& action_list);
     ~Maze_QLearning();
 
-    QLearningResult execute(action_func action_picker, actor_func actor_handler, size_t iteration_max = 1, function<QLearningOptions(maze &, size_t)> iteration_init_callback = NULL);
+    action** get_policy() const;
+    QLearningResult execute(action_func action_picker, actor_func actor_handler, function<QLearningOptions(maze &, size_t)> iteration_init_callback, size_t iteration_max = 1);
 
-    inline maze get_maze() const { return this->_m; }
+    inline maze& get_maze() { return *this->_m; }
+    inline maze get_maze() const { return *this->_m; }
     inline vector<action> actions_list() const { return this->_actions_list; }
     inline scalar& Q(const maze::state& s, const uint& action) { return this->_Q[s[0]][s[1]][action]; }
     inline scalar Q(const maze::state& s, const uint& action) const { return this->_Q[s[0]][s[1]][action]; }

@@ -27,7 +27,7 @@ public:
          * @brief height The height of world
          */
         height;
-    enum actions { TOP = 0, RIGHT, DOWN, LEFT };
+    enum actions { NONE = 0, TOP, RIGHT, DOWN, LEFT };
 public:
     /**
      * @brief maze The ctor
@@ -94,6 +94,12 @@ public:
      * @return A copy of the block
      */
     inline block operator () (const state& s) const { this->ensure_state(s); return this->_matrix[s[0]][s[1]]; }
+    /**
+     * @brief action_tostring Converts actions to string
+     * @param a The action
+     * @return The strifigy action
+     */
+    inline string action_tostring(actions a) const { string s[] = { "NONE", "UP", "RIGHT", "DOWN", "LEFT" }; return s[int(a)]; }
     /**
      * @brief agent_location Sets the agent's state in the world
      * @param s The desired state

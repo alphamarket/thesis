@@ -39,6 +39,7 @@ Maze_QLearning::action action_picker(const Maze_QLearning& mq, const maze::state
  */
 maze::state action_handler(const Maze_QLearning& mq, const maze::state& state, Maze_QLearning::action action);
 
+QLearningOptions iteration_init_callback(maze& m, size_t iter);
 /**
  * @brief main The main entry of program
  * @return The exit flag
@@ -61,12 +62,27 @@ int main(int, char**) {
                     {4, 2}, {4, 3}, {4, 4}
                 });
     set_agent_random(m);
-    Maze_QLearning mq(m, {maze::TOP, maze::RIGHT, maze::DOWN, maze::LEFT});
-//    mq.execute(action_picker, action_handler);
+    Maze_QLearning mq(m, {maze::NONE, maze::TOP, maze::RIGHT, maze::DOWN, maze::LEFT});
     cout << m << endl;
-    for(auto a : {maze::TOP, maze::RIGHT, maze::DOWN, maze::LEFT}){
-        cout << a << "? " << m.agent_location(action_handler(mq, m.agent_location(), a)) << endl;
-        cout << m << endl;
+    mq.execute(action_picker, action_handler, iteration_init_callback, 1000);
+    cout << m << endl;
+
+
+    Maze_QLearning::action** policy = mq.get_policy();
+    for(size_t i = 0; i < m.width; i++) {
+        for(size_t j = 0; j < m.height; j++) {
+            string s = m.action_tostring(maze::actions(policy[i][j]));
+            while(s.length() < 5) s += " ";
+            auto color = Color::Modifier(Color::Code::FG_DEFAULT);
+            if(m({i,j}).type() == block::WALL)
+                color = Color::Modifier(Color::Code::FG_RED);
+            else if(m({i,j}).type() == block::GOAL)
+                color = Color::Modifier(Color::Code::FG_YELLOW);
+            else if(m({i,j}) == Agent())
+                color = Color::Modifier(Color::Code::FG_GREEN);
+            cout << color << s << Color::Modifier(Color::Code::FG_DEFAULT) << " ";
+        }
+        cout << endl;
     }
 
 	return 0;
@@ -133,6 +149,13 @@ maze::state action_handler(const Maze_QLearning& mq, const maze::state& state, M
         case maze::LEFT:
             if(state[1] > 0) return {state[0], state[1] - 1};
             return maze::state(state);
+        case maze::NONE:
+            return maze::state(state);
         default: throw runtime_error("Undefined action!");
     }
+}
+
+QLearningOptions iteration_init_callback(maze& m, size_t __unused iter) {
+    set_agent_random(m);
+    return {.8, .2};
 }
