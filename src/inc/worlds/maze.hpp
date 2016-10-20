@@ -27,6 +27,7 @@ public:
          * @brief height The height of world
          */
         height;
+    enum actions { TOP = 0, RIGHT, DOWN, LEFT };
 public:
     /**
      * @brief maze The ctor
@@ -94,10 +95,20 @@ public:
      */
     inline block operator () (const state& s) const { this->ensure_state(s); return this->_matrix[s[0]][s[1]]; }
     /**
-     * @brief set_agent Sets the agent to the world
+     * @brief agent_location Sets the agent's state in the world
      * @param s The desired state
      */
-    void set_agent(const state& s);
+    bool agent_location(const state& s);
+    /**
+     * @brief agent_location Get the agent's location in the world
+     * @return The agent's state
+     */
+    state agent_location() const { return this->_pos_agent; }
+    /**
+     * @brief agent_block Get the agent's block in the world
+     * @return The agent's block
+     */
+    block agent_block() const { return this->operator()(this->agent_location()); }
     /**
      * @brief foreach_block Foreach block iterator
      * @param callback The callback for each state and block

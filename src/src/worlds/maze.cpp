@@ -11,12 +11,27 @@ void maze::foreach_block(std::function<bool(maze::state, block&)> callback) {
     }
 }
 
-void maze::set_agent(const state &s) {
+bool maze::agent_location(const state &s) {
     this->ensure_state(s);
-    if(this->_pos_agent[0] >= 0 && this->_pos_agent[1] >= 0)
-        this->operator ()(this->_pos_agent) -= Agent();
+    // cannot move into walls
+    if(this->operator ()(s).type() == block::WALL) return false;
+    // if we have valid current agent state?
+    if(this->_pos_agent[0] >= 0 && this->_pos_agent[1] >= 0) {
+        // if the current agent state holds valid?
+        if(this->operator ()(this->_pos_agent) == Agent())
+            // just remove the agent from the block.
+            this->operator ()(this->_pos_agent) -= Agent();
+        // otherwise we have lost the agent!
+        else
+            // search through all block for removing it.
+            this->foreach_block([](auto, auto b){ b -= Agent(); return true; });
+    }
+    // add the agent to the given state
     this->operator ()(s) += Agent();
+    // keep track of the agent's position
     this->_pos_agent = s;
+    // the success indicator
+    return true;
 }
 
 ostream& operator<<(ostream& os, const maze& m) {
