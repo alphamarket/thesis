@@ -11,5 +11,7 @@ CONFIG += c++14
 # Input
 HEADERS += inc/stdafx.hpp inc/worlds/maze.hpp \
     inc/worlds/block.hpp \
-    inc/colormod.hpp
-SOURCES += main.cpp src/worlds/maze.cpp
+    inc/colormod.hpp \
+    inc/rl/qlearning.hpp
+SOURCES += main.cpp src/worlds/maze.cpp \
+    src/rl/qlearning.cpp
