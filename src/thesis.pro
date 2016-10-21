@@ -16,8 +16,13 @@ HEADERS += inc/stdafx.hpp inc/worlds/maze.hpp \
     inc/rl/qlearning.hpp \
     main.helper.hpp \
     inc/qcom.hpp \
-    config.hpp
+    config.hpp \
+    inc/qcom.fci.gpp \
+    inc/qcom/qcom.fci.hpp
 SOURCES += main.cpp src/worlds/maze.cpp \
     src/rl/maze_qlearning.cpp \
     main.helper.cpp \
     src/qcom.cpp
+
+DISTFILES += \
+    CMakeLists.txt

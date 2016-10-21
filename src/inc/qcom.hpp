@@ -7,11 +7,12 @@
 
 class QCom
 {
-    const size_t _ref_size;
-    const vector<QLearningResult> _results;
+public:
+    const size_t ref_size;
+    const vector<QLearningResult> results;
 public:
     QCom(const vector<QLearningResult>& results, const size_t& ref_size)
-        : _ref_size(ref_size), _results(results)
+        : ref_size(ref_size), results(results)
     { }
     qtable_t combine() const;
 };

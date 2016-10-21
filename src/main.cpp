@@ -43,12 +43,11 @@ int main(int argc, char** argv) {
     if(argc > 1) ____i_max = stoi(string(argv[1]));
     for(size_t ____i = 0; ____i < ____i_max; ____i++) {
 
-        vector<maze> worlds;
         vector<scalar> avg_moves;
         vector<QLearningResult> results;
         future<QLearningResult> threads[MULTI_AGENT_COUNT];
-        qtable_t qtable = Maze_QLearning::init_Qtable(m.width, m.height, action_list);
         vector<action> action_list = {maze::NONE, maze::TOP, maze::RIGHT, maze::DOWN, maze::LEFT};
+        qtable_t qtable = Maze_QLearning::init_Qtable(m.width, m.height, action_list);
 
         foreach_trial(_try) {
             // the result container
@@ -86,14 +85,12 @@ int main(int argc, char** argv) {
             cout << accumulate(avg_moves.begin(), avg_moves.begin() + i + 1, 0.0) / (i + 1) << " ";
         cout <<endl;
 
-        assert(worlds.size() == results.size());
-        assert(avg_moves.size() == 1000);
-
+        assert(results.size() == MULTI_AGENT_COUNT);
 
         foreach_agent(gid) {
             break;
             cout << endl << endl << "POLICY FOR AGENT# " << gid << endl << endl;
-            print_policy(worlds[gid], results[gid]._policy);
+            print_policy(m, results[gid]._policy);
         }
     }
 
