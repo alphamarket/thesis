@@ -1,6 +1,6 @@
 #include "inc/qcom.hpp"
 
-QCom::QCom(const vector<QLearningResult>& results)
+QCom::QCom(const vector<QLearningResult>& __unused results)
 {
 
 }

@@ -5,13 +5,6 @@
 
 #include "inc/qcom.hpp"
 
-#define MULTI_AGENT_COUNT       1
-#define AGENT_LEARNING_CYCLES   5
-#define TRIAL_MAX               200
-
-#define for_each_agent(tid) for(auto tid = 0; tid < MULTI_AGENT_COUNT; tid++)
-#define for_each_trial(_try) for(auto _try = 0; _try < TRIAL_MAX; _try++)
-
 /**
  * @brief execute_agent Executes an agent
  * @param m The maze instance clone
@@ -21,7 +14,7 @@
  * @param thread_id The agent's thread id
  * @return
  */
-QLearningResult execute_agent(maze m, const vector<action> &action_list, const qtable_t& qtable, size_t iteration_max, size_t thread_id);
+QLearningResult execute_agent(maze m, const vector<action> &action_list, const qtable_t& qtable, Maze_QLearning::action_func action_picker, Maze_QLearning::qupdate_func greedy_qupdator, size_t iteration_max, size_t thread_id);
 /**
  * @brief get_avg_hop_single Calculates the avg hop of EVERY hop for all agents
  * @param results The agent's qlearning results
@@ -34,6 +27,26 @@ vector<scalar> get_avg_hop_single(const vector<QLearningResult>& results);
  * @return The avg hop of vector (a single value)
  */
 vector<scalar> get_avg_hop_clustered(const vector<QLearningResult>& results);
+/**
+ * @brief greedy_qupdator The greedy Q Updator
+ * @param opt The options
+ * @param qsa The current state/action Q[s,a] value
+ * @param qsa_prim The next state/action Q[s',a'] value
+ * @param reward The reward acquired
+ * @param hop The curren hop
+ * @return The new Q[s,a] update value
+ */
+scalar greedy_qupdator(const QLearningOptions& opt, const scalar& qsa, const scalar& qsa_prim, const scalar& reward, const size_t& hop);
+/**
+ * @brief boltsman_qupdator The boltsman Q Updator
+ * @param opt The options
+ * @param qsa The current state/action Q[s,a] value
+ * @param qsa_prim The next state/action Q[s',a'] value
+ * @param reward The reward acquired
+ * @param hop The curren hop
+ * @return The new Q[s,a] update value
+ */
+scalar boltsman_qupdator(const QLearningOptions& opt, const scalar& qsa, const scalar& qsa_prim, const scalar& reward, const size_t& hop);
 /**
  * @brief main The main entry of program
  * @return The exit flag
@@ -68,23 +81,25 @@ int main(int, char**) {
     auto qtable = Maze_QLearning::init_Qtable(m.width, m.height, action_list);
 
 	// clone the world for each agent
-    for_each_agent(gid) worlds.push_back(m.clone());
+    foreach_agent(gid) worlds.push_back(m.clone());
 
-    for_each_trial(_try) {
+    foreach_trial(_try) {
         // the result container
         results.clear();
         // make them learn
-        for_each_agent(gid)
+        foreach_agent(gid)
             threads[gid] =
                 std::async(std::launch::async,
                            execute_agent,
                            worlds[gid],
                            action_list,
                            qtable,
+                           greedy_action_picker,
+                           greedy_qupdator,
                            AGENT_LEARNING_CYCLES,
                            size_t(gid));
         // fetch the results
-        for_each_agent(gid)
+        foreach_agent(gid)
             results.push_back(threads[gid].get());
         // calc the average moves
         auto avm = get_avg_hop_single(results);
@@ -108,7 +123,7 @@ int main(int, char**) {
 
     assert(worlds.size() == results.size());
 
-	for_each_agent(gid) {
+    foreach_agent(gid) {
         cout << endl << endl << "POLICY FOR AGENT# " << gid << endl << endl;
         print_policy(worlds[gid], results[gid]._policy);
     }
@@ -122,15 +137,22 @@ int main(int, char**) {
     exit(0);
 }
 
-QLearningResult execute_agent(maze m, const vector<action>& action_list, const qtable_t& qtable, size_t iteration_max, size_t __unused thread_id) {
+QLearningResult execute_agent(
+        maze m,
+        const vector<action>& action_list,
+        const qtable_t& qtable,
+        Maze_QLearning::action_func action_picker,
+        Maze_QLearning::qupdate_func greedy_qupdator,
+        size_t iteration_max,
+        size_t __unused thread_id) {
     set_agent_random(m);
     Maze_QLearning mq(qtable, m, action_list);
-    return mq.execute(action_picker, action_handler, iteration_init_callback, iteration_max);
+    return mq.execute(action_picker, action_handler, greedy_qupdator, iteration_init_callback, iteration_max);
 }
 
 vector<scalar> get_avg_hop_single(const vector<QLearningResult>& results) {
     vector<scalar> out(results[0]._hops.size(), 0.);
-    for_each_agent(tid) {
+    foreach_agent(tid) {
         assert(out.size() == results[tid]._hops.size());
         for(size_t i = 0; i < results[tid]._hops.size(); i++)
             out[i] += results[tid]._hops[i] / MULTI_AGENT_COUNT;
@@ -140,9 +162,15 @@ vector<scalar> get_avg_hop_single(const vector<QLearningResult>& results) {
 
 vector<scalar> get_avg_hop_clustered(const vector<QLearningResult> &results) {
     vector<scalar> out = { 0 };
-    for_each_agent(tid) {
+    foreach_agent(tid) {
         auto hop = results[tid]._hops;
         out.back() += (accumulate(hop.begin(), hop.end(), 0.0) / (hop.size() * MULTI_AGENT_COUNT));
     }
     return out;
 }
+
+scalar greedy_qupdator(const QLearningOptions& opt, const scalar& qsa, const scalar& qsa_prim, const scalar& reward, const size_t&)
+{ return (1 - opt.alpha) * qsa + opt.alpha * (reward + opt.gamma * qsa_prim); }
+
+scalar boltsman_qupdator(const QLearningOptions& opt, const scalar&, const scalar& qsa_prim, const scalar& reward, const size_t&)
+{ return reward + opt.gamma * qsa_prim; }

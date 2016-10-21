@@ -15,7 +15,8 @@ HEADERS += inc/stdafx.hpp inc/worlds/maze.hpp \
     inc/rl/maze_qlearning.hpp \
     inc/rl/qlearning.hpp \
     main.helper.hpp \
-    inc/qcom.hpp
+    inc/qcom.hpp \
+    config.hpp
 SOURCES += main.cpp src/worlds/maze.cpp \
     src/rl/maze_qlearning.cpp \
     main.helper.cpp \

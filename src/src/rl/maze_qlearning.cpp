@@ -18,7 +18,8 @@ Maze_QLearning::~Maze_QLearning()
 QLearningResult Maze_QLearning::execute(
         action_func action_picker,
         actor_func actor_handler,
-        function<QLearningOptions(maze&, size_t)> iteration_init_callback,
+        qupdate_func q_updater,
+        iteration_init_func iteration_init_callback,
         size_t iteration_max) {
     // total hop done in this execution
     vector<size_t> hops;
@@ -47,12 +48,17 @@ QLearningResult Maze_QLearning::execute(
             for(auto act : this->_actions_list) qprim = max(qprim, this->Q(sprim, act));
             // update the Q table for current state that agent still
             this->Q(this->_m->agent_location(), a) =
-                    (1 - opts.back().alpha) *
-                            // Q[s,a]
-                            this->Q(this->_m->agent_location(), a) +
-                    opts.back().alpha *
-                            // r + \gamma * \max_{a'} Q[s',a']
-                            (reward +opts.back().gamma * qprim);
+                    q_updater(
+                        // options
+                        opts.back(),
+                        // Q[s,a]
+                        this->Q(this->_m->agent_location(), a),
+                        // Q[s',a']
+                        qprim,
+                        // reward
+                        reward,
+                        //hop
+                        hops.back());
             // apply the actual transition
             this->_m->agent_location(sprim);
         }

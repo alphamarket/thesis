@@ -36,16 +36,32 @@ void set_agent_random(maze& m) {
     } while(m(s).type() != block::EMPTY);
 }
 
-action action_picker(const Maze_QLearning& mq, const maze::state& state, size_t __unused current_hop, size_t __unused current_iter) {
+action greedy_action_picker(const Maze_QLearning& mq, const maze::state& state, size_t __unused current_hop, size_t __unused current_iter) {
     // with 20% explore
-    if(frand() < .2) return mq.actions_list().at(get_rand(0, mq.actions_list().size()));
+    if(frand() < ACTION_PICKER_GREEDY_EXPLORE) return mq.actions_list().at(get_rand(0, mq.actions_list().size()));
     // with 80% exploit
     scalar qprim = -INFINITY;
     action out = 0;
     // search over every action for find the maximum impact in next state
-    for(auto act : mq.actions_list()) { if(qprim < mq.Q(state, act)) { qprim = mq.Q(state, act); out = act; } }
+    foreach_elem(act, mq.actions_list()) { if(qprim < mq.Q(state, act)) { qprim = mq.Q(state, act); out = act; } }
     // the argmax action
     return out;
+}
+
+action boltsman_action_picker(const Maze_QLearning& mq, const maze::state &state, size_t __unused current_hop, size_t __unused current_iter) {
+    scalar sum = 0;
+    size_t index = 0;
+    scalar p = frand();
+    vector<pair<size_t, scalar>> eq;
+    // calc the exp(Q/tau)
+    foreach_elem(act, mq.actions_list()) { eq.push_back({index++, exp(mq.Q(state, act) / ACTION_PICKER_BOLTSMAN_TAU)}); sum += eq.back().second; }
+    // compute the boltsman prob and subtract it from the prob of choice
+    // the nearest one to the prob will have the smallest value among the others
+    for(size_t i = 0; i < mq.actions_list().size(); i++)  eq[i].second = abs(eq[i].second / sum - p);
+    // sort in ascending order
+    sort(eq.begin(), eq.end(), [](auto i, auto j) { return i.second < j.second; });
+    // the smallest value is the nearest to the prob
+    return mq.actions_list()[eq.front().first];
 }
 
 maze::state action_handler(const Maze_QLearning& mq, const maze::state& state, action action) {
@@ -70,7 +86,7 @@ maze::state action_handler(const Maze_QLearning& mq, const maze::state& state, a
 
 QLearningOptions iteration_init_callback(maze& m, size_t __unused iter) {
     set_agent_random(m);
-    return {.8, .2};
+    return {QLEARNING_ALPHA, QLEARNING_GAMMA};
 }
 
 void print_policy(const maze& m, const vector<vector<action>>& policy) {

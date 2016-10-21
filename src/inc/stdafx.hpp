@@ -27,8 +27,10 @@
 #include <exception>
 using namespace std;
 
+typedef double scalar;
+
 #define get_rand(min, range)((min) + rand() % (range))
-#define frand()             (double(rand()) / RAND_MAX)
+#define frand()             (scalar(rand()) / RAND_MAX)
 #ifdef OS_UNIX
 #   include <unistd.h>
 #   define dynamic_seed     (time(NULL) + rand() + getpid() * 100)
@@ -56,11 +58,15 @@ using namespace std;
 #   endif
 #endif
 
-typedef double scalar;
-
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wignored-attributes"
 #pragma GCC diagnostic ignored "-Wmisleading-indentation"
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 #include <Eigen/Core>
 #pragma GCC diagnostic pop
+
+#define foreach_elem(i, j)      for(auto i : j)
+#define foreach_agent(tid)     for(auto tid = 0; tid < MULTI_AGENT_COUNT; tid++)
+#define foreach_trial(_try)    for(auto _try = 0; _try < TRIAL_MAX; _try++)
+
+#include "config.hpp"
