@@ -17,7 +17,6 @@ struct QLearningResult {
     size_t _iteration_max;
     qtable_t _qTable;
     policy_t _policy;
-    maze* _maze;
 
     QLearningResult() { }
 
@@ -26,14 +25,12 @@ struct QLearningResult {
         vector<QLearningOptions> _opts,
         size_t _iteration_max,
         qtable_t _qTable,
-        policy_t _policy,
-        maze* _maze) {
+        policy_t _policy) {
         this->_hops = _hops;
         this->_opts = _opts;
         this->_iteration_max = _iteration_max;
         this->_qTable = _qTable;
         this->_policy = _policy;
-        this->_maze = _maze;
     }
 };
 

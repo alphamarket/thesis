@@ -59,7 +59,7 @@ QLearningResult Maze_QLearning::execute(
     }
     // fail-check
     assert(hops.size() == iteration_max);
-    return { hops, opts, iteration_max, this->_Q, this->get_policy(), this->_m };
+    return { hops, opts, iteration_max, this->_Q, this->get_policy() };
 }
 
 policy_t Maze_QLearning::get_policy() const {

@@ -61,20 +61,24 @@ int main(int, char**) {
 
     future<QLearningResult> threads[MULTI_AGENT_COUNT];
 
+    vector<maze> worlds;
+    vector<scalar> avg_moves;
+    vector<QLearningResult> results;
     vector<action> action_list = {maze::NONE, maze::TOP, maze::RIGHT, maze::DOWN, maze::LEFT};
     auto qtable = Maze_QLearning::init_Qtable(m.width, m.height, action_list);
 
-    vector<scalar> avg_moves;
+	// clone the world for each agent
+    for_each_agent(gid) worlds.push_back(m.clone());
 
     for_each_trial(_try) {
         // the result container
-        vector<QLearningResult> results;
+        results.clear();
         // make them learn
         for_each_agent(gid)
             threads[gid] =
                 std::async(std::launch::async,
                            execute_agent,
-                           m.clone(),
+                           worlds[gid],
                            action_list,
                            qtable,
                            AGENT_LEARNING_CYCLES,
@@ -102,6 +106,13 @@ int main(int, char**) {
     for(size_t i = 0; i < avg_moves.size(); i++)
         cout << accumulate(avg_moves.begin(), avg_moves.begin() + i + 1, 0.0) / (i + 1) << " ";
 
+    assert(worlds.size() == results.size());
+
+	for_each_agent(gid) {
+        cout << endl << endl << "POLICY FOR AGENT# " << gid << endl << endl;
+        print_policy(worlds[gid], results[gid]._policy);
+    }
+
     exiting = true;
     cout << endl << "Waiting for " << thread_pool.size() << " threads to finish!";
     while(thread_pool.size()) {
@@ -114,8 +125,7 @@ int main(int, char**) {
 QLearningResult execute_agent(maze m, const vector<action>& action_list, const qtable_t& qtable, size_t iteration_max, size_t __unused thread_id) {
     set_agent_random(m);
     Maze_QLearning mq(qtable, m, action_list);
-    QLearningResult result = mq.execute(action_picker, action_handler, iteration_init_callback, iteration_max);
-    return result;
+    return mq.execute(action_picker, action_handler, iteration_init_callback, iteration_max);
 }
 
 vector<scalar> get_avg_hop_single(const vector<QLearningResult>& results) {
