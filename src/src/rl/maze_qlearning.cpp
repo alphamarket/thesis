@@ -41,7 +41,7 @@ QLearningResult Maze_QLearning::execute(
             // calc. the transition that the action causes
             maze::state sprim = actor_handler(*this, this->_m->agent_location(), a);
             // get the reward of the next state
-            scalar reward = (*this->_m)(sprim).reward();
+            scalar reward = (*this->_m)(sprim).value();
             // \max_{a'} Q[s',a']
             scalar qprim = -INFINITY;
             // search over every action for find the maximum impact in next state
@@ -65,7 +65,7 @@ QLearningResult Maze_QLearning::execute(
     }
     // fail-check
     assert(hops.size() == iteration_max);
-    return { hops, opts, iteration_max, this->_Q, this->get_policy() };
+    return { hops, opts, iteration_max, this->_Q, this->get_policy(), this->_m->refmat() };
 }
 
 policy_t Maze_QLearning::get_policy() const {

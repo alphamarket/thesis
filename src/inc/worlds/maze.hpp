@@ -7,10 +7,16 @@
 
 class maze
 {
-    /**
-     * @brief _matrix The world's matrix
-     */
-    vector<vector<block>> _matrix;
+    typedef vector<vector<block>> matrix_t;
+    matrix_t
+        /**
+         * @brief _matrix The world's matrix
+         */
+        _matrix,
+        /**
+         * @brief _refmat The world's reference matrix
+         */
+        _refmat;
 public:
     typedef Eigen::Vector2i state;
     /**
@@ -26,7 +32,11 @@ public:
         /**
          * @brief height The height of world
          */
-        height;
+        height,
+        /**
+         * @brief ref_size The reference size
+         */
+        ref_size;
     enum actions { NONE = 0, TOP, RIGHT, DOWN, LEFT };
 public:
     /**
@@ -34,13 +44,25 @@ public:
      * @param width The width of the world to create
      * @param height The height of world to create
      */
-    maze(const size_t width, const size_t height)
-        : _pos_agent(-1, -1), width(width), height(height)
+    maze(const size_t width, const size_t height, const size_t ref_size = 0)
+        : _pos_agent(-1, -1), width(width), height(height), ref_size(ref_size)
     {
+        if(ref_size && (width % ref_size != 0 || height % ref_size != 0))
+            throw runtime_error("The width and height should be dividable by `ref_size`!");
+        // create the matrix
         for(size_t i = 0; i < width; i++) {
             this->_matrix.push_back(vector<block>());
             for(size_t j = 0; j < height; j++)
-                this->_matrix[i].push_back(block(block::EMPTY));
+                this->_matrix.back().push_back(block(block::EMPTY));
+        }
+        // if reference grid size defined?
+        if(ref_size) {
+            // create the reference matrix
+            for(size_t i = 0; i < size_t(width / ref_size); i++) {
+                this->_refmat.push_back(vector<block>());
+                for(size_t j = 0; j < size_t(width / ref_size); j++)
+                    this->_refmat.back().push_back(block(block::NONE, 0));
+            }
         }
     }
     /**
@@ -48,14 +70,14 @@ public:
      * @param m The maze to copy from
      */
     maze(const maze& m)
-        : width(m.width), height(m.height)
+        : width(m.width), height(m.height), ref_size(m.ref_size)
     { this->operator = (m); }
     /**
      * @brief maze The move ctor
      * @param m The maze to get moved from
      */
     maze(maze&& m)
-        :  _matrix(move(m._matrix)), _pos_agent(move(m._pos_agent)), width(move(m.width)), height(move(m.height))
+        :  _matrix(move(m._matrix)), _refmat(move(m._refmat)), _pos_agent(move(m._pos_agent)), width(move(m.width)), height(move(m.height)), ref_size(move(m.ref_size))
     { }
     /**
      * @brief ~maze The dtor
@@ -126,6 +148,18 @@ public:
      * @return Current instance
      */
     maze& operator = (const maze& m);
+    /**
+     * @brief matrix get a copy version of maze's matrix
+     */
+    matrix_t matrix() const { return this->_matrix; }
+    /**
+     * @brief matrix get a copy version of maze's referenece matrix
+     */
+    matrix_t refmat() const { return this->_refmat; }
+    /**
+     * @brief reset_refmat resets the reference matrix
+     */
+    inline void reset_refmat() { foreach_elem(e, this->_refmat) foreach_elem(k, e) k.value(0); }
     /**
      * @brief operator << The out stream operator
      * @param os Stream object

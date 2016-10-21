@@ -12,8 +12,7 @@
  * @param walls The position of walls
  * @return The created and initalized maze
  */
-maze create_maze(
-        const maze::state& size,
+maze create_maze(const maze::state& size, const size_t ref_size,
         vector<pair<maze::state, scalar>> goals,
         vector<maze::state> walls);
 /**

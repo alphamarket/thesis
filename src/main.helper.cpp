@@ -3,10 +3,11 @@
 
 maze create_maze(
         const maze::state& size,
+        const size_t ref_size,
         vector<pair<maze::state, scalar>> goals,
         vector<maze::state> walls)
 {
-    maze m(size[0], size[1]);
+    maze m(size[0], size[1], ref_size);
     // set the walls' reward
     for(auto g : goals) m(g.first) = block(block::GOAL, g.second);
     // set the walls' reward
@@ -20,7 +21,7 @@ maze create_maze(
             // the block's reward is the minimum of the distance of the block to the goals
             for(auto g : goals) _min = min(scalar((g.first - s).norm()), _min);
             // set the block's reward
-            b.reward(1 / _min);
+            b.value(1 / _min);
         }
         return true;
     });
