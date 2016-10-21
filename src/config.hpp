@@ -1,6 +1,8 @@
 #ifndef CONFIG_HPP
 #define CONFIG_HPP
 
+#define MAZE_WALL_REWARD -1
+
 #define MULTI_AGENT_COUNT       1
 #define AGENT_LEARNING_CYCLES   5
 #define TRIAL_MAX               200

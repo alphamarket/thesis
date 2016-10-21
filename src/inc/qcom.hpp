@@ -8,7 +8,7 @@
 class QCom
 {
 public:
-    QCom(const vector<QLearningResult>& __unused results);
+    QCom(const vector<QLearningResult>&);
     qtable_t combine() const;
 };
 

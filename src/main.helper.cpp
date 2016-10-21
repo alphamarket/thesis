@@ -10,7 +10,7 @@ maze create_maze(
     // set the walls' reward
     for(auto g : goals) m(g.first) = block(block::GOAL, g.second);
     // set the walls' reward
-    for(auto w : walls) m(w) = block(block::WALL, WALL_REWARD);
+    for(auto w : walls) m(w) = block(block::WALL, MAZE_WALL_REWARD);
     // for every other empty blocks, the reward is
     //  the minimum of the distance of the block to the goals
     m.foreach_block([&goals](maze::state s, block& b) {
@@ -106,3 +106,38 @@ void print_policy(const maze& m, const vector<vector<action>>& policy) {
         cout << endl;
     }
 }
+
+QLearningResult execute_agent(
+        maze m,
+        const vector<action>& action_list,
+        const qtable_t& qtable,
+        Maze_QLearning::action_func action_picker,
+        Maze_QLearning::qupdate_func greedy_qupdator,
+        size_t iteration_max,
+        size_t __unused thread_id) {
+    set_agent_random(m);
+    Maze_QLearning mq(qtable, m, action_list);
+    return mq.execute(action_picker, action_handler, greedy_qupdator, iteration_init_callback, iteration_max);
+}
+
+vector<scalar> get_avg_hop_single(const vector<QLearningResult>& results) {
+    vector<scalar> out(results[0]._hops.size(), 0.);
+    foreach_agent(tid) {
+        assert(out.size() == results[tid]._hops.size());
+        for(size_t i = 0; i < results[tid]._hops.size(); i++)
+            out[i] += results[tid]._hops[i] / MULTI_AGENT_COUNT;
+    }
+    return out;
+}
+
+vector<scalar> get_avg_hop_clustered(const vector<QLearningResult> &results) {
+    vector<scalar> out = { 0 };
+    foreach_agent(tid) {
+        auto hop = results[tid]._hops;
+        out.back() += (accumulate(hop.begin(), hop.end(), 0.0) / (hop.size() * MULTI_AGENT_COUNT));
+    }
+    return out;
+}
+
+scalar Q_updator(const QLearningOptions& opt, const scalar& qsa, const scalar& qsa_prim, const scalar& reward, const size_t&)
+{ return (1 - opt.alpha) * qsa + opt.alpha * (reward + opt.gamma * qsa_prim); }
