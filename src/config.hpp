@@ -5,8 +5,8 @@
 #define AGENT_LEARNING_CYCLES   5
 #define TRIAL_MAX               200
 
-#define QLEARNING_ALPHA         .90
-#define QLEARNING_GAMMA         .01
+#define QLEARNING_ALPHA         .10
+#define QLEARNING_GAMMA         .90
 
 #define ACTION_PICKER_BOLTSMAN_TAU      .2
 #define ACTION_PICKER_GREEDY_EXPLORE    .4
