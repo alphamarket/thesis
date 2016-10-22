@@ -107,8 +107,8 @@ qtable_t merge(const vector<qtable_t>& qtables, const vector<vector<vector<scala
                     };
                     auto __unused mu_max = [](const vector<choquet_package>& packages, const size_t& i) -> scalar {
                         scalar _max = -INFINITY;
-                        for(size_t j = i, k = 1; j < packages.size(); j++, k++) { _max = max(packages[j]._ref); }
-                        return max;
+                        for(size_t j = i, k = 1; j < packages.size(); j++, k++) { _max = max(_max, packages[j]._ref); }
+                        return _max;
                     };
 
                     auto mu = [&packages](const size_t& i, function<scalar(const vector<choquet_package>&, const size_t&)> mu_handler) -> scalar {
