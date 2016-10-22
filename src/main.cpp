@@ -2,7 +2,9 @@
 #include <future>
 #include <chrono>
 #include <algorithm>
+#include <unordered_map>
 
+#include "inc/fci.hpp"
 #include "inc/qcom.hpp"
 
 void print_refmat(const vector<vector<block>>& refmat) {
@@ -39,6 +41,22 @@ int main(int argc, char** argv) {
                     {2, 4}, {2, 5},
                     {4, 2}, {4, 3}, {4, 4}
                 });
+//    vector<vector<scalar>> grades = {
+//        {18, 16, 10},
+//        {10, 12, 18},
+//        {14, 15, 15}
+//    };
+//    unordered_map<string, scalar> k = {
+//        {"1", .45},{"2", .45},{"3",.3},
+//        {"1,3", .9},{"2,3", .9},{"1,2",.5}
+//    };
+//    size_t i = 0;
+//    foreach_elem(g, grades) {
+//        cout << "Student#" << i << " = " << fci::combine(g, k) << endl;
+//    }
+
+//    exit(0);
+
     size_t ____i_max = 1;
     if(argc > 1) ____i_max = stoi(string(argv[1]));
     for(size_t ____i = 0; ____i < ____i_max; ____i++) {
@@ -72,9 +90,12 @@ int main(int argc, char** argv) {
             // store the calced avg moves for later outputing
             avg_moves.insert(avg_moves.end(), avm.begin(), avm.end());
             // if using single agent
-            if(MULTI_AGENT_COUNT == 1)
+            if(MULTI_AGENT_COUNT == 1) {
                 // don't combine for single agent
                 qtable = results.back()._qtable;
+                print_refmat(results.back()._refmat);
+                cout << endl;
+            }
             else
                 // combine the intel
                 qtable = QCom(results, m.ref_size).combine();

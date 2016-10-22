@@ -2,6 +2,7 @@
 #define QCOM_FCI_GPP
 
 #include "qcom.hpp"
+#include "fci.hpp"
 #include "rl/qlearning.hpp"
 
 template<typename _out>
@@ -65,8 +66,6 @@ vector<vector<vector<T>>> create_matrix_3d(const vector<size_t>& sizes) {
 }
 
 qtable_t merge(const vector<qtable_t>& qtables, const vector<vector<vector<scalar>>>& evals, const size_t& _ref_size) {
-    // the choquet integral package
-    struct choquet_package { scalar _qvl, _ref; size_t _index; };
     // make sure the number of agents in both are same
     assert(qtables[0][0][0].size() == evals[0][0].size());
     // ensure the sub-sizes
@@ -88,37 +87,7 @@ qtable_t merge(const vector<qtable_t>& qtables, const vector<vector<vector<scala
                     vector<scalar> qvl = qtables[x][y][k];
                     vector<scalar> ref = evals[ref_x][ref_y];
                     assert(qvl.size() == ref.size());
-                    vector<choquet_package> packages = {{0, 0, 0}};
-                    for(size_t i = 0; i < qvl.size(); i++) packages.push_back({qvl[i], ref[i], i});
-
-                    sort(packages.begin(), packages.end(), [](auto i, auto j) { return i._ref < j._ref; });
-
-                    auto __unused mu_max_min = [](const vector<choquet_package>& packages, const size_t& i) -> scalar {
-                        size_t div = 0;
-                        scalar out = 0;
-                        for(size_t j = i, k = 1; j < packages.size(); j++, k++) { out += k * packages[j]._ref; div += k; }
-                        return out / div;
-                    };
-                    auto __unused mu_mean = [](const vector<choquet_package>& packages, const size_t& i) -> scalar {
-                        size_t div = 0;
-                        scalar out = 0;
-                        for(size_t j = i, k = 1; j < packages.size(); j++, k++) { out += packages[j]._ref; div += 1; }
-                        return out / div;
-                    };
-                    auto __unused mu_max = [](const vector<choquet_package>& packages, const size_t& i) -> scalar {
-                        scalar _max = -INFINITY;
-                        for(size_t j = i, k = 1; j < packages.size(); j++, k++) { _max = max(_max, packages[j]._ref); }
-                        return _max;
-                    };
-
-                    auto mu = [&packages](const size_t& i, function<scalar(const vector<choquet_package>&, const size_t&)> mu_handler) -> scalar {
-                        if(i == 1) return 1.;
-                        else if(i >= packages.size()) return 0.;
-                        else return mu_handler(packages, i);
-                    };
-
-                    out[x][y][k] = 0;
-                    for(size_t i = 1; i < packages.size(); i++) { out[x][y][k] += (packages[i]._qvl - packages[i - 1]._qvl) * mu(i, mu_max); }
+                    out[x][y][k] = fci::combine(qvl, ref, fci::combiner_k_mean);
                 }
             }
         }

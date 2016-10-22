@@ -25,6 +25,7 @@
 #include <assert.h>
 #include <iostream>
 #include <exception>
+#include <functional>
 using namespace std;
 
 typedef double scalar;
