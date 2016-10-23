@@ -40,8 +40,7 @@ int main(int argc, char** argv) {
 
     auto opt = process_args(argc, argv);
 
-    Maze_QLearning::action_func_t action_picker = boltzmann_action_picker;
-    if(boost::to_lower_copy(opt["action_picker"].as<string>()) == "greedy") action_picker = greedy_action_picker;
+    // init general configs
     ::CONF_RATE_TAU = opt["tau"].as<scalar>();
     ::CONF_RATE_BETA = opt["beta"].as<scalar>();
     ::CONF_ITERATIONS = opt["iters"].as<size_t>();
@@ -50,18 +49,27 @@ int main(int argc, char** argv) {
     ::CONF_MULTI_AGENT_COUNT = opt["agents"].as<size_t>();
     ::CONF_RATE_GREEDY_EXPLORE = opt["greedy_explore_rate"].as<scalar>();
     ::CONF_AGENT_LEARNING_CYCLES = opt["agents_learning_cycle"].as<size_t>();
-
+    // init fci combiner function
     unordered_map<string, fci_combiner_func_t> combiner = {
         {"max", fci::combiner_max},
         {"mean", fci::combiner_mean},
         {"k_mean", fci::combiner_k_mean}
     };
-    ::CONF_FCI_COMBINER = combiner[opt["fci_combine_method"].as<string>()];
+    ::CONF_FCI_COMBINER = combiner[boost::to_lower_copy(opt["fci_combine_method"].as<string>())];
+    // init action selector function
+    unordered_map<string, Maze_QLearning::action_func_t> action_pickers = {
+        {"boltzmann", boltzmann_action_picker},
+        {"greedy", greedy_action_picker}
+    };
+    auto action_picker = action_pickers[boost::to_lower_copy(opt["action_picker"].as<string>())];
 
+    // exiting flag
     bool exiting = false;
     vector<future<void>> thread_pool;
+    // random seed updator
     thread_pool.push_back(std::async(std::launch::async, [&exiting]() { while(!exiting) { updateseed(); std::this_thread::sleep_for(std::chrono::milliseconds(100));}} ));
 
+    // define the maze
     maze m = create_maze(
                 // the size of maze
                 {6, 6},
@@ -69,9 +77,9 @@ int main(int argc, char** argv) {
                 3,
                 // define the goals positions and theirs rewards(since they can be variable!)
                 {
-                    {{0, 3}, +10},
+                    {{1, 5}, +10},
                     {{3, 5}, +10},
-                    {{5, 1}, +10}
+                    {{5, 0}, +10}
                 },
                 // define the walls positions
                 {
@@ -79,26 +87,11 @@ int main(int argc, char** argv) {
                     {2, 4}, {2, 5},
                     {4, 2}, {4, 3}, {4, 4}
                 });
+    // define the action lists
     vector<action> action_list = {maze::NONE, maze::UP, maze::RIGHT, maze::DOWN, maze::LEFT};
 
     cerr << "The world:" << endl;
     cerr << m << endl;
-
-//    SEP ssep({m.width, m.height, action_list.size() - 1}, {{0, 3}});
-//    m.agent_location({0, 0});
-//    auto prev_state = m.agent_location();
-//    vector<action> actions = {maze::RIGHT, maze::RIGHT, maze::DOWN, maze::DOWN, maze::UP, maze::UP, maze::LEFT, maze::RIGHT, maze::RIGHT};
-//    for (size_t loc = 0; loc < actions.size(); loc++){
-//        m.agent_location(action_handler(m, m.agent_location(), actions[loc]));
-//        ssep.sep_dispatch_shock(prev_state, actions[loc], m.agent_location());
-//        ssep.sep_visit_path(prev_state, actions[loc], m.agent_location());
-//        prev_state = m.agent_location();
-//        cout << m << endl;
-//    }
-
-//    ssep.get_sep();
-
-//    exit(0);
 
     future<QLearningResult>* threads = new future<QLearningResult>[::CONF_MULTI_AGENT_COUNT];
 
