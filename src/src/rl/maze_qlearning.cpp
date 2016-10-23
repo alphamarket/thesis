@@ -29,6 +29,8 @@ QLearningResult Maze_QLearning::execute(
     size_t iteration = iteration_max;
     // for each iteration defined
     while(iteration--) {
+        // request new refmat
+        this->_m->new_refmat();
         // init the hop count for this iteration to zero
         hops.push_back(0);
         // init callback at each iteration for any pre-processing phase

@@ -7,11 +7,27 @@
 #include "inc/fci.hpp"
 #include "inc/qcom.hpp"
 
-void print_refmat(const vector<vector<block>>& refmat) {
+void print_refmat(const vector<vector<vector<scalar>>>& refmat) {
     foreach_elem(e, refmat) {
         foreach_elem(k, e)
-            cout << k.value() << " ";
+            foreach_elem(s, k)
+                cout << s << " ";
         cout <<endl;
+    }
+}
+
+void recall_refmat(vector<maze::refmat_t>& now, maze::refmat_t& past) {
+    for(size_t k = 0; k < now.size(); k++) {
+        assert(now[k].size() == past.size());
+        for(size_t i = 0; i < now[k].size(); i++) {
+            assert(now[k][i].size() == past[i].size());
+            for(size_t j = 0; j < past.size(); j++) {
+                // if not recalling it? recall it
+                if(now[k][i][j] == 0) now[k][i][j] = past[i][j];
+                // otherwise memorise it
+                else past[i][j] = now[k][i][j];
+            }
+        }
     }
 }
 
@@ -47,24 +63,36 @@ int main(int argc, char** argv) {
                 // define the goals positions and theirs rewards(since they can be variable!)
                 {
                     {{1, 5}, +10},
-                    {{3, 5}, +10},
-                    {{5, 1}, +10}
+//                    {{3, 5}, +10},
+//                    {{5, 1}, +10}
                 },
                 // define the walls positions
                 {
-                    {1, 0}, {1, 1}, {1, 2},
-                    {2, 4}, {2, 5},
-                    {4, 2}, {4, 3}, {4, 4}
+//                    {1, 0}, {1, 1}, {1, 2},
+//                    {2, 4}, {2, 5},
+//                    {4, 2}, {4, 3}, {4, 4}
                 });
+
+    cerr << "The world:" << endl;
+    cerr << m << endl;
 
     future<QLearningResult>* threads = new future<QLearningResult>[::CONF_MULTI_AGENT_COUNT];
 
+    const size_t MAX_ITERATION = ::CONF_ITERATIONS;
+
     while(::CONF_ITERATIONS--) {
+
+        fprintf(stderr, "\r%.1f%% of all iterations done!", 100 * (1 - scalar(::CONF_ITERATIONS + 1) / MAX_ITERATION));
 
         vector<scalar> avg_moves;
         vector<QLearningResult> results;
+        vector<maze::refmat_t> _recall_refmat;
         vector<action> action_list = {maze::NONE, maze::TOP, maze::RIGHT, maze::DOWN, maze::LEFT};
         qtable_t qtable = Maze_QLearning::init_Qtable(m.width, m.height, action_list);
+
+        m.new_refmat();
+        foreach_agent(_) _recall_refmat.push_back(m.refmat().back());
+        m.refmat().pop_back();
 
         foreach_trial(_try) {
             // the result container
@@ -82,8 +110,11 @@ int main(int argc, char** argv) {
                                ::CONF_AGENT_LEARNING_CYCLES,
                                size_t(gid));
             // fetch the results
-            foreach_agent(gid)
+            foreach_agent(gid) {
                 results.push_back(threads[gid].get());
+                assert(results.back()._refmat.size() == ::CONF_AGENT_LEARNING_CYCLES);
+                recall_refmat(results.back()._refmat, _recall_refmat[gid]);
+            }
             // calc the average moves
             auto avm = get_avg_hop_single(results);
             // store the calced avg moves for later outputing
@@ -92,14 +123,14 @@ int main(int argc, char** argv) {
             if(::CONF_MULTI_AGENT_COUNT == 1) {
                 // don't combine for single agent
                 qtable = results.back()._qtable;
-//                print_refmat(results.back()._refmat);
-//                cout << endl;
+                print_refmat(results.back()._refmat);
             }
             else
                 // combine the intel
                 qtable = QCom(results, m.ref_size).combine();
         }
-
+        fprintf(stderr, "\r100.0%% of all iterations done!");
+        continue;
         for(size_t i = 0; i < avg_moves.size(); i++)
             cout << accumulate(avg_moves.begin(), avg_moves.begin() + i + 1, 0.0) / (i + 1) << " ";
         cout <<endl;

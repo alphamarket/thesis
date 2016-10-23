@@ -94,6 +94,7 @@ qtable_t merge(const vector<qtable_t>& qtables, const vector<vector<vector<scala
     }
     return out;
 }
+
 template<typename T>
 vector<vector<vector<vector<T>>>> trans_4d(const vector<vector<vector<vector<T>>>>& mat) {
     foreach_elem(q, mat) ensure_matrix(q);
@@ -130,7 +131,7 @@ qtable_t fci_execute(const QCom* const qcom) {
     vector<vector<vector<scalar>>> norms;
     foreach_elem(e, qcom->results) {
         qtables.push_back(e._qtable);
-        norms.push_back(normalize_2d<scalar>(e._refmat));
+        //norms.push_back(normalize_2d<scalar>(e._refmat));
     }
     return merge(trans_4d(qtables), trans_3d(norms), qcom->ref_size);
 }

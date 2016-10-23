@@ -128,7 +128,6 @@ QLearningResult execute_agent(
         Maze_QLearning::qupdate_func_t greedy_qupdator,
         size_t iteration_max,
         size_t __unused thread_id) {
-    set_agent_random(m);
     Maze_QLearning mq(qtable, m, action_list);
     return mq.execute(action_picker, action_handler, greedy_qupdator, iteration_init_callback, iteration_max);
 }

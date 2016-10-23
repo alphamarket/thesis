@@ -27,8 +27,10 @@ bool maze::agent_location(const state &s) {
     this->operator ()(s) += Agent();
     // keep track of the agent's position
     this->_pos_agent = s;
-    // update the reference value for current stage
-    this->_refmat[s[0] / this->ref_size][s[1] / this->ref_size].value() += 1;
+    // if there is a refmat defined?
+    if(this->ref_size && this->_refmat.size())
+        // update the reference value for current stage
+        this->current_refmat()[s[0] / this->ref_size][s[1] / this->ref_size] += 1;
     // the success indicator
     return true;
 }
@@ -40,8 +42,7 @@ ostream& operator<<(ostream& os, const maze& m) {
         for(size_t j = 0; j < m.height; j++) {
             os << m._matrix[i][j];
         }
-
-        cout << endl;
+        os << endl;
     }
     return os;
 }
@@ -49,19 +50,19 @@ ostream& operator<<(ostream& os, const maze& m) {
 maze& maze::operator = (const maze& m) {
     if(m.width != this->width || m.height != this->height || m.ref_size != this->ref_size)
         throw runtime_error("Cannot assign a maze with different configuration!");
-    // copy the agent pos
+    // copy the vectors
+    this->_refmat = m._refmat;
+    this->_matrix = m._matrix;
     this->_pos_agent = m._pos_agent;
-    // clone the matrix
-    for(size_t i = 0; i < m.width; i++) {
-        this->_matrix.push_back(vector<block>());
-        for(size_t j = 0; j < m.height; j++)
-            this->_matrix[i].push_back(m({i, j}));
-    }
-    // clone the reference matrix
-    for(size_t i = 0; i < m._refmat.size(); i++) {
-        this->_refmat.push_back(vector<block>());
-        for(size_t j = 0; j < m._refmat[i].size(); j++)
-            this->_refmat[i].push_back(m._refmat[i][j]);
-    }
     return *this;
+}
+
+void maze::new_refmat() {
+    this->_refmat.push_back(refmat_t());
+    // create the reference matrix
+    for(size_t i = 0; i < size_t(width / ref_size); i++) {
+        this->current_refmat().push_back(vector<scalar>());
+        for(size_t j = 0; j < size_t(width / ref_size); j++)
+            this->current_refmat().back().push_back(0);
+    }
 }

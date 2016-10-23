@@ -7,18 +7,22 @@
 
 class maze
 {
+public:
+    typedef vector<size_t> state;
     typedef vector<vector<block>> matrix_t;
+    typedef vector<vector<scalar>> refmat_t;
+protected:
     matrix_t
         /**
          * @brief _matrix The world's matrix
          */
-        _matrix,
+        _matrix;
+    vector<refmat_t>
         /**
          * @brief _refmat The world's reference matrix
          */
         _refmat;
 public:
-    typedef vector<size_t> state;
     /**
      * @brief _pos_agent The state of agent
      */
@@ -54,15 +58,6 @@ public:
             this->_matrix.push_back(vector<block>());
             for(size_t j = 0; j < height; j++)
                 this->_matrix.back().push_back(block(block::EMPTY));
-        }
-        // if reference grid size defined?
-        if(ref_size) {
-            // create the reference matrix
-            for(size_t i = 0; i < size_t(width / ref_size); i++) {
-                this->_refmat.push_back(vector<block>());
-                for(size_t j = 0; j < size_t(width / ref_size); j++)
-                    this->_refmat.back().push_back(block(block::NONE, 0));
-            }
         }
     }
     /**
@@ -153,13 +148,29 @@ public:
      */
     matrix_t matrix() const { return this->_matrix; }
     /**
+     * @brief matrix get the referenece matrix
+     */
+    vector<refmat_t>& refmat() { return this->_refmat; }
+    /**
      * @brief matrix get a copy version of maze's referenece matrix
      */
-    matrix_t refmat() const { return this->_refmat; }
+    vector<refmat_t> refmat() const{ return this->_refmat; }
+    /**
+     * @brief new_refmat creates new refmat
+     */
+    void new_refmat();
+    /**
+     * @brief current_refmat get current refmat
+     */
+    inline refmat_t& current_refmat() { return this->_refmat.back(); }
+    /**
+     * @brief current_refmat get a copy of current refmat
+     */
+    inline refmat_t current_refmat() const { return this->_refmat.back(); }
     /**
      * @brief reset_refmat resets the reference matrix
      */
-    inline void reset_refmat() { foreach_elem(e, this->_refmat) foreach_elem(k, e) k.value(0); }
+    inline void reset_refmat() { foreach_elem(&k, this->_refmat) foreach_elem(&e, k) foreach_elem(&k, e) k = 0; }
     /**
      * @brief operator << The out stream operator
      * @param os Stream object

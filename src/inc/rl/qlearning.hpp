@@ -5,8 +5,8 @@
 #include "inc/worlds/maze.hpp"
 
 typedef uint action;
-typedef vector<vector<block>> refmat_t;
 typedef vector<vector<action>> policy_t;
+typedef vector<vector<vector<scalar>>> refmat_t;
 typedef vector<vector<vector<scalar>>> qtable_t;
 
 struct QLearningResult;
