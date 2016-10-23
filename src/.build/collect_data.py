@@ -2,7 +2,7 @@
 import os
 
 iters = 20;
-trials = 400;
+trials = 200;
 
 # collecting with different configs
 configs = [
