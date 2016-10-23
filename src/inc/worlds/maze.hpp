@@ -18,7 +18,7 @@ class maze
          */
         _refmat;
 public:
-    typedef Eigen::Vector2i state;
+    typedef vector<size_t> state;
     /**
      * @brief _pos_agent The state of agent
      */
@@ -45,7 +45,7 @@ public:
      * @param height The height of world to create
      */
     maze(const size_t width, const size_t height, const size_t ref_size = 0)
-        : _pos_agent(-1, -1), width(width), height(height), ref_size(ref_size)
+        : _pos_agent({0, 0}), width(width), height(height), ref_size(ref_size)
     {
         if(ref_size && (width % ref_size != 0 || height % ref_size != 0))
             throw runtime_error("The width and height should be dividable by `ref_size`!");
@@ -97,7 +97,7 @@ public:
      * @return Returns true of the state is valid in current world; otherwise false.
      */
     inline bool is_valid(const state& s) const
-    { return size_t(s[0]) >= 0 && size_t(s[1]) >= 0 && size_t(s[0]) < this->width && size_t(s[1]) < this->height; }
+    { return s[0] < this->width && s[1] < this->height; }
     /**
      * @brief ensure_state Ensures that the given state is valid; otherwise a runtime error will raise
      * @param s The target state

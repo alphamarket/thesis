@@ -25,6 +25,7 @@
 #include <assert.h>
 #include <iostream>
 #include <exception>
+#include <algorithm>
 #include <functional>
 using namespace std;
 
@@ -58,13 +59,6 @@ typedef double scalar;
 #       define clear_screen()
 #   endif
 #endif
-
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wignored-attributes"
-#pragma GCC diagnostic ignored "-Wmisleading-indentation"
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-#include <Eigen/Core>
-#pragma GCC diagnostic pop
 
 #include "config.hpp"
 

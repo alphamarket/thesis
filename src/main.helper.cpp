@@ -2,6 +2,14 @@
 #include "main.helper.hpp"
 #include <unordered_map>
 
+template<typename T>
+scalar norm(const vector<T>& t, const vector<T>& s) {
+    scalar out = 0;
+    if(t.size() != s.size()) throw runtime_error("[norm()] The sizes does not match!");
+    for(size_t i = 0; i < t.size(); i++) out += pow(t[i] - s[i], 2);
+    return sqrt(out);
+}
+
 maze create_maze(
         const maze::state& size,
         const size_t ref_size,
@@ -20,7 +28,7 @@ maze create_maze(
         if(b.type() == b.EMPTY) {
             scalar _min = INFINITY;
             // the block's reward is the minimum of the distance of the block to the goals
-            for(auto g : goals) _min = min(scalar((g.first - s).norm()), _min);
+            for(auto g : goals) _min = min(norm(g.first, s), _min);
             // set the block's reward
             b.value(1 / _min);
         }
