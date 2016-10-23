@@ -188,7 +188,8 @@ po::variables_map process_args(int argc, char** argv) {
             ("greedy_explore_rate,g", po::value<scalar>()->default_value(.2, ".20")->notifier(prob_checker("ger")), "The greedy action picker exploration rate, should be in range of [0,1].")
             ("fci_combine_method,f", po::value<string>()->default_value("k_mean")->notifier(fci_checker("fci_combine_method")), "The FCI combinator method, could be [combiner_k_mean, combiner_mean, combiner_max].")
             ("agents_learning_cycle, c", po::value<size_t>()->default_value(5), "The number of agents learning cycle.")
-            ("display_defaults", "Displays the default values for inputs")
+            ("display_defaults", "Displays the default values for inputs.")
+            ("test_sep", "Prints the test SEP implementation.")
         ;
     po::variables_map vm;
     try {
@@ -218,4 +219,64 @@ po::variables_map process_args(int argc, char** argv) {
         exit(EXIT_SUCCESS);
     }
     return vm;
+}
+
+void test_sep() {
+    maze m = create_maze(
+                // the size of maze
+                {3, 4},
+                // the reference size
+                0,
+                // define the goals positions and theirs rewards(since they can be variable!)
+                {
+                    {{0, 3}, +10},
+                },
+                // define the walls positions
+                {
+                    {1, 0}, {1, 1}, {1, 3},
+                });
+    vector<action> action_list = {maze::NONE, maze::UP, maze::RIGHT, maze::DOWN, maze::LEFT};
+
+    m.agent_location({0, 0});
+
+    cerr << "The world:" << endl;
+    cerr << m << endl;
+
+    SEP ssep({m.width, m.height, action_list.size() - 1});
+    auto prev_state = m.agent_location();
+    vector<action> actions = {maze::RIGHT, maze::RIGHT, maze::DOWN, maze::DOWN, maze::UP, maze::UP, maze::LEFT, maze::RIGHT, maze::RIGHT};
+    for (size_t loc = 0; loc < actions.size(); loc++){
+        m.agent_location(action_handler(m, m.agent_location(), actions[loc]));
+        ssep.sep_dispatch_shock(prev_state, actions[loc], m.agent_location());
+        ssep.sep_visit_path(prev_state, actions[loc], m.agent_location());
+        prev_state = m.agent_location();
+        cout << m << endl;
+    }
+
+    foreach_elem(r, ssep.get_sep())
+        cerr << "State: [" << r._state[0] << ", " << r._state[1] << "] Action: " << r._action << " Length: " << r._length << endl;
+}
+
+void print_refmat(const vector<vector<vector<scalar>>>& refmat) {
+    foreach_elem(e, refmat) {
+        foreach_elem(k, e)
+            foreach_elem(s, k)
+                cout << s << " ";
+        cout <<endl;
+    }
+}
+
+void recall_refmat(vector<maze::refmat_t>& now, maze::refmat_t& past) {
+    for(size_t k = 0; k < now.size(); k++) {
+        assert(now[k].size() == past.size());
+        for(size_t i = 0; i < now[k].size(); i++) {
+            assert(now[k][i].size() == past[i].size());
+            for(size_t j = 0; j < past.size(); j++) {
+                // if not recalling it? recall it
+                if(now[k][i][j] == 0) now[k][i][j] = past[i][j];
+                // otherwise memorise it
+                else past[i][j] = now[k][i][j];
+            }
+        }
+    }
 }

@@ -8,30 +8,6 @@
 #include "inc/fci.hpp"
 #include "inc/qcom.hpp"
 
-void print_refmat(const vector<vector<vector<scalar>>>& refmat) {
-    foreach_elem(e, refmat) {
-        foreach_elem(k, e)
-            foreach_elem(s, k)
-                cout << s << " ";
-        cout <<endl;
-    }
-}
-
-void recall_refmat(vector<maze::refmat_t>& now, maze::refmat_t& past) {
-    for(size_t k = 0; k < now.size(); k++) {
-        assert(now[k].size() == past.size());
-        for(size_t i = 0; i < now[k].size(); i++) {
-            assert(now[k][i].size() == past[i].size());
-            for(size_t j = 0; j < past.size(); j++) {
-                // if not recalling it? recall it
-                if(now[k][i][j] == 0) now[k][i][j] = past[i][j];
-                // otherwise memorise it
-                else past[i][j] = now[k][i][j];
-            }
-        }
-    }
-}
-
 /**
  * @brief main The main entry of program
  * @return The exit flag
@@ -62,6 +38,9 @@ int main(int argc, char** argv) {
         {"greedy", greedy_action_picker}
     };
     auto action_picker = action_pickers[boost::to_lower_copy(opt["action_picker"].as<string>())];
+
+	// if calling for SEP test? 
+    if(opt.count("test_sep")) { test_sep(); exit(0); }
 
     // exiting flag
     bool exiting = false;

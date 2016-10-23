@@ -15,9 +15,7 @@ namespace po = boost::program_options;
  * @param walls The position of walls
  * @return The created and initalized maze
  */
-maze create_maze(const maze::state& size, const size_t ref_size,
-        vector<pair<maze::state, scalar>> goals,
-        vector<maze::state> walls);
+maze create_maze(const maze::state& size, const size_t ref_size, vector<pair<maze::state, scalar>> goals, vector<maze::state> walls);
 /**
  * @brief set_agent_random Sets the agent at valid random position
  * @param m The maze to act upon
@@ -99,5 +97,20 @@ scalar Q_updator(const QLearningOptions& opt, const scalar& qsa, const scalar& q
  * @return The varible map of options
  */
 po::variables_map process_args(int argc, char** argv);
+/**
+ * @brief print_refmat Prints the refmat
+ * @param refmat The refmats
+ */
+void print_refmat(const vector<vector<vector<scalar>>>& refmat);
+/**
+ * @brief recall_refmat Recalls the refmats from past if necessary
+ * @param now The current refmats
+ * @param past The pass refmat
+ */
+void recall_refmat(vector<maze::refmat_t>& now, maze::refmat_t& past);
+/**
+ * @brief test_sep Prints out the tests for SEP
+ */
+void test_sep();
 
 #endif // MAIN_HELPER_HPP
