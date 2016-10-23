@@ -56,7 +56,6 @@ int main(int argc, char** argv) {
         {"mean", fci::combiner_mean},
         {"k_mean", fci::combiner_k_mean}
     };
-    if(!combiner.count(opt["fci_combine_method"].as<string>())) throw runtime_error("The `"+opt["fci_combine_method"].as<string>()+"` does not exist!");
     ::CONF_FCI_COMBINER = combiner[opt["fci_combine_method"].as<string>()];
 
     bool exiting = false;
@@ -76,7 +75,7 @@ int main(int argc, char** argv) {
                 },
                 // define the walls positions
                 {
-                    {1, 0}, {1, 1}, {1, 3},
+                    {1, 0}, {1, 1}, {1, 2},
                     {2, 4}, {2, 5},
                     {4, 2}, {4, 3}, {4, 4}
                 });

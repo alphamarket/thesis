@@ -1,4 +1,4 @@
-clc, clear, close all
+clear, close all
 a = {'IL.dat','fci_mean.dat', 'fci_max.dat', 'fci_k_mean.dat'};
 figure, hold
 B = [];
