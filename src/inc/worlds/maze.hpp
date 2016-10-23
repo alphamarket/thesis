@@ -41,7 +41,7 @@ public:
          * @brief ref_size The reference size
          */
         ref_size;
-    enum actions { NONE = 0, TOP, RIGHT, DOWN, LEFT };
+    enum actions { NONE = 0, UP, RIGHT, DOWN, LEFT };
 public:
     /**
      * @brief maze The ctor

@@ -41,7 +41,7 @@ QLearningResult Maze_QLearning::execute(
             // pick an action
             action a = action_picker(*this, this->_m->agent_location(), hops.back()++, (iteration_max - iteration));
             // calc. the transition that the action causes
-            maze::state sprim = actor_handler(*this, this->_m->agent_location(), a);
+            maze::state sprim = actor_handler(*this->_m, this->_m->agent_location(), a);
             // get the reward of the next state
             scalar reward = (*this->_m)(sprim).value();
             // \max_{a'} Q[s',a']

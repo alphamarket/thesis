@@ -4,8 +4,8 @@
 
 TEMPLATE = app
 TARGET = theises
-DEPENDPATH += . inc inc/worlds src/worlds
-INCLUDEPATH += . inc /usr/include/eigen3
+DEPENDPATH += . inc inc/worlds
+INCLUDEPATH += . inc
 CONFIG += c++14
 
 LIBS += -lboost_program_options
@@ -20,13 +20,20 @@ HEADERS += inc/stdafx.hpp inc/worlds/maze.hpp \
     inc/qcom.hpp \
     config.hpp \
     inc/qcom/qcom.fci.hpp \
-    inc/fci.hpp
+    inc/fci.hpp \
+    inc/sep.hpp \
+    mat/mat1d.hpp \
+    mat/mat2d.hpp \
+    mat/mat3d.hpp \
+    mat/mat4d.hpp \
+    mat/matrix.hpp
 SOURCES += main.cpp src/worlds/maze.cpp \
     src/rl/maze_qlearning.cpp \
     main.helper.cpp \
     src/qcom.cpp \
     src/fci.cpp \
-    src/config.cpp
+    src/config.cpp \
+    src/sep.cpp
 
 DISTFILES += \
     CMakeLists.txt

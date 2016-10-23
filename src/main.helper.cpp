@@ -77,16 +77,16 @@ action boltzmann_action_picker(const Maze_QLearning& mq, const maze::state &stat
     throw runtime_error("The PC should not reach this!");
 }
 
-maze::state action_handler(const Maze_QLearning& mq, const maze::state& state, action action) {
+maze::state action_handler(const maze& mq, const maze::state& state, action action) {
     switch(action) {
-        case maze::TOP:
+        case maze::UP:
             if(state[0] > 0) return {state[0] - 1, state[1]};
             return maze::state(state);
         case maze::RIGHT:
-            if(size_t(state[1]) < mq.get_maze().height - 1) return {state[0], state[1] + 1};
+            if(size_t(state[1]) < mq.height - 1) return {state[0], state[1] + 1};
             return maze::state(state);
         case maze::DOWN:
-            if(size_t(state[0]) < mq.get_maze().width - 1) return {state[0] + 1, state[1]};
+            if(size_t(state[0]) < mq.width - 1) return {state[0] + 1, state[1]};
             return maze::state(state);
         case maze::LEFT:
             if(state[1] > 0) return {state[0], state[1] - 1};
@@ -186,7 +186,7 @@ po::variables_map process_args(int argc, char** argv) {
             ("gamma,g", po::value<scalar>()->default_value(.9, ".90")->notifier(prob_checker("gamma")), "The discount rate(gamma) rate, should be in range of [0,1].")
             ("tau,t", po::value<scalar>()->default_value(.4, ".40"), "The temperature rate(gamma) value.")
             ("greedy_explore_rate,g", po::value<scalar>()->default_value(.2, ".20")->notifier(prob_checker("ger")), "The greedy action picker exploration rate, should be in range of [0,1].")
-            ("fci_combine_method,f", po::value<string>()->default_value("combiner_k_mean")->notifier(fci_checker("fcm")), "The FCI combinator method, could be [combiner_k_mean, combiner_mean, combiner_max].")
+            ("fci_combine_method,f", po::value<string>()->default_value("k_mean")->notifier(fci_checker("fci_combine_method")), "The FCI combinator method, could be [combiner_k_mean, combiner_mean, combiner_max].")
             ("agents_learning_cycle, c", po::value<size_t>()->default_value(5), "The number of agents learning cycle.")
             ("display_defaults", "Displays the default values for inputs")
         ;

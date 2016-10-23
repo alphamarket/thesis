@@ -26,7 +26,7 @@ public:
      * @param action The action to be taken
      * @return The result state
      */
-    typedef function<maze::state(const Maze_QLearning&, const maze::state&, action)> actor_func_t;
+    typedef function<maze::state(const maze&, const maze::state&, action)> actor_func_t;
     /**
      * @brief qupdate_func Calcs the update value for Q[s,a]
      * @param opt The Qlearning option instance

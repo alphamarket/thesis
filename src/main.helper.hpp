@@ -46,7 +46,7 @@ action boltzmann_action_picker(const Maze_QLearning& mq, const maze::state &stat
  * @param action The action to be taken
  * @return The transited state
  */
-maze::state action_handler(const Maze_QLearning& mq, const maze::state& state, action action);
+maze::state action_handler(const maze &mq, const maze::state& state, action action);
 /**
  * @brief iteration_init_callback The QLearning iteration callback
  * @param m The maze world
