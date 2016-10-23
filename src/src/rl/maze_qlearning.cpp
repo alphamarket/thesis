@@ -16,10 +16,10 @@ Maze_QLearning::~Maze_QLearning()
 { }
 
 QLearningResult Maze_QLearning::execute(
-        action_func action_picker,
-        actor_func actor_handler,
-        qupdate_func q_updater,
-        iteration_init_func iteration_init_callback,
+        action_func_t action_picker,
+        actor_func_t actor_handler,
+        qupdate_func_t q_updater,
+        iteration_init_func_t iteration_init_callback,
         size_t iteration_max) {
     // total hop done in this execution
     vector<size_t> hops;

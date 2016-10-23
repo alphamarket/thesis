@@ -29,13 +29,13 @@ void set_agent_random(maze& m);
  */
 action greedy_action_picker(const Maze_QLearning& mq, const maze::state &state, size_t current_hop, size_t current_iter);
 /**
- * @brief action_picker Picks an action with boltsman method
+ * @brief action_picker Picks an action with boltzmann method
  * @param mq The Maze QLearning instance
  * @param current_hop The current hop#
  * @param current_iter The current iter#
  * @return The picked action
  */
-action boltsman_action_picker(const Maze_QLearning& mq, const maze::state &state, size_t current_hop, size_t current_iter);
+action boltzmann_action_picker(const Maze_QLearning& mq, const maze::state &state, size_t current_hop, size_t current_iter);
 /**
  * @brief action_handler The action handler
  * @param mq The Maze QLearning instance
@@ -66,7 +66,7 @@ void print_policy(const maze& m, const vector<vector<action>>& policy);
  * @param thread_id The agent's thread id
  * @return
  */
-QLearningResult execute_agent(maze m, const vector<action> &action_list, const qtable_t& qtable, Maze_QLearning::action_func action_picker, Maze_QLearning::qupdate_func Q_updator, size_t iteration_max, size_t thread_id);
+QLearningResult execute_agent(maze m, const vector<action> &action_list, const qtable_t& qtable, Maze_QLearning::action_func_t action_picker, Maze_QLearning::qupdate_func_t Q_updator, size_t iteration_max, size_t thread_id);
 /**
  * @brief get_avg_hop_single Calculates the avg hop of EVERY hop for all agents
  * @param results The agent's qlearning results

@@ -66,8 +66,9 @@ typedef double scalar;
 #include <Eigen/Core>
 #pragma GCC diagnostic pop
 
-#define foreach_elem(i, j)      for(auto i : j)
-#define foreach_agent(tid)     for(auto tid = 0; tid < MULTI_AGENT_COUNT; tid++)
-#define foreach_trial(_try)    for(auto _try = 0; _try < TRIAL_MAX; _try++)
-
 #include "config.hpp"
+
+#define foreach_elem(i, j)     for(auto i : j)
+#define foreach_trial(_try)    for(size_t _try = 0; _try < ::CONF_TRIAL_MAX; _try++)
+#define foreach_agent(tid)     for(size_t tid = 0; tid < ::CONF_MULTI_AGENT_COUNT; tid++)
+

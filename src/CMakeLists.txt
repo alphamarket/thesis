@@ -18,7 +18,7 @@ include_directories(${IINCLUDE_DIRS} "." "/usr/include/eigen3")
 
 add_executable (thesis main.cpp main.helper.cpp ${ISOURCES})
 
-target_link_libraries (thesis pthread)
+target_link_libraries (thesis pthread boost_program_options)
 
 # set warnings level
 IF(MSVC) # MSVC compiler (Win32 only)

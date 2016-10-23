@@ -1,16 +1,25 @@
 #ifndef CONFIG_HPP
 #define CONFIG_HPP
 
-#define MAZE_WALL_REWARD -1
+#include "stdafx.hpp"
 
-#define MULTI_AGENT_COUNT       1
-#define AGENT_LEARNING_CYCLES   5
-#define TRIAL_MAX               200
+extern scalar
 
-#define QLEARNING_ALPHA         .90
-#define QLEARNING_GAMMA         .10
+CONF_RATE_TAU,
+CONF_RATE_BETA,
+CONF_RATE_GAMMA,
+CONF_MAZE_WALL_REWARD,
+CONF_RATE_GREEDY_EXPLORE
 
-#define ACTION_PICKER_BOLTSMAN_TAU      .2
-#define ACTION_PICKER_GREEDY_EXPLORE    .4
+;
+
+extern size_t
+
+CONF_TRIAL_MAX,
+CONF_ITERATIONS,
+CONF_MULTI_AGENT_COUNT,
+CONF_AGENT_LEARNING_CYCLES
+
+;
 
 #endif // CONFIG_HPP

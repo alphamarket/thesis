@@ -19,6 +19,24 @@ protected:
      * @return The combined value fo i'th iteration
      */
     static scalar master_combiner(const packages_t& packages, const combiner_func_t& slave_combiner, const size_t& i);
+    /**
+     * @brief fci::range_string Returns string of sorted indices for choquet operations
+     * @param packages The choquet packages vector
+     * @param i The current index
+     * @param plus The add-on value indices
+     * @param j The maximum value to iterate to, if not specified the package size will be used
+     * @return The ranged string
+     */
+    static string range_string(const packages_t& packages, long i, size_t plus = 0, long j = std::numeric_limits<long>::max());
+    /**
+     * @brief fci::range_vector Returns vectors of sorted indices for choquet operations
+     * @param packages The choquet packages vector
+     * @param i The current index
+     * @param plus The add-on value indices
+     * @param j The maximum value to iterate to, if not specified the package size will be used
+     * @return the ranged vector
+     */
+    static vector<size_t> range_vector(const packages_t& packages, long i, size_t plus = 0, long j = std::numeric_limits<long>::max());
 
 public:
     /**

@@ -11,7 +11,7 @@ maze create_maze(
     // set the walls' reward
     for(auto g : goals) m(g.first) = block(block::GOAL, g.second);
     // set the walls' reward
-    for(auto w : walls) m(w) = block(block::WALL, MAZE_WALL_REWARD);
+    for(auto w : walls) m(w) = block(block::WALL, ::CONF_MAZE_WALL_REWARD);
     // for every other empty blocks, the reward is
     //  the minimum of the distance of the block to the goals
     m.foreach_block([&goals](maze::state s, block& b) {
@@ -39,7 +39,7 @@ void set_agent_random(maze& m) {
 
 action greedy_action_picker(const Maze_QLearning& mq, const maze::state& state, size_t __unused current_hop, size_t __unused current_iter) {
     // with 20% explore
-    if(frand() < ACTION_PICKER_GREEDY_EXPLORE) return mq.actions_list().at(get_rand(0, mq.actions_list().size()));
+    if(frand() < ::CONF_RATE_GREEDY_EXPLORE) return mq.actions_list().at(get_rand(0, mq.actions_list().size()));
     // with 80% exploit
     scalar qprim = -INFINITY;
     action out = 0;
@@ -49,20 +49,23 @@ action greedy_action_picker(const Maze_QLearning& mq, const maze::state& state, 
     return out;
 }
 
-action boltsman_action_picker(const Maze_QLearning& mq, const maze::state &state, size_t __unused current_hop, size_t __unused current_iter) {
+action boltzmann_action_picker(const Maze_QLearning& mq, const maze::state &state, size_t __unused current_hop, size_t __unused current_iter) {
     scalar sum = 0;
     size_t index = 0;
     scalar p = frand();
     vector<pair<size_t, scalar>> eq;
     // calc the exp(Q/tau)
-    foreach_elem(act, mq.actions_list()) { eq.push_back({index++, exp(mq.Q(state, act) / ACTION_PICKER_BOLTSMAN_TAU)}); sum += eq.back().second; }
-    // compute the boltsman prob and subtract it from the prob of choice
-    // the nearest one to the prob will have the smallest value among the others
-    for(size_t i = 0; i < mq.actions_list().size(); i++)  eq[i].second = abs(eq[i].second / sum - p);
+    foreach_elem(act, mq.actions_list()) { eq.push_back({index++, exp(mq.Q(state, act) / ::CONF_RATE_TAU)}); sum += eq.back().second; }
+    // normalize them
+    foreach_elem(&e, eq) e.second /= sum;
     // sort in ascending order
     sort(eq.begin(), eq.end(), [](auto i, auto j) { return i.second < j.second; });
-    // the smallest value is the nearest to the prob
-    return mq.actions_list()[eq.front().first];
+    sum = 0;
+    foreach_elem(e, eq) {
+        if(p < sum + e.second) return mq.actions_list()[e.first];
+        sum += e.second;
+    }
+    throw runtime_error("The PC should not reach this!");
 }
 
 maze::state action_handler(const Maze_QLearning& mq, const maze::state& state, action action) {
@@ -87,7 +90,7 @@ maze::state action_handler(const Maze_QLearning& mq, const maze::state& state, a
 
 QLearningOptions iteration_init_callback(maze& m, size_t __unused iter) {
     set_agent_random(m);
-    return {QLEARNING_ALPHA, QLEARNING_GAMMA};
+    return {::CONF_RATE_BETA, ::CONF_RATE_GAMMA};
 }
 
 void print_policy(const maze& m, const vector<vector<action>>& policy) {
@@ -112,8 +115,8 @@ QLearningResult execute_agent(
         maze m,
         const vector<action>& action_list,
         const qtable_t& qtable,
-        Maze_QLearning::action_func action_picker,
-        Maze_QLearning::qupdate_func greedy_qupdator,
+        Maze_QLearning::action_func_t action_picker,
+        Maze_QLearning::qupdate_func_t greedy_qupdator,
         size_t iteration_max,
         size_t __unused thread_id) {
     set_agent_random(m);
@@ -126,7 +129,7 @@ vector<scalar> get_avg_hop_single(const vector<QLearningResult>& results) {
     foreach_agent(tid) {
         assert(out.size() == results[tid]._hops.size());
         for(size_t i = 0; i < results[tid]._hops.size(); i++)
-            out[i] += results[tid]._hops[i] / MULTI_AGENT_COUNT;
+            out[i] += results[tid]._hops[i] / ::CONF_MULTI_AGENT_COUNT;
     }
     return out;
 }
@@ -135,7 +138,7 @@ vector<scalar> get_avg_hop_clustered(const vector<QLearningResult> &results) {
     vector<scalar> out = { 0 };
     foreach_agent(tid) {
         auto hop = results[tid]._hops;
-        out.back() += (accumulate(hop.begin(), hop.end(), 0.0) / (hop.size() * MULTI_AGENT_COUNT));
+        out.back() += (accumulate(hop.begin(), hop.end(), 0.0) / (hop.size() * ::CONF_MULTI_AGENT_COUNT));
     }
     return out;
 }

@@ -9,6 +9,21 @@ struct fci::choquet_package {
         _index;
 };
 
+vector<size_t> fci::range_vector(const packages_t& packages, long i, size_t plus, long j) {
+    vector<size_t> indexes;
+    assert(size_t(i) < packages.size() && i < j);
+    while(size_t(i) < packages.size() && i < j) indexes.push_back(packages[i++]._index + plus);
+    sort(indexes.begin(), indexes.end());
+    return indexes;
+}
+
+string fci::range_string(const packages_t& packages, long i, size_t plus, long j) {
+    string out = "";
+    auto vec = range_vector(packages, i, plus, j);
+    foreach_elem(e, vec) out += to_string(e) + ",";
+    return out.substr(0, out.length()-1);
+}
+
 scalar fci::master_combiner(const packages_t& packages, const combiner_func_t &slave_combiner, const size_t &i) {
     if(i == 1) return 1.;
     else if(i >= packages.size()) return 0.;
@@ -17,23 +32,27 @@ scalar fci::master_combiner(const packages_t& packages, const combiner_func_t &s
 
 scalar fci::combiner_max(const packages_t& packages, const size_t& i) {
     scalar _max = -INFINITY;
-    for(size_t j = i, k = 1; j < packages.size(); j++, k++) { _max = max(_max, packages[j]._val); }
+    auto vec = fci::range_vector(packages, i, 1);
+    for(size_t j = 0, k = 1; j < vec.size(); j++, k++) { _max = max(_max, packages[vec[j]]._val); }
     return _max;
 }
 
 scalar fci::combiner_mean(const packages_t& packages, const size_t& i) {
-    size_t div = 0;
     scalar out = 0;
-    for(size_t j = i, k = 1; j < packages.size(); j++, k++) { out += packages[j]._val; div += 1; }
-    return out / div;
+    auto vec = fci::range_vector(packages, i, 1);
+    for(size_t j = 0, k = 1; j < vec.size(); j++, k++) { out += packages[vec[j]]._val; }
+    return out / vec.size();
 }
 
 scalar fci::combiner_k_mean(const packages_t& packages, const size_t& i) {
     size_t div = 0;
     scalar out = 0;
-    // assuming that the package is sorted
-    for(size_t j = i, k = 1; j < packages.size(); j++, k++) { out += k * packages[j]._val; div += k; }
-    return out / div;
+    vector<scalar> mus;
+    vector<size_t> vec = fci::range_vector(packages, i, 1);
+    foreach_elem(v, vec) mus.insert(std::upper_bound(mus.begin(), mus.end(), packages[v]._val), packages[v]._val);
+    for(size_t j = 0, k = 1; j < mus.size(); j++, k++)  { out += k * mus[j]; div += k; }
+    // make it less averaged!
+    return out / (div - (div == 1 ? 0 : 1));
 }
 
 scalar fci::combine(const vector<scalar>& ins, const vector<scalar>& vals,  const combiner_func_t &combiner_func) {
@@ -44,9 +63,9 @@ scalar fci::combine(const vector<scalar>& ins, const vector<scalar>& vals,  cons
     // fill the packages
     for(long i = 0; size_t(i) < ins.size(); i++) packages.push_back({ins[i], vals[i], i});
     // sort ascending
-    sort(packages.begin(), packages.end(), [](auto i, auto j) { return i._val < j._val; });
+    sort(packages.begin(), packages.end(), [](auto i, auto j) { return i._in < j._in; });
     // insert the init value
-    packages.insert(packages.begin(), {0, 0, 0});
+    packages.insert(packages.begin(), {0, 0, -1});
     // foreach packages
     for(long i = 1; size_t(i) < packages.size(); i++)
         // [x(i) - x(i-1)] * tau(i...n)
@@ -66,38 +85,26 @@ scalar fci::combine(const vector<scalar>& ins, unordered_map<string,scalar> vals
     sort(packages.begin(), packages.end(), [](auto i, auto j) { return i._in < j._in; });
     // insert the init value
     packages.insert(packages.begin(), {0, 0, -1});
-    /**
-     * @brief creates choquent \tua range string
-     */
-    auto range_string = [&packages](long i, size_t plus = 0, long j = std::numeric_limits<long>::max()) -> string {
-        string out = "";
-        vector<size_t> indexes;
-        assert(size_t(i) < packages.size() && i < j);
-        while(size_t(i) < packages.size() && i < j) indexes.push_back(packages[i++]._index + plus);
-        sort(indexes.begin(), indexes.end());
-        foreach_elem(e, indexes) out += to_string(e) + ",";
-        return out.substr(0, out.length()-1);
-    };
     // if the \empty condition of \mu does not exists? add it
     if(!vals.count("")) vals.insert({"", 0});
     // if the \all condition of \mu does not exists? add it
-    if(!(vals.count(range_string(1, 1)) || vals.count(range_string(0, 0, packages.size()-1)))) vals.insert({range_string(1, 1), 1});
+    if(!(vals.count(fci::range_string(packages, 1, 1)) || vals.count(fci::range_string(packages, 0, 0, packages.size()-1)))) vals.insert({fci::range_string(packages, 1, 1), 1});
     // ensure the default value are set correctly
     if(vals[""] != 0) vals[""] = 0;
-    if(vals.count(range_string(1, 1))) {
-        if(vals[range_string(1, 1)] != 1) vals[range_string(1, 1)] = 1;
-    } else if(vals.count(range_string(0, 0, packages.size()-1))) {
-        if(vals[range_string(0, 0, packages.size()-1)] != 1) vals[range_string(0, 0, packages.size()-1)] = 1;
+    if(vals.count(fci::range_string(packages, 1, 1))) {
+        if(vals[fci::range_string(packages, 1, 1)] != 1) vals[fci::range_string(packages, 1, 1)] = 1;
+    } else if(vals.count(fci::range_string(packages, 0, 0, packages.size()-1))) {
+        if(vals[fci::range_string(packages, 0, 0, packages.size()-1)] != 1) vals[fci::range_string(packages, 0, 0, packages.size()-1)] = 1;
     } else throw runtime_error("This should no happend!!");
     // foreach packages
     for(long i = 1; size_t(i) < packages.size(); i++) {
         scalar factor = 0;
         // get the factor with zero-based or one-based input tolerance
-        if(vals.count(range_string(i, 1)))
-           factor = vals[range_string(i, 1)];
-        else if(vals.count(range_string(i)))
-            factor = vals[range_string(i)];
-        else throw runtime_error("The key value {"+range_string(i)+"} is not defined!!");
+        if(vals.count(fci::range_string(packages, i, 1)))
+           factor = vals[fci::range_string(packages, i, 1)];
+        else if(vals.count(fci::range_string(packages, i)))
+            factor = vals[fci::range_string(packages, i)];
+        else throw runtime_error("The key value {"+fci::range_string(packages, i)+"} is not defined!!");
         // [x(i) - x(i-1)] * \mu{\tau(i...n)}
         out += (packages[i]._in - packages[i - 1]._in) * factor;
     }

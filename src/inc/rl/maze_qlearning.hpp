@@ -18,7 +18,7 @@ public:
      * @param current_iteration The current iteration of learning
      * @return The action
      */
-    typedef function<action(const Maze_QLearning&, const maze::state&, size_t, size_t)> action_func;
+    typedef function<action(const Maze_QLearning&, const maze::state&, size_t, size_t)> action_func_t;
     /**
      * @brief actor_func The actor handler to caculate the transition on a state based on an action
      * @param Maze_QLearning The learner handle
@@ -26,7 +26,7 @@ public:
      * @param action The action to be taken
      * @return The result state
      */
-    typedef function<maze::state(const Maze_QLearning&, const maze::state&, action)> actor_func;
+    typedef function<maze::state(const Maze_QLearning&, const maze::state&, action)> actor_func_t;
     /**
      * @brief qupdate_func Calcs the update value for Q[s,a]
      * @param opt The Qlearning option instance
@@ -36,8 +36,8 @@ public:
      * @param hop The current hop
      * @return scalar The new Q value for Q[s,a]
      */
-    typedef function<scalar(const QLearningOptions&, const scalar&, const scalar&, const scalar&, const size_t&)> qupdate_func;
-    typedef function<QLearningOptions(maze &, size_t)> iteration_init_func;
+    typedef function<scalar(const QLearningOptions&, const scalar&, const scalar&, const scalar&, const size_t&)> qupdate_func_t;
+    typedef function<QLearningOptions(maze &, size_t)> iteration_init_func_t;
 protected:
     qtable_t _Q;
     maze* const _m;
@@ -48,7 +48,7 @@ public:
     ~Maze_QLearning();
 
     policy_t get_policy() const;
-    QLearningResult execute(action_func action_picker, actor_func actor_handler, qupdate_func, iteration_init_func iteration_init_callback, size_t iteration_max = 1);
+    QLearningResult execute(action_func_t action_picker, actor_func_t actor_handler, qupdate_func_t, iteration_init_func_t iteration_init_callback, size_t iteration_max = 1);
 
     inline maze& get_maze() { return *this->_m; }
     inline maze get_maze() const { return *this->_m; }
