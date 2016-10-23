@@ -4,6 +4,9 @@
 #include "inc/stdafx.hpp"
 #include "inc/worlds/maze.hpp"
 #include "inc/rl/maze_qlearning.hpp"
+#include <boost/program_options.hpp>
+#include <boost/algorithm/string.hpp>
+namespace po = boost::program_options;
 
 /**
  * @brief create_maze Creates a maze world
@@ -89,5 +92,12 @@ vector<scalar> get_avg_hop_clustered(const vector<QLearningResult>& results);
  * @return The new Q[s,a] update value
  */
 scalar Q_updator(const QLearningOptions& opt, const scalar& qsa, const scalar& qsa_prim, const scalar& reward, const size_t& hop);
+/**
+ * @brief process_args Processes the program options
+ * @param argc The argc
+ * @param argv The argv
+ * @return The varible map of options
+ */
+po::variables_map process_args(int argc, char** argv);
 
 #endif // MAIN_HELPER_HPP
