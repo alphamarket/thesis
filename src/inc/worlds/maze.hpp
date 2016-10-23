@@ -158,7 +158,7 @@ public:
     /**
      * @brief new_refmat creates new refmat
      */
-    void new_refmat();
+    maze& new_refmat();
     /**
      * @brief current_refmat get current refmat
      */

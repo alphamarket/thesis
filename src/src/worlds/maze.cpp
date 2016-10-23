@@ -57,7 +57,7 @@ maze& maze::operator = (const maze& m) {
     return *this;
 }
 
-void maze::new_refmat() {
+maze& maze::new_refmat() {
     this->_refmat.push_back(refmat_t());
     // create the reference matrix
     for(size_t i = 0; i < size_t(width / ref_size); i++) {
@@ -65,4 +65,5 @@ void maze::new_refmat() {
         for(size_t j = 0; j < size_t(width / ref_size); j++)
             this->current_refmat().back().push_back(0);
     }
+    return *this;
 }

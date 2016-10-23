@@ -1,6 +1,6 @@
 clear
 refmat1 = load('refmat.dat');
-refmat2 = load('refmat2.dat');
+refmat2 = load('refmat3.dat');
 
 N = 1000;
 B1 = zeros(20, N, 4);

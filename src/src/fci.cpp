@@ -1,7 +1,7 @@
 #include "fci.hpp"
 #include <limits>
 
-struct fci::choquet_package {
+struct fci_choquet_package {
     scalar
         _in,
         _val;
@@ -24,7 +24,7 @@ string fci::range_string(const packages_t& packages, long i, size_t plus, long j
     return out.substr(0, out.length()-1);
 }
 
-scalar fci::master_combiner(const packages_t& packages, const combiner_func_t &slave_combiner, const size_t &i) {
+scalar fci::master_combiner(const packages_t& packages, const fci_combiner_func_t &slave_combiner, const size_t &i) {
     if(i == 1) return 1.;
     else if(i >= packages.size()) return 0.;
     else return slave_combiner(packages, i);
@@ -55,7 +55,7 @@ scalar fci::combiner_k_mean(const packages_t& packages, const size_t& i) {
     return out / (div - (div == 1 ? 0 : 1));
 }
 
-scalar fci::combine(const vector<scalar>& ins, const vector<scalar>& vals,  const combiner_func_t &combiner_func) {
+scalar fci::combine(const vector<scalar>& ins, const vector<scalar>& vals,  const fci_combiner_func_t &combiner_func) {
     scalar out = 0;
     assert(ins.size() == vals.size());
     // create choquet packages

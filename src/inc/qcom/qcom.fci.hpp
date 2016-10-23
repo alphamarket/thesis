@@ -5,34 +5,53 @@
 #include "fci.hpp"
 #include "rl/qlearning.hpp"
 
-template<typename _out>
-vector<vector<_out>> normalize_2d(const vector<vector<block>>& v){
-    size_t sum = 0;
-    vector<vector<_out>> out;
-    foreach_elem(k, v) foreach_elem(e, k) sum += e.value();
-    for(size_t i = 0; i < v.size(); i++) {
-        out.push_back(vector<scalar>());
-        for(size_t j = 0; j < v[i].size(); j++) {
-            out.back().push_back(floor(v[i][j].value()) / sum);
+vector<scalar> operator-(const vector<scalar>& s, const long& d) {
+    vector<scalar> out = s;
+    for(size_t j = 0; j < s.size(); j++) out[j] -= d;
+    return out;
+}
+vector<scalar> operator-(const long& d, const vector<scalar>& s) {
+    vector<scalar> out = s;
+    for(size_t j = 0; j < s.size(); j++) out[j] = d - out[j];
+    return out;
+}
+
+vector<scalar> operator/(const vector<scalar>& s, const long& d) {
+    vector<scalar> out = s;
+    for(size_t j = 0; j < s.size(); j++) out[j] /= d;
+    return out;
+}
+
+refmat_t operator/(const refmat_t& r, const long& d) {
+    refmat_t out = r;
+    for(size_t i = 0; i < r.size(); i++) out[i] = out[i] / d;
+    return out;
+}
+refmat_t operator+(const refmat_t& r, const refmat_t& s) {
+    refmat_t out = r;
+    for(size_t i = 0; i < r.size(); i++) {
+        for(size_t j = 0; j < r[i].size(); j++) {
+            out[i][j] += s[i][j];
         }
     }
     return out;
 }
 
 template<typename _out>
-vector<vector<vector<_out>>> normalize_3d(const vector<vector<vector<block>>>& l){
+vector<vector<_out>> normalize_2d(const vector<vector<scalar>>& v){
+    size_t sum = 0;
+    foreach_elem(k, v) sum = accumulate(k.begin(), k.end(), 0.0);
+    vector<vector<_out>> out = v / sum;
+    return out;
+}
+
+template<typename _out>
+vector<vector<vector<_out>>> normalize_3d(const vector<vector<vector<scalar>>>& l){
     size_t sum = 0;
     vector<vector<vector<_out>>> out;
-    foreach_elem(v, l) foreach_elem(k, v) foreach_elem(e, k) sum += e.value();
-    for(size_t k = 0; k < l.size(); k++) {
-        out.push_back(vector<vector<scalar>>());
-        for(size_t i = 0; i < l[k].size(); i++) {
-            out.back().push_back(vector<scalar>());
-            for(size_t j = 0; j < l[k][i].size(); j++) {
-                out[k][i].push_back(floor(l[k][i][j].value()) / sum);
-            }
-        }
-    }
+    foreach_elem(v, l) foreach_elem(k, v) sum = accumulate(k.begin(), k.end(), 0.0);
+    for(size_t k = 0; k < l.size(); k++)
+    { out.push_back(l[k] / sum); }
     return out;
 }
 template<typename T>
@@ -85,9 +104,9 @@ qtable_t merge(const vector<qtable_t>& qtables, const vector<vector<vector<scala
                         ref_x = x / _ref_size,
                         ref_y = y / _ref_size;
                     vector<scalar> qvl = qtables[x][y][k];
-                    vector<scalar> ref = evals[ref_x][ref_y];
+                    vector<scalar> ref = (1 - evals[ref_x][ref_y] / accumulate(evals[ref_x][ref_y].begin(),  evals[ref_x][ref_y].end(), 0.0));
                     assert(qvl.size() == ref.size());
-                    out[x][y][k] = fci::combine(qvl, ref, fci::combiner_k_mean);
+                    out[x][y][k] = fci::combine(qvl, ref, ::CONF_FCI_COMBINER);
                 }
             }
         }
@@ -131,7 +150,9 @@ qtable_t fci_execute(const QCom* const qcom) {
     vector<vector<vector<scalar>>> norms;
     foreach_elem(e, qcom->results) {
         qtables.push_back(e._qtable);
-        //norms.push_back(normalize_2d<scalar>(e._refmat));
+        refmat_t avg = e._refmat.front() / scalar(e._refmat.size());
+        for(size_t k = 1; k < e._refmat.size(); k++) avg = avg + (e._refmat[k] / scalar(e._refmat.size()));
+        norms.push_back(avg);
     }
     return merge(trans_4d(qtables), trans_3d(norms), qcom->ref_size);
 }

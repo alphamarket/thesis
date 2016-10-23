@@ -6,7 +6,7 @@
 
 typedef uint action;
 typedef vector<vector<action>> policy_t;
-typedef vector<vector<vector<scalar>>> refmat_t;
+typedef vector<vector<scalar>> refmat_t;
 typedef vector<vector<vector<scalar>>> qtable_t;
 
 struct QLearningResult;
@@ -18,7 +18,7 @@ struct QLearningResult {
     size_t _iteration_max;
     qtable_t _qtable;
     policy_t _policy;
-    refmat_t _refmat;
+    vector<refmat_t> _refmat;
 
     QLearningResult() { }
 
@@ -28,7 +28,7 @@ struct QLearningResult {
         size_t _iteration_max,
         qtable_t _qTable,
         policy_t _policy,
-        refmat_t _refmat) {
+        vector<refmat_t> _refmat) {
         this->_hops = _hops;
         this->_opts = _opts;
         this->_iteration_max = _iteration_max;
@@ -40,7 +40,7 @@ struct QLearningResult {
 
 struct QLearningOptions {
     scalar
-        alpha,
+        beta,
         gamma;
 };
 

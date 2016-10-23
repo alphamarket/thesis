@@ -50,6 +50,13 @@ int main(int argc, char** argv) {
     ::CONF_RATE_GREEDY_EXPLORE = opt["greedy_explore_rate"].as<scalar>();
     ::CONF_AGENT_LEARNING_CYCLES = opt["agents_learning_cycle"].as<size_t>();
 
+    unordered_map<string, fci_combiner_func_t> combiner = {
+        {"max", fci::combiner_max},
+        {"mean", fci::combiner_mean},
+        {"k_mean", fci::combiner_k_mean}
+    };
+    if(!combiner.count(opt["fci_combine_method"].as<string>())) throw runtime_error("The `"+opt["fci_combine_method"].as<string>()+"` does not exist!");
+    ::CONF_FCI_COMBINER = combiner[opt["fci_combine_method"].as<string>()];
 
     bool exiting = false;
     vector<future<void>> thread_pool;
@@ -63,14 +70,14 @@ int main(int argc, char** argv) {
                 // define the goals positions and theirs rewards(since they can be variable!)
                 {
                     {{1, 5}, +10},
-//                    {{3, 5}, +10},
-//                    {{5, 1}, +10}
+                    {{3, 5}, +10},
+                    {{5, 1}, +10}
                 },
                 // define the walls positions
                 {
-//                    {1, 0}, {1, 1}, {1, 2},
-//                    {2, 4}, {2, 5},
-//                    {4, 2}, {4, 3}, {4, 4}
+                    {1, 0}, {1, 1}, {1, 2},
+                    {2, 4}, {2, 5},
+                    {4, 2}, {4, 3}, {4, 4}
                 });
 
     cerr << "The world:" << endl;
@@ -85,14 +92,15 @@ int main(int argc, char** argv) {
         fprintf(stderr, "\r%.1f%% of all iterations done!", 100 * (1 - scalar(::CONF_ITERATIONS + 1) / MAX_ITERATION));
 
         vector<scalar> avg_moves;
+        vector<qtable_t> qtables;
         vector<QLearningResult> results;
         vector<maze::refmat_t> _recall_refmat;
         vector<action> action_list = {maze::NONE, maze::TOP, maze::RIGHT, maze::DOWN, maze::LEFT};
-        qtable_t qtable = Maze_QLearning::init_Qtable(m.width, m.height, action_list);
 
-        m.new_refmat();
-        foreach_agent(_) _recall_refmat.push_back(m.refmat().back());
-        m.refmat().pop_back();
+        foreach_agent(_) {
+            qtables.push_back(Maze_QLearning::init_Qtable(m.width, m.height, action_list));
+            _recall_refmat.push_back(m.clone().new_refmat().refmat().back());
+        }
 
         foreach_trial(_try) {
             // the result container
@@ -104,7 +112,7 @@ int main(int argc, char** argv) {
                                execute_agent,
                                m,
                                action_list,
-                               qtable,
+                               qtables[gid],
                                action_picker,
                                Q_updator,
                                ::CONF_AGENT_LEARNING_CYCLES,
@@ -122,15 +130,15 @@ int main(int argc, char** argv) {
             // if using single agent
             if(::CONF_MULTI_AGENT_COUNT == 1) {
                 // don't combine for single agent
-                qtable = results.back()._qtable;
-                print_refmat(results.back()._refmat);
+                qtables.back() = results.back()._qtable;
             }
-            else
+            else {
                 // combine the intel
-                qtable = QCom(results, m.ref_size).combine();
+                auto qtable = QCom(results, m.ref_size).combine();
+                foreach_elem(&e, qtables) e = qtable;
+            }
         }
-        fprintf(stderr, "\r100.0%% of all iterations done!");
-        continue;
+
         for(size_t i = 0; i < avg_moves.size(); i++)
             cout << accumulate(avg_moves.begin(), avg_moves.begin() + i + 1, 0.0) / (i + 1) << " ";
         cout <<endl;
@@ -143,6 +151,7 @@ int main(int argc, char** argv) {
             print_policy(m, results[gid]._policy);
         }
     }
+    fprintf(stderr, "\r100.0%% of all iterations done!\n");
 
     exiting = true;
     while(thread_pool.size()) {

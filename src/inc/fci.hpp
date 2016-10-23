@@ -6,9 +6,7 @@
 
 class fci {
 public:
-    struct choquet_package;
-    typedef vector<choquet_package> packages_t;
-    typedef function<scalar(const packages_t&, const size_t&)> combiner_func_t;
+    typedef vector<fci_choquet_package> packages_t;
 
 protected:
     /**
@@ -18,7 +16,7 @@ protected:
      * @param i The i'th iteration of combination
      * @return The combined value fo i'th iteration
      */
-    static scalar master_combiner(const packages_t& packages, const combiner_func_t& slave_combiner, const size_t& i);
+    static scalar master_combiner(const packages_t& packages, const fci_combiner_func_t& slave_combiner, const size_t& i);
     /**
      * @brief fci::range_string Returns string of sorted indices for choquet operations
      * @param packages The choquet packages vector
@@ -68,7 +66,7 @@ public:
      * @param combiner_func The combiner function
      * @return The combined value
      */
-    static scalar combine(const vector<scalar>& ins, const vector<scalar>& vals,  const combiner_func_t& combiner_func);
+    static scalar combine(const vector<scalar>& ins, const vector<scalar>& vals,  const fci_combiner_func_t& combiner_func);
     /**
      * @brief combine Combines the input with the values
      * @param ins The inputs

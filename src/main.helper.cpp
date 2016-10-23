@@ -152,7 +152,7 @@ vector<scalar> get_avg_hop_clustered(const vector<QLearningResult> &results) {
 }
 
 scalar Q_updator(const QLearningOptions& opt, const scalar& qsa, const scalar& qsa_prim, const scalar& reward, const size_t&)
-{ return (1 - opt.alpha) * qsa + opt.alpha * (reward + opt.gamma * qsa_prim); }
+{ return (1 - opt.beta) * qsa + opt.beta * (reward + opt.gamma * qsa_prim); }
 
 po::variables_map process_args(int argc, char** argv) {
     po::options_description desc("Allowed options");
@@ -171,7 +171,7 @@ po::variables_map process_args(int argc, char** argv) {
     };
     auto fci_checker = [](char const * const opt_name) {
         return [opt_name](const string& v) {
-            unordered_map<string, void*> mp = {{"combiner_k_mean", nullptr}, {"combiner_mean", nullptr}, {"combiner_max", nullptr}};
+            unordered_map<string, void*> mp = {{"k_mean", nullptr}, {"mean", nullptr}, {"max", nullptr}};
             if(!mp.count(boost::to_lower_copy(v)))
                 throw po::validation_error(po::validation_error::invalid_option_value, opt_name, v);
         };
