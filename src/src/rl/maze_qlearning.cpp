@@ -36,6 +36,8 @@ QLearningResult Maze_QLearning::execute(
         // init callback at each iteration for any pre-processing phase
         // such as relocating the agent or apply changes in environment
         opts.push_back(iteration_init_callback(*this->_m, iteration));
+        // store the previous position
+        auto prev_state = m.agent_location();
         // while not reached to final state (the termination condition)
         while(this->_m->agent_block().type() != block::GOAL) {
             // pick an action
@@ -63,7 +65,14 @@ QLearningResult Maze_QLearning::execute(
                         hops.back());
             // apply the actual transition
             this->_m->agent_location(sprim);
+			// dispatch the shock matrix
+            this->sep_dispatch_shock(prev_state, a, m.agent_location());
+			// flag for SEP that we have visited the state
+            this->sep_visit_path(prev_state, a, m.agent_location());
+			// update the previous state            
+			prev_state = sprim;
         }
+        // here we need to update the SEP matrix
     }
     // fail-check
     assert(hops.size() == iteration_max);

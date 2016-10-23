@@ -4,10 +4,11 @@
 #include <functional>
 
 #include "stdafx.hpp"
+#include "sep.hpp"
 #include "qlearning.hpp"
 #include "worlds/maze.hpp"
 
-class Maze_QLearning
+class Maze_QLearning : SEP
 {
 public:
     /**
@@ -40,6 +41,7 @@ public:
     typedef function<QLearningOptions(maze &, size_t)> iteration_init_func_t;
 protected:
     qtable_t _Q;
+    qtable_t _sep;
     maze* const _m;
     vector<action> _actions_list;
 public:

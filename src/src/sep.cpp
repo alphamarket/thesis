@@ -18,9 +18,7 @@ void SEP::sep_reset(const vector<size_t>& sizes, const vector<state_t>& goals) {
         for(size_t j = 0; j < sizes[1]; j++) {
             this->_shock[i].push_back(vector<size_t>());
             this->_sep_sheet[i].push_back({0, 0, 0, numeric_limits<size_t>::infinity()});
-            for(size_t k = 0; k < sizes[2]; k++) {
-                this->_shock[i][j].push_back(0);
-            }
+            for(size_t k = 0; k < sizes[2]; k++) this->_shock[i][j].push_back(0);
         }
     }
     foreach_elem(g, goals) {
@@ -29,7 +27,6 @@ void SEP::sep_reset(const vector<size_t>& sizes, const vector<state_t>& goals) {
         }
     }
 }
-
 
 void SEP::sep_dispatch_shock(const state_t& prev_state, const size_t& prev_action, const state_t& curr_state) {
     assert(curr_state.size() == prev_state.size() && prev_state.size() == 2);
@@ -41,7 +38,6 @@ void SEP::sep_dispatch_shock(const state_t& prev_state, const size_t& prev_actio
 void SEP::sep_visit_path(const state_t& prev_state, const size_t& prev_action, const state_t& curr_state) {
     this->_sep_sheet[prev_state[0]][prev_state[1]] = { curr_state[0], curr_state[1], prev_action, ++this->_steps };
 }
-
 
 vector<SEP::sep_detail> SEP::get_sep() const {
     vector<sep_detail> out;
