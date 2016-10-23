@@ -66,6 +66,7 @@ po::variables_map process_args(int argc, char** argv) {
     if (vm.count("help")) { cout << desc << endl; exit(EXIT_SUCCESS); }
     if (vm.count("display_defaults")) {
         foreach_elem(e, vm) {
+            if(e.first == "display_defaults") continue;
             auto& v = e.second.value();
             cout << "[" << e.first.c_str() << "] = ";
             if(auto vv = boost::any_cast<string>(&v))
@@ -124,22 +125,6 @@ int main(int argc, char** argv) {
                     {2, 4}, {2, 5},
                     {4, 2}, {4, 3}, {4, 4}
                 });
-//    vector<vector<scalar>> grades = {
-//        {18, 16, 10},
-//        {10, 12, 18},
-//        {14, 15, 15}
-//    };
-//    unordered_map<string, scalar> k = {
-//        {"1", .45},{"2", .45},{"3",.3},
-//        {"1,3", .9},{"2,3", .9},{"1,2",.5}
-//    };
-//    vector<scalar> kk = {.45, .45, .3};
-//    size_t i = 0;
-//    foreach_elem(g, grades) {
-//        cout << "Student#" << i << " = " << fci::combine(g, kk, fci::combiner_k_mean) << endl;
-//    }
-
-//    exit(0);
 
     future<QLearningResult>* threads = new future<QLearningResult>[::CONF_MULTI_AGENT_COUNT];
 

@@ -76,6 +76,10 @@ public:
      * @return The combined value
      */
     static scalar combine(const vector<scalar>& ins, unordered_map<string, scalar> vals);
+    /**
+     * @brief test performce some tests to validate the FCI implemenetations
+     */
+    static void test();
 };
 
 #endif // FCI_HPP

@@ -110,3 +110,20 @@ scalar fci::combine(const vector<scalar>& ins, unordered_map<string,scalar> vals
     }
     return out;
 }
+
+void fci::test() {
+    vector<vector<scalar>> grades = {
+        {18, 16, 10},
+        {10, 12, 18},
+        {14, 15, 15}
+    };
+    vector<scalar> kk = {.45, .45, .3};
+    unordered_map<string, scalar> k = {
+        {"1", kk[0]},{"2", kk[1]},{"3", kk[2]},
+        {"1,3", .9},{"2,3", .9},{"1,2",.5}
+    };
+    size_t i = 0;
+    foreach_elem(g, grades) {
+        cout << "Student#" << i << " = " << fci::combine(g, kk, fci::combiner_k_mean) << endl;
+    }
+}
