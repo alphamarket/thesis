@@ -65,41 +65,41 @@ int main(int argc, char** argv) {
 
     maze m = create_maze(
                 // the size of maze
-                {3, 4},
+                {6, 6},
                 // the reference size
-                0,
+                3,
                 // define the goals positions and theirs rewards(since they can be variable!)
                 {
                     {{0, 3}, +10},
-//                    {{3, 5}, +10},
-//                    {{5, 1}, +10}
+                    {{3, 5}, +10},
+                    {{5, 1}, +10}
                 },
                 // define the walls positions
                 {
                     {1, 0}, {1, 1}, {1, 3},
-//                    {2, 4}, {2, 5},
-//                    {4, 2}, {4, 3}, {4, 4}
+                    {2, 4}, {2, 5},
+                    {4, 2}, {4, 3}, {4, 4}
                 });
     vector<action> action_list = {maze::NONE, maze::UP, maze::RIGHT, maze::DOWN, maze::LEFT};
 
     cerr << "The world:" << endl;
-
-    SEP ssep({m.width, m.height, action_list.size() - 1}, {{0, 3}});
-    m.agent_location({0, 0});
     cerr << m << endl;
-    auto prev_state = m.agent_location();
-    vector<action> actions = {maze::RIGHT, maze::RIGHT, maze::DOWN, maze::DOWN, maze::UP, maze::UP, maze::LEFT, maze::RIGHT, maze::RIGHT};
-    for (size_t loc = 0; loc < actions.size(); loc++){
-        m.agent_location(action_handler(m, m.agent_location(), actions[loc]));
-        ssep.sep_dispatch_shock(prev_state, actions[loc], m.agent_location());
-        ssep.sep_visit_path(prev_state, actions[loc], m.agent_location());
-        prev_state = m.agent_location();
-        cout << m << endl;
-    }
 
-    ssep.get_sep();
+//    SEP ssep({m.width, m.height, action_list.size() - 1}, {{0, 3}});
+//    m.agent_location({0, 0});
+//    auto prev_state = m.agent_location();
+//    vector<action> actions = {maze::RIGHT, maze::RIGHT, maze::DOWN, maze::DOWN, maze::UP, maze::UP, maze::LEFT, maze::RIGHT, maze::RIGHT};
+//    for (size_t loc = 0; loc < actions.size(); loc++){
+//        m.agent_location(action_handler(m, m.agent_location(), actions[loc]));
+//        ssep.sep_dispatch_shock(prev_state, actions[loc], m.agent_location());
+//        ssep.sep_visit_path(prev_state, actions[loc], m.agent_location());
+//        prev_state = m.agent_location();
+//        cout << m << endl;
+//    }
 
-    exit(0);
+//    ssep.get_sep();
+
+//    exit(0);
 
     future<QLearningResult>* threads = new future<QLearningResult>[::CONF_MULTI_AGENT_COUNT];
 

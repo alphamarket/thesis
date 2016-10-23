@@ -9,6 +9,7 @@ class SEP
     typedef vector<size_t> state_t;
 
     size_t _steps;
+    vector<size_t> _sizes;
     vector<vector<vector<size_t>>> _shock;
     vector<vector<array<size_t, 4>>> _sep_sheet;
 public:
@@ -19,11 +20,11 @@ public:
     };
 
 public:
-    SEP(const vector<size_t>& sizes, const vector<state_t> &goals);
+    SEP(const vector<size_t>& sizes);
     vector<sep_detail> get_sep() const;
-    void sep_reset(const vector<size_t>& sizes, const vector<state_t>& goals);
+    void sep_reset();
     void sep_visit_path(const state_t& prev_state, const size_t& prev_action, const state_t& curr_state);
-    void sep_dispatch_shock(const state_t& prev_state, const size_t& prev_action, const state_t& curr_state);
+    void sep_dispatch_shock(const state_t& prev_state, const size_t& prev_action, const state_t& curr_state, const bool& current_is_goal = false);
 };
 
 #endif // SEP_H
