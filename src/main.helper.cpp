@@ -171,7 +171,14 @@ po::variables_map process_args(int argc, char** argv) {
     };
     auto fci_checker = [](char const * const opt_name) {
         return [opt_name](const string& v) {
-            unordered_map<string, void*> mp = {{"k_mean", nullptr}, {"mean", nullptr}, {"max", nullptr}};
+            unordered_map<string, void*> mp = {{"k-mean", nullptr}, {"mean", nullptr}, {"max", nullptr}};
+            if(!mp.count(boost::to_lower_copy(v)))
+                throw po::validation_error(po::validation_error::invalid_option_value, opt_name, v);
+        };
+    };
+    auto method_checker = [](char const * const opt_name) {
+        return [opt_name](const string& v) {
+            unordered_map<string, void*> mp = {{"fci", nullptr}, {"sep", nullptr}};
             if(!mp.count(boost::to_lower_copy(v)))
                 throw po::validation_error(po::validation_error::invalid_option_value, opt_name, v);
         };
@@ -181,15 +188,16 @@ po::variables_map process_args(int argc, char** argv) {
             ("agents", po::value<size_t>()->default_value(1), "The number of agents to run.")
             ("iters", po::value<size_t>()->default_value(20), "The iterations that the program should run itself.")
             ("trials", po::value<size_t>()->default_value(200), "The agents' trials at each program iteration.")
-            ("action_picker,a", po::value<string>()->default_value("boltzmann")->notifier(action_checker("action_picker")), "The action picker method, could be [greedy, boltzmann].")
+            ("action-picker,a", po::value<string>()->default_value("boltzmann")->notifier(action_checker("action_picker")), "The action picker method, could be [greedy, boltzmann].")
             ("beta,b", po::value<scalar>()->default_value(.01, ".01")->notifier(prob_checker("beta")), "The learning rate(beta) rate, should be in range of [0,1].")
             ("gamma,g", po::value<scalar>()->default_value(.9, ".90")->notifier(prob_checker("gamma")), "The discount rate(gamma) rate, should be in range of [0,1].")
             ("tau,t", po::value<scalar>()->default_value(.4, ".40"), "The temperature rate(gamma) value.")
-            ("greedy_explore_rate,g", po::value<scalar>()->default_value(.2, ".20")->notifier(prob_checker("ger")), "The greedy action picker exploration rate, should be in range of [0,1].")
-            ("fci_combine_method,f", po::value<string>()->default_value("k_mean")->notifier(fci_checker("fci_combine_method")), "The FCI combinator method, could be [combiner_k_mean, combiner_mean, combiner_max].")
-            ("agents_learning_cycle, c", po::value<size_t>()->default_value(5), "The number of agents learning cycle.")
-            ("display_defaults", "Displays the default values for inputs.")
-            ("test_sep", "Prints the test SEP implementation.")
+            ("greedy-explore-rate,g", po::value<scalar>()->default_value(.2, ".20")->notifier(prob_checker("ger")), "The greedy action picker exploration rate, should be in range of [0,1].")
+            ("fci-combine-method,f", po::value<string>()->default_value("k-mean")->notifier(fci_checker("fci-combine-method")), "The FCI combinator method, could be [k-mean, mean, max].")
+            ("agents-learning-cycle, c", po::value<size_t>()->default_value(5), "The number of agents learning cycle.")
+            ("display-defaults", "Displays the default values for inputs.")
+            ("test-sep", "Prints the test SEP implementation.")
+            ("method", po::value<string>()->default_value("fci")->notifier(method_checker("method")), "The combiner method, could be [fci, sep].")
         ;
     po::variables_map vm;
     try {
@@ -201,9 +209,9 @@ po::variables_map process_args(int argc, char** argv) {
       exit(EXIT_FAILURE);
     }
     if (vm.count("help")) { cout << desc << endl; exit(EXIT_SUCCESS); }
-    if (vm.count("display_defaults")) {
+    if (vm.count("display-defaults")) {
         foreach_elem(e, vm) {
-            if(e.first == "display_defaults") continue;
+            if(e.first == "display-defaults") continue;
             auto& v = e.second.value();
             cout << "[" << e.first.c_str() << "] = ";
             if(auto vv = boost::any_cast<string>(&v))
@@ -247,13 +255,13 @@ void test_sep() {
     vector<action> actions = {maze::RIGHT, maze::RIGHT, maze::DOWN, maze::DOWN, maze::UP, maze::UP, maze::LEFT, maze::RIGHT, maze::RIGHT};
     for (size_t loc = 0; loc < actions.size(); loc++){
         m.agent_location(action_handler(m, m.agent_location(), actions[loc]));
-        ssep.sep_dispatch_shock(prev_state, actions[loc], m.agent_location());
+        ssep.sep_update_shock(prev_state, actions[loc], m.agent_location());
         ssep.sep_visit_path(prev_state, actions[loc], m.agent_location());
         prev_state = m.agent_location();
         cout << m << endl;
     }
-
-    auto sep = ssep.get_sep();
+    ssep.sep_update_sep();
+    auto sep = ssep.sep_get_sep();
     vector<pair<array<size_t, 2>, pair<action, size_t>>> checkpoints = {
         {{0,0}, {maze::RIGHT, 3}}, {{0, 1}, {maze::RIGHT, 2}}, {{0, 2}, {maze::RIGHT, 1}}, {{1, 2}, {maze::UP, 2}}, {{2, 2}, {maze::UP, 3}}
     };

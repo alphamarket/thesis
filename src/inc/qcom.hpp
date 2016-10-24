@@ -14,7 +14,7 @@ public:
     QCom(const vector<QLearningResult>& results, const size_t& ref_size)
         : ref_size(ref_size), results(results)
     { }
-    qtable_t combine() const;
+    qtable_t combine(const string& method = "fci") const;
 };
 
 #endif // QCOM_H

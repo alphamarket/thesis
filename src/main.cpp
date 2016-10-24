@@ -23,24 +23,24 @@ int main(int argc, char** argv) {
     ::CONF_RATE_GAMMA = opt["gamma"].as<scalar>();
     ::CONF_TRIAL_MAX = opt["trials"].as<size_t>();
     ::CONF_MULTI_AGENT_COUNT = opt["agents"].as<size_t>();
-    ::CONF_RATE_GREEDY_EXPLORE = opt["greedy_explore_rate"].as<scalar>();
-    ::CONF_AGENT_LEARNING_CYCLES = opt["agents_learning_cycle"].as<size_t>();
+    ::CONF_RATE_GREEDY_EXPLORE = opt["greedy-explore-rate"].as<scalar>();
+    ::CONF_AGENT_LEARNING_CYCLES = opt["agents-learning-cycle"].as<size_t>();
     // init fci combiner function
     unordered_map<string, fci_combiner_func_t> combiner = {
         {"max", fci::combiner_max},
         {"mean", fci::combiner_mean},
-        {"k_mean", fci::combiner_k_mean}
+        {"k-mean", fci::combiner_k_mean}
     };
-    ::CONF_FCI_COMBINER = combiner[boost::to_lower_copy(opt["fci_combine_method"].as<string>())];
+    ::CONF_FCI_COMBINER = combiner[boost::to_lower_copy(opt["fci-combine-method"].as<string>())];
     // init action selector function
     unordered_map<string, Maze_QLearning::action_func_t> action_pickers = {
         {"boltzmann", boltzmann_action_picker},
         {"greedy", greedy_action_picker}
     };
-    auto action_picker = action_pickers[boost::to_lower_copy(opt["action_picker"].as<string>())];
+    auto action_picker = action_pickers[boost::to_lower_copy(opt["action-picker"].as<string>())];
 
 	// if calling for SEP test? 
-    if(opt.count("test_sep")) { test_sep(); exit(0); }
+    if(opt.count("test-sep")) { test_sep(); exit(0); }
 
     // exiting flag
     bool exiting = false;
@@ -67,7 +67,7 @@ int main(int argc, char** argv) {
                     {4, 2}, {4, 3}, {4, 4}
                 });
     // define the action lists
-    vector<action> action_list = {maze::NONE, maze::UP, maze::RIGHT, maze::DOWN, maze::LEFT};
+    vector<action> action_list = {maze::UP, maze::RIGHT, maze::DOWN, maze::LEFT};
 
     cerr << "The world:" << endl;
     cerr << m << endl;
@@ -122,7 +122,7 @@ int main(int argc, char** argv) {
             }
             else {
                 // combine the intel
-                auto qtable = QCom(results, m.ref_size).combine();
+                auto qtable = QCom(results, m.ref_size).combine(boost::to_lower_copy(opt["method"].as<string>()));
                 foreach_elem(&e, qtables) e = qtable;
             }
         }

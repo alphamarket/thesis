@@ -2,6 +2,7 @@
 #define QLEARNING_HPP
 
 #include "stdafx.hpp"
+#include "inc/sep.hpp"
 #include "inc/worlds/maze.hpp"
 
 typedef uint action;
@@ -19,6 +20,8 @@ struct QLearningResult {
     qtable_t _qtable;
     policy_t _policy;
     vector<refmat_t> _refmat;
+    SEP::sepmat_t _sepmat;
+    SEP::shockmat_t _shockmat;
 
     QLearningResult() { }
 
@@ -28,13 +31,17 @@ struct QLearningResult {
         size_t _iteration_max,
         qtable_t _qTable,
         policy_t _policy,
-        vector<refmat_t> _refmat) {
+        vector<refmat_t> _refmat,
+        SEP::sepmat_t _sepmat,
+        SEP::shockmat_t _shockmat) {
         this->_hops = _hops;
         this->_opts = _opts;
         this->_iteration_max = _iteration_max;
         this->_qtable = _qTable;
         this->_policy = _policy;
         this->_refmat = _refmat;
+        this->_sepmat = _sepmat;
+        this->_shockmat = _shockmat;
     }
 };
 

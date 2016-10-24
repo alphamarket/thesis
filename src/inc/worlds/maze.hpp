@@ -41,7 +41,7 @@ public:
          * @brief ref_size The reference size
          */
         ref_size;
-    enum actions { NONE = 0, UP, RIGHT, DOWN, LEFT };
+    enum actions { UP = 0, RIGHT, DOWN, LEFT, NONE };
 public:
     /**
      * @brief maze The ctor
@@ -116,7 +116,7 @@ public:
      * @param a The action
      * @return The strifigy action
      */
-    inline string action_tostring(actions a) const { string s[] = { "NONE", "UP", "RIGHT", "DOWN", "LEFT" }; return s[int(a)]; }
+    inline string action_tostring(actions a) const { string s[] = { "UP", "RIGHT", "DOWN", "LEFT", "NONE" }; return s[int(a)]; }
     /**
      * @brief agent_location Sets the agent's state in the world
      * @param s The desired state

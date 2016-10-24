@@ -66,18 +66,18 @@ QLearningResult Maze_QLearning::execute(
             // apply the actual transition
             this->_m->agent_location(sprim);
 			// dispatch the shock matrix
-            this->sep_dispatch_shock(prev_state, a, sprim, this->_m->agent_block().type() == this->_m->agent_block().GOAL);
+            this->sep_update_shock(prev_state, a, sprim, this->_m->agent_block().type() == this->_m->agent_block().GOAL);
 			// flag for SEP that we have visited the state
-            this->sep_visit_path(prev_state, a, this->_m->agent_location());
+            this->sep_visit_path(prev_state, a, sprim);
 			// update the previous state            
 			prev_state = sprim;
         }
         // here we need to update the SEP matrix
-        this->get_sep();
+        this->sep_update_sep();
     }
     // fail-check
     assert(hops.size() == iteration_max);
-    return { hops, opts, iteration_max, this->_Q, this->get_policy(), this->_m->refmat() };
+    return { hops, opts, iteration_max, this->_Q, this->get_policy(), this->_m->refmat(), this->sep_get_sep(), this->sep_get_shock() };
 }
 
 policy_t Maze_QLearning::get_policy() const {
