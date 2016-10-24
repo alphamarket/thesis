@@ -72,7 +72,7 @@ public:
      * @param m The maze to get moved from
      */
     maze(maze&& m)
-        :  _matrix(move(m._matrix)), _refmat(move(m._refmat)), _pos_agent(move(m._pos_agent)), width(move(m.width)), height(move(m.height)), ref_size(move(m.ref_size))
+        : _matrix(move(m._matrix)), _refmat(move(m._refmat)), _pos_agent(move(m._pos_agent)), width(move(m.width)), height(move(m.height)), ref_size(move(m.ref_size))
     { }
     /**
      * @brief ~maze The dtor

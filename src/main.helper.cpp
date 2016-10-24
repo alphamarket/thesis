@@ -253,8 +253,17 @@ void test_sep() {
         cout << m << endl;
     }
 
-    foreach_elem(r, ssep.get_sep())
-        cerr << "State: [" << r._state[0] << ", " << r._state[1] << "] Action: " << r._action << " Length: " << r._length << endl;
+    auto sep = ssep.get_sep();
+    vector<pair<array<size_t, 2>, pair<action, size_t>>> checkpoints = {
+        {{0,0}, {maze::RIGHT, 3}}, {{0, 1}, {maze::RIGHT, 2}}, {{0, 2}, {maze::RIGHT, 1}}, {{1, 2}, {maze::UP, 2}}, {{2, 2}, {maze::UP, 3}}
+    };
+    foreach_elem(c, checkpoints) {
+        fprintf(stderr, "[%zu,%zu]{%zu} ", c.first[0], c.first[1], size_t(c.second.first));
+        cerr << sep[c.first[0]][c.first[1]][c.second.first] << " ?= " << c.second.second;
+        assert(sep[c.first[0]][c.first[1]][c.second.first] == c.second.second);
+        cerr << " \033[32m[OK]\033[m" << endl;
+    }
+    cerr << endl << "\033[32m[ ALL OK! ]\033[m" << endl;
 }
 
 void print_refmat(const vector<vector<vector<scalar>>>& refmat) {

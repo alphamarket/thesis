@@ -73,6 +73,7 @@ QLearningResult Maze_QLearning::execute(
 			prev_state = sprim;
         }
         // here we need to update the SEP matrix
+        this->get_sep();
     }
     // fail-check
     assert(hops.size() == iteration_max);
