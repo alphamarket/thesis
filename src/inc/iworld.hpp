@@ -17,10 +17,10 @@ struct block {
 };
 
 template<size_t dim>
-class world
+class IWorld
 {
 protected:
-    typedef world<dim> base;
+    typedef IWorld<dim> base;
 
     state _state;
     const size_t _actions_no;
@@ -28,11 +28,11 @@ protected:
 
 public:
 
-    world(const array<size_t, dim>& size, const size_t& actions_no)
+    IWorld(const array<size_t, dim>& size, const size_t& actions_no)
         : _actions_no(actions_no), _size(size)
     { }
 
-    virtual ~world() { }
+    virtual ~IWorld() { }
 
     inline size_t action_no() const { return this->_actions_no; }
     inline array<size_t, dim> size() const { return this->_size; }

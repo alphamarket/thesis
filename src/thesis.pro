@@ -12,10 +12,10 @@ CONFIG += c++14
 HEADERS += inc/colormod.hpp inc/stdafx.hpp \
     inc/matrix.hpp \
     inc/agent.hpp \
-    inc/world.hpp \
     inc/qlearner.hpp \
     inc/state.hpp \
     inc/world.maze.hpp \
     inc/unit.tests.hpp \
-    inc/plugin.hpp
+    inc/iplugin.hpp \
+    inc/iworld.hpp
 SOURCES += main.cpp

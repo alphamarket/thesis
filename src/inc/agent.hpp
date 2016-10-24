@@ -1,10 +1,10 @@
 #ifndef AGENT_HPP
 #define AGENT_HPP
 
-#include "plugin.hpp"
+#include "iplugin.hpp"
 
 class agent {
-    friend class plugin;
+    friend class IPlugin;
 public:
     agent() { }
 };

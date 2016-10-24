@@ -1,9 +1,9 @@
 #ifndef WORLD_MAZE_HPP
 #define WORLD_MAZE_HPP
 
-#include "world.hpp"
+#include "iworld.hpp"
 
-class maze : public world<2>
+class maze : public IWorld<2>
 {
     const size_t ACTIONS_NO = 4;
 

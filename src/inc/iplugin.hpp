@@ -1,7 +1,7 @@
-#ifndef PLUGIN_HPP
-#define PLUGIN_HPP
+#ifndef IPLUGIN_HPP
+#define IPLUGIN_HPP
 
-class plugin
+class IPlugin
 {
 public:
     template<typename T>
@@ -20,4 +20,4 @@ public:
     void notify_deinit_event(T* const) = 0;
 };
 
-#endif // PLUGIN_HPP
+#endif // IPLUGIN_HPP
