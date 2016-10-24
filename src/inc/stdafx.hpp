@@ -60,8 +60,6 @@ typedef double scalar;
 #   endif
 #endif
 
-#include "config.hpp"
-
 #define foreach_elem(i, j)     for(auto i : j)
 #define foreach_trial(_try)    for(size_t _try = 0; _try < ::CONF_TRIAL_MAX; _try++)
 #define foreach_agent(tid)     for(size_t tid = 0; tid < ::CONF_MULTI_AGENT_COUNT; tid++)
