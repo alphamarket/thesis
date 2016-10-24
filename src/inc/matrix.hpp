@@ -6,24 +6,29 @@
 #include <algorithm>
 #include <type_traits>
 #include <boost/range.hpp>
+#include <initializer_list>
 #include <boost/multi_array.hpp>
 
 template<class T, size_t N>
 class matrix : public boost::multi_array<T, N> {
-    std::vector<size_t> _sizes;
+    std::array<size_t, N> _sizes;
 public:
     typedef boost::multi_array_types::index index_t;
     typedef boost::multi_array_types::index_range range_t;
     typedef boost::multi_array_types::size_type size_type_t;
 
 public:
-    matrix(const std::vector<size_t>& sizes)
+    matrix(const std::array<size_t, N>& sizes)
         : _sizes(sizes)
-    { assert(sizes.size() == N); this->resize(sizes); }
+    { this->resize(sizes); }
 
     template<typename S, typename = typename std::enable_if<std::is_convertible<S, T>::value>::type>
     inline matrix& operator=(const S& x)
     { std::for_each(this->data(), this->data() + this->num_elements(), [&x](auto& i) { i = x; }); return *this; }
+
+    template<typename S, typename = typename std::enable_if<std::is_convertible<S, T>::value>::type>
+    inline matrix& operator=(const std::initializer_list<S> x)
+    { size_t e = 0; std::all_of(x.begin(), x.end(), [&e, this](const auto& i) { if(e < this->num_elements()) { this->data()[e++] = i; return true; } return false; }); return *this; }
 
     template<typename S, typename = typename std::enable_if<std::is_convertible<S, T>::value>::type>
     inline matrix& operator+=(const S& x)
