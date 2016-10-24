@@ -64,10 +64,15 @@ void print_policy(const maze& m, const vector<vector<action>>& policy);
  * @param action_list The actions list
  * @param qtable The pre-inited Q-Table
  * @param iteration_max The iteration maximum
- * @param thread_id The agent's thread id
- * @return
+ * @param sep The SEP matrix
+ * @param shock The SHOCK matrix
+ * @return The execution result
  */
-QLearningResult execute_agent(maze m, const vector<action> &action_list, const qtable_t& qtable, Maze_QLearning::action_func_t action_picker, Maze_QLearning::qupdate_func_t Q_updator, size_t iteration_max, size_t thread_id);
+QLearningResult execute_agent(
+        Maze_QLearning mq,
+        Maze_QLearning::action_func_t action_picker,
+        Maze_QLearning::qupdate_func_t Q_updator,
+        size_t iteration_max);
 /**
  * @brief get_avg_hop_single Calculates the avg hop of EVERY hop for all agents
  * @param results The agent's qlearning results

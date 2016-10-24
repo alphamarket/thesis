@@ -92,7 +92,7 @@ public:
      * @brief operator = Initialize the current instance with SEP & SHOCK matrices
      * @param init_pair The init pairs of SEP & SHOCK matrices
      */
-    SEP& operator =(const pair<const sepmat_t&, const shockmat_t&>& init_pair);
+    SEP& operator =(const pair<sepmat_t, shockmat_t>& init_pair);
 };
 
 #endif // SEP_H

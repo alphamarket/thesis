@@ -8,7 +8,7 @@ SEP::SEP(const vector<size_t>& sizes)
     this->sep_reset();
 }
 
-SEP& SEP::operator =(const pair<const sepmat_t&, const shockmat_t&>& init_pair) {
+SEP& SEP::operator =(const pair<sepmat_t, shockmat_t>& init_pair) {
     assert(this->_sizes[0] == init_pair.first.size() && this->_sizes[0] == init_pair.second.size());
     for(size_t i = 0; i < this->_sizes[0]; i++) {
         assert(this->_sizes[1] == init_pair.first[i].size() && this->_sizes[1] == init_pair.second[i].size());

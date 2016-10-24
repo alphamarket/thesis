@@ -9,8 +9,12 @@ Maze_QLearning::Maze_QLearning(maze &m, const vector<action>& action_list)
 
 
 Maze_QLearning::Maze_QLearning(const qtable_t& q, maze& m, const vector<action>& action_list)
-    : SEP({m.width, m.height, action_list.size()}), _Q(q), _m(&m), _actions_list(action_list)
-{ }
+    : Maze_QLearning(m, action_list)
+{ this->_Q = q; }
+
+Maze_QLearning::Maze_QLearning(const qtable_t& q, maze& m, const vector<action>& action_list, const sepmat_t& sep, const shockmat_t& shock)
+    : Maze_QLearning(q, m, action_list)
+{ this->set_sep_shock(sep, shock); }
 
 Maze_QLearning::~Maze_QLearning()
 { }

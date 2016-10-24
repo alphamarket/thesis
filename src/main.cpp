@@ -80,6 +80,8 @@ int main(int argc, char** argv) {
 
         fprintf(stderr, "\r%.1f%% of all iterations done!", 100 * (1 - scalar(::CONF_ITERATIONS + 1) / MAX_ITERATION));
 
+        SEP::sepmat_t sep;
+        SEP::shockmat_t shock;
         vector<scalar> avg_moves;
         vector<qtable_t> qtables;
         vector<QLearningResult> results;
@@ -94,17 +96,16 @@ int main(int argc, char** argv) {
             // the result container
             results.clear();
             // make them learn
-            foreach_agent(gid)
+            foreach_agent(gid) {
+                auto mq = Maze_QLearning(qtables[gid], m, action_list);
                 threads[gid] =
                     std::async(std::launch::async,
                                execute_agent,
-                               m,
-                               action_list,
-                               qtables[gid],
+                               mq,
                                action_picker,
                                Q_updator,
-                               ::CONF_AGENT_LEARNING_CYCLES,
-                               size_t(gid));
+                               ::CONF_AGENT_LEARNING_CYCLES);
+            }
             // fetch the results
             foreach_agent(gid) {
                 results.push_back(threads[gid].get());

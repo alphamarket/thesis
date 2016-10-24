@@ -121,14 +121,10 @@ void print_policy(const maze& m, const vector<vector<action>>& policy) {
 }
 
 QLearningResult execute_agent(
-        maze m,
-        const vector<action>& action_list,
-        const qtable_t& qtable,
+        Maze_QLearning mq,
         Maze_QLearning::action_func_t action_picker,
         Maze_QLearning::qupdate_func_t greedy_qupdator,
-        size_t iteration_max,
-        size_t __unused thread_id) {
-    Maze_QLearning mq(qtable, m, action_list);
+        size_t iteration_max) {
     return mq.execute(action_picker, action_handler, greedy_qupdator, iteration_init_callback, iteration_max);
 }
 

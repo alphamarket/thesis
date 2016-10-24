@@ -41,12 +41,12 @@ public:
     typedef function<QLearningOptions(maze &, size_t)> iteration_init_func_t;
 protected:
     qtable_t _Q;
-    qtable_t _sep;
     maze* const _m;
     vector<action> _actions_list;
 public:
     Maze_QLearning(maze& m, const vector<action>& action_list);
     Maze_QLearning(const qtable_t& q, maze& m, const vector<action>& action_list);
+    Maze_QLearning(const qtable_t& q, maze& m, const vector<action>& action_list, const sepmat_t& sep, const shockmat_t& shock);
     ~Maze_QLearning();
 
     policy_t get_policy() const;
@@ -59,6 +59,9 @@ public:
     inline scalar Q(const maze::state& s, const uint& action) const { return this->_Q[s[0]][s[1]][action]; }
     inline qtable_t& QTable() { return this->_Q; }
     inline qtable_t QTable() const { return this->_Q; }
+    inline void set_sep_shock(const SEP::sepmat_t& sep, const SEP::shockmat_t& shock) {
+        SEP::operator =({sep, shock});
+    }
 
     static qtable_t init_Qtable(const size_t width, const size_t height, const vector<action>& action_list) {
         auto q = vector<vector<vector<scalar>>>();
