@@ -34,11 +34,12 @@ public:
 
     virtual ~world() { }
 
+    inline size_t action_no() const { return this->_actions_no; }
     inline array<size_t, dim> size() const { return this->_size; }
 
-    virtual state& get_current_state() { return this->_state; }
-    virtual state get_current_state() const { return this->_state; }
-    virtual void set_current_state(const state& s) { this->_state = s; }
+    inline virtual state& get_current_state() { return this->_state; }
+    inline virtual state get_current_state() const { return this->_state; }
+    inline virtual void set_current_state(const state& s) { this->_state = s; }
 
 public:
     virtual bool is_terminated() const = 0;
