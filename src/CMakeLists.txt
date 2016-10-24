@@ -16,7 +16,7 @@ list(REMOVE_DUPLICATES IINCLUDE_DIRS)
 
 include_directories(${IINCLUDE_DIRS} "." "/usr/include/eigen3")
 
-add_executable (thesis main.cpp main.helper.cpp ${ISOURCES})
+add_executable (thesis main.cpp ${ISOURCES})
 
 target_link_libraries (thesis pthread boost_program_options)
 

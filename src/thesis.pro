@@ -9,5 +9,6 @@ INCLUDEPATH += .
 CONFIG += c++14
 
 # Input
-HEADERS += inc/colormod.hpp inc/stdafx.hpp
+HEADERS += inc/colormod.hpp inc/stdafx.hpp \
+    inc/matrix.hpp
 SOURCES += main.cpp
