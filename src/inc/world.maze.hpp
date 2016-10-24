@@ -36,13 +36,13 @@ public:
             }
             return false;
         case RIGHT:
-            if(this->get_current_state().x() < this->size()[1] - 1) {
+            if(this->get_current_state().x() < this->size()[0] - 1) {
                 this->get_current_state().x()++;
                 return true;
             }
             return false;
         case DOWN:
-            if(this->get_current_state().y() < this->size()[0] - 1) {
+            if(this->get_current_state().y() < this->size()[1] - 1) {
                 this->get_current_state().y()++;
                 return true;
             }
@@ -62,7 +62,6 @@ public:
         foreach_elem(&psb, values)
             this->_maze[psb.first[0]][psb.first[1]] = psb.second;
     }
-
 };
 
 #endif // WORLD_MAZE_HPP
