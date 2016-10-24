@@ -12,12 +12,18 @@
 template<class T, size_t N>
 class matrix : public boost::multi_array<T, N> {
     std::array<size_t, N> _sizes;
+protected:
+    typedef matrix<T, N> base;
+
 public:
     typedef boost::multi_array_types::index index_t;
     typedef boost::multi_array_types::index_range range_t;
     typedef boost::multi_array_types::size_type size_type_t;
 
 public:
+    matrix()
+    { }
+
     matrix(const std::array<size_t, N>& sizes)
         : _sizes(sizes)
     { this->resize(sizes); }
@@ -109,8 +115,6 @@ public:
     inline matrix<double, N> normalize() const
     { return this->as<double>() / std::accumulate(this->begin(), this->end(), 0.0); }
 
-    inline range_t range(const index_t& i, const index_t& s) const { return range_t{i, s}; }
-
     template<typename S, typename = typename std::enable_if<std::is_convertible<T, S>::value>::type>
     inline matrix<S, N> as() const
     { size_t e = 0; matrix<S, N> out(this->_sizes); std::for_each(this->data(), this->data() + this->num_elements(), [&out, &e](const auto& i) { out.data()[e++] = static_cast<S>(i); }); return out; }
@@ -135,5 +139,6 @@ template<class T>
 using matrix4D_t = matrixND_t<T, 4>;
 
 using boost::indices;
+typedef boost::multi_array_types::index_range range;
 
 #endif // MATRIX_HPP
