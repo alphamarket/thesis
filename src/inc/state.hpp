@@ -5,6 +5,7 @@
 
 class state : public matrix1D_t<size_t>
 {
+    typedef matrix1D_t<size_t> base;
 public:
     state()
         : matrix1D_t<size_t>({2})

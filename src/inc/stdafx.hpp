@@ -66,4 +66,5 @@ typedef double scalar;
 
 #define error(s) throw runtime_error("[" + string(__PRETTY_FUNCTION__) + "] " + s)
 
+#include "state.hpp"
 #include "matrix.hpp"

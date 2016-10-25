@@ -12,8 +12,7 @@
 template<class T, size_t N>
 class matrix : public boost::multi_array<T, N> {
     std::array<size_t, N> _sizes;
-protected:
-    typedef matrix<T, N> base;
+    typedef boost::multi_array<T, N> base;
 
 public:
     typedef boost::multi_array_types::index index_t;
@@ -27,6 +26,9 @@ public:
     matrix(const std::array<size_t, N>& sizes)
         : _sizes(sizes)
     { this->resize(sizes); }
+
+    std::array<size_t, N> size() const
+    { return this->_sizes; }
 
     template<typename S, typename = typename std::enable_if<std::is_convertible<S, T>::value>::type>
     inline matrix& operator=(const S& x)
@@ -121,6 +123,12 @@ public:
 
     friend std::ostream& operator << (std::ostream& os, const matrix<T, N>& m)
     { std::for_each(m.data(), m.data() + m.num_elements(), [&os](const auto& i) { os << i << " "; }); return os; }
+
+    inline typename base::element& operator()(const std::array<size_t, N>& l)
+    { return base::operator ()(l); }
+
+    inline typename base::element operator()(const std::array<size_t, N>& l) const
+    { return base::operator ()(l); }
 };
 
 template<class T, size_t N>

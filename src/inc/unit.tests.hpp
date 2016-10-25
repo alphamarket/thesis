@@ -3,6 +3,7 @@
 
 #include <unordered_map>
 #include "colormod.hpp"
+#include "qlearner.hpp"
 #include "world.maze.hpp"
 
 void test_world_maze() {
@@ -38,9 +39,27 @@ void test_world_maze() {
     }
 }
 
+void test_qleaner() {
+    const scalar
+        beta = .1,
+        gamma = .9,
+        reward = 1.;
+    maze_learner ql({2, 2, 4});
+    assert(ql.update({0, 0, 0}, {1, 0}, reward, beta, gamma) == 0.1);
+    assert(ql.update({0, 0, 0}, {1, 0}, reward, beta, gamma) == 0.19);
+    assert(ql.update({1, 0, 2}, {1, 1}, reward, beta, gamma) == 0.1);
+    assert(ql.advise_action_greedy({0, 0}, 0.) == 0);
+    assert(ql.advise_action_boltzmann({0, 0}, 1e-10) == 0);
+    assert(ql.advise_action_greedy({1, 0}, 0.) == 2);
+    assert(ql.advise_action_boltzmann({1, 0}, 1e-10) == 2);
+    assert(ql.advise_action_greedy({1, 0}, 1.) < ql.Q.size().back());
+    assert(ql.advise_action_boltzmann({0, 0}, 1e+10) < ql.Q.size().back());
+}
+
 void execute_tests() {
     unordered_map<string, function<void(void)>> tests = {
-        {"world.maze.hpp", test_world_maze}
+        {"world.maze.hpp", test_world_maze},
+        {"qlearner.hpp", test_qleaner}
     };
     cerr << Color::Modifier(Color::FG_YELLOW) << "Engaging the tests..." << Color::Modifier(Color::FG_DEFAULT) << endl;
     foreach_elem(test, tests) {
