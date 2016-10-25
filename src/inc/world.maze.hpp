@@ -59,8 +59,12 @@ public:
         }
     }
 
-    virtual string move_tostring(const state_t<1>& move) const
+    inline string move_tostring(const state_t<1>& move) const
     { string s[] = {"UP", "RIGHT", "DOWN", "LEFT"}; return s[move[0]]; }
+
+
+    inline state_t<2> get_random_state() const
+    { return {get_rand(0, this->size()[0]), get_rand(0, this->size()[1])}; }
 };
 
 #endif // WORLD_MAZE_HPP

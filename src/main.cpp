@@ -2,56 +2,15 @@
 #include "inc/agent.hpp"
 #include "inc/world.maze.hpp"
 #include "inc/unit.tests.hpp"
+#include "inc/main.plugins.hpp"
 #include "inc/learner.maze.hpp"
 
-#define AGENT_COUNT 1
-
-class print_maze_world : public plugin {
-
-    inline agent<2, 1>* get_agent(void* const in) const { return static_cast<agent<2, 1>*>(in); }
-
-    virtual void notify_exit_event(void* const in) {
-        auto a = this->get_agent(in);
-        auto p = a->learner->get_policy();
-
-        cerr << "------------------" << endl;
-        for(size_t i = 0; i < a->world->size()[0]; i++) {
-            for(size_t j = 0; j < a->world->size()[1]; j++) {
-                auto color = Color::Modifier(Color::FG_DEFAULT);
-                auto ss = a->world->get_current_state();
-                if(ss[0] == i && ss[1] == j) color = Color::Modifier(Color::FG_GREEN);
-                if(!a->world->get_maze()[i][j]._is_moveable) color = Color::Modifier(Color::FG_RED);
-                if(a->world->get_maze()[i][j]._value > 0) color = Color::Modifier(Color::FG_YELLOW);
-                assert(a->world->get_current_block()._is_moveable);
-                cerr << color << a->world->move_tostring({p({i, j})})[0] << " " << Color::Modifier(Color::FG_DEFAULT);
-            }
-            cerr << endl;
-        }
-        cerr << endl << "***************" << endl;
-    }
-
-    virtual void notify_init_event(void* const in) {
-        auto a = this->get_agent(in);
-        a->world->set_current_state({get_rand(0, a->world->size()[0]), get_rand(0, a->world->size()[1])});
-    }
-};
-
-/**
- * @brief main The main entry of program
- * @return The exit flag
- */
-int main(int, char**) {
-    // exiting flag
-    bool exiting = false;
-    vector<future<void>> thread_pool;
-    // random seed updator
-    thread_pool.push_back(std::async(std::launch::async, [&exiting]() { while(!exiting) { updateseed(); std::this_thread::sleep_for(std::chrono::milliseconds(100));}} ));
-
-    execute_tests();
+template<size_t ITERS, size_t AGENTS, size_t TRIALS, size_t CYCLES>
+void execute_over_maze(array<array<array<scalar, TRIALS * CYCLES>, AGENTS>, ITERS>& data, const size_t& CURRENT_ITER) {
     vector<maze> worlds;
     vector<agent<2, 1>> agents;
     vector<learner_maze> learners;
-    for(size_t i = 0; i < AGENT_COUNT; i++) {
+    for(size_t i = 0; i < AGENTS; i++) {
         worlds.push_back(maze({6, 6}));
         worlds.back().define_values({
             // define a goal
@@ -70,20 +29,71 @@ int main(int, char**) {
         });
         learners.push_back(learner_maze({worlds.back().size()[0], worlds.back().size()[1], worlds.back().action_no()}));
     }
-
-    for(size_t i = 0; i < AGENT_COUNT; i++) {
+    vector<pair<string, plugin<2, 1>*>> plugins = {
+        {"plugin_maze_reset_agent", new plugin_maze_reset_agent()},
+        {"plugin_maze_count_hop", new plugin_maze_count_hop()}
+    };
+    agents.clear();
+    for(size_t i = 0; i < AGENTS; i++) {
         agents.push_back(agent<2, 1>(&worlds[i], &learners[i]));
-        agents.back() += {"maze printer", new print_maze_world()};
+        foreach_elem(_plugin, plugins) agents.back() += _plugin;
     }
-    for(size_t i = 0; i < agents.size(); i++)
-        agents[i].execute(100, agents.size() > 1);
-    for(size_t i = 0; i < agents.size(); i++)
-        agents[i].wait_to_execute();
+    for(size_t trial = 0; trial < TRIALS; trial++) {
+        // execute
+        for(size_t i = 0; i < agents.size(); i++) agents[i].execute(CYCLES, agents.size() > 1);
+        // wait for combine
+        for(size_t i = 0; i < agents.size(); i++) agents[i].wait_to_execute();
+    }
+    for(size_t i = 0; i < agents.size(); i++) {
+        auto h = agents[i].get_plugin<plugin_maze_count_hop>("plugin_maze_count_hop");
+        assert(h->hops.size() == TRIALS * CYCLES);
+        std::copy(h->hops.begin(), h->hops.end(), data[CURRENT_ITER][i].begin());
+        h->hops.clear();
+    }
+    // release all plugin's resources
+    foreach_elem(_plugin, plugins)
+    { delete _plugin.second; }
+}
 
-    exiting = true;
-    while(thread_pool.size()) {
-        thread_pool.back().get();
-        thread_pool.pop_back();
+/**
+ * @brief main The main entry of program
+ * @return The exit flag
+ */
+int main(int, char**) {
+    // exiting flag
+    bool exiting = false;
+    vector<future<void>> thread_pool;
+    // random seed updator
+    thread_pool.push_back(std::async(std::launch::async, [&exiting]() { while(!exiting) { updateseed(); std::this_thread::sleep_for(std::chrono::milliseconds(100));}} ));
+
+    execute_tests();
+
+    const size_t ITERS = 20;
+    const size_t CYCLES = 5;
+    const size_t TRIALS = 200;
+    const size_t AGENT_COUNT = 1;
+
+    // ITERS x AGENTS x [TRIALS * CYCLES]
+    array<array<array<scalar, TRIALS * CYCLES>, AGENT_COUNT>, ITERS> data;
+
+    // execute
+    for(size_t iter = 0; iter < ITERS; iter++)
+        execute_over_maze<ITERS, AGENT_COUNT, TRIALS, CYCLES>(data, iter);
+
+    // try to average data over AGENTS and ITERs
+    array<scalar, TRIALS * CYCLES> avg_data;
+    for(size_t k = 0; k < TRIALS * CYCLES; k++) {
+        for(size_t i = 0; i < ITERS; i++) {
+            for(size_t j = 0; j < AGENT_COUNT; j++) {
+                avg_data[k] += data[i][j][k] / (AGENT_COUNT * ITERS);
+            }
+        }
     }
+    // print accumulate the sums of avg data
+    for(size_t i = 0; i < avg_data.size(); i++)
+        cout << accumulate(avg_data.begin(), avg_data.begin() + i + 1, 0.0) / (i + 1) << " ";
+    // exit the program
+    exiting = true;
+    while(!thread_pool.empty()) { thread_pool.back().get(); thread_pool.pop_back(); }
     exit(EXIT_SUCCESS);
 }

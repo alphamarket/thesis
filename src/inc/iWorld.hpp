@@ -54,6 +54,8 @@ public:
 
 public:
 
+    virtual state_t<state_dim> get_random_state() const = 0;
+
     virtual scalar make_move(const state_t<action_dim>& action_id) = 0;
 
     virtual string move_tostring(const state_t<action_dim>& move) const = 0;

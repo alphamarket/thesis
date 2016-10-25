@@ -26,7 +26,9 @@ protected:
     /**
      * @brief _executing Check if the thread is executing or not?
      */
-    bool _executing;
+    bool
+        _executing = 0,
+        _threaded = 0;
     /**
      * @brief _thread The execution thread
      */
@@ -34,20 +36,20 @@ protected:
     /**
      * @brief _plugins The plugin map
      */
-    unordered_map<string, plugin* const> _plugins;
+    unordered_map<string, plugin<state_dim, action_dim>* const> _plugins;
 public:
     /**
      * @brief _prev_q Previous Q value
      */
-    scalar _prev_q;
+    scalar _prev_q = 0;
     /**
      * @brief _current_reward Current acquired reward
      */
-    scalar _current_reward;
+    scalar _current_reward = 0;
     /**
      * @brief _prev_state The previous state
      */
-    state_t<state_dim> _prev_state;
+    state_t<state_dim> _prev_state ;
     /**
      * @brief _prev_action The previous action
      */
@@ -127,7 +129,7 @@ public:
     /**
      * @brief operator += Adds new pluing
      */
-    inline agent& operator+=(pair<string, plugin* const> plugin) { this->_plugins.insert(plugin); return *this; }
+    inline agent& operator+=(pair<string, plugin<state_dim, action_dim>* const> plugin) { this->_plugins.insert(plugin); return *this; }
     /**
      * @brief operator += Removes a pluing
      */
@@ -135,11 +137,12 @@ public:
     /**
      * @brief get_plugin Get a pluging by name
      */
-    inline plugin* get_plugin(const string& plugin) const { return this->_plugins[plugin]; }
+    template<typename T>
+    inline T* get_plugin(const string& plugin) const { return static_cast<T*>(this->_plugins.at(plugin)); }
     /**
      * @brief get_plugins Get all of plugins
      */
-    inline unordered_map<string, plugin* const> get_plugins() const { return this->_plugins; }
+    inline unordered_map<string, plugin<state_dim, action_dim>* const> get_plugins() const { return this->_plugins; }
     /**
      * @brief execute Executes the agent
      * @param cycle The cycle#
@@ -156,6 +159,7 @@ public:
             }
             this->_executing = false;
         };
+        _threaded = deattached;
         if(deattached) {
             if(this->_executing)
                 error("There is already a thread executing right now, cannot initiate new one!");
@@ -168,7 +172,7 @@ public:
      * @brief wait_to_execute wait untill the agent get finish it's execution
      */
     void wait_to_execute()
-    { if(this->_executing) this->_thread.get(); }
+    { if(this->_threaded) this->_thread.get(); }
 };
 
 template<size_t S, size_t T>

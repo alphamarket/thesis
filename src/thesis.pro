@@ -18,5 +18,6 @@ HEADERS += inc/colormod.hpp inc/stdafx.hpp \
     inc/iQlearner.hpp \
     inc/iWorld.hpp \
     inc/learner.maze.hpp \
-    inc/plugin.hpp
+    inc/plugin.hpp \
+    inc/main.plugins.hpp
 SOURCES += main.cpp
