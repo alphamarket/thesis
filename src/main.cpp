@@ -4,7 +4,7 @@
 #include "inc/unit.tests.hpp"
 #include "inc/learner.maze.hpp"
 
-#define AGENT_COUNT 1
+#define AGENT_COUNT 2
 
 class print_maze_world : public IPlugin {
 
@@ -12,18 +12,18 @@ class print_maze_world : public IPlugin {
 
     virtual void notify_deinit_event(void* const in) {
         auto a = this->get_agent(in);
-        auto p = a->_learner->get_policy();
+        auto p = a->learner->get_policy();
 
         cerr << "------------------" << endl;
-        for(size_t i = 0; i < a->_world->size()[0]; i++) {
-            for(size_t j = 0; j < a->_world->size()[1]; j++) {
+        for(size_t i = 0; i < a->world->size()[0]; i++) {
+            for(size_t j = 0; j < a->world->size()[1]; j++) {
                 auto color = Color::Modifier(Color::FG_DEFAULT);
-                auto ss = a->_world->get_current_state();
+                auto ss = a->world->get_current_state();
                 if(ss[0] == i && ss[1] == j) color = Color::Modifier(Color::FG_GREEN);
-                if(!a->_world->get_maze()[i][j]._is_moveable) color = Color::Modifier(Color::FG_RED);
-                if(a->_world->get_maze()[i][j]._value > 0) color = Color::Modifier(Color::FG_YELLOW);
-                assert(a->_world->get_current_block()._is_moveable);
-                cerr << color << a->_world->move_tostring({p({i, j})})[0] << " " << Color::Modifier(Color::FG_DEFAULT);
+                if(!a->world->get_maze()[i][j]._is_moveable) color = Color::Modifier(Color::FG_RED);
+                if(a->world->get_maze()[i][j]._value > 0) color = Color::Modifier(Color::FG_YELLOW);
+                assert(a->world->get_current_block()._is_moveable);
+                cerr << color << a->world->move_tostring({p({i, j})})[0] << " " << Color::Modifier(Color::FG_DEFAULT);
             }
             cerr << endl;
         }
@@ -38,7 +38,7 @@ class print_maze_world : public IPlugin {
 
     virtual void notify_init_event(void* const in) {
         auto a = this->get_agent(in);
-        a->_world->set_current_state({get_rand(0, a->_world->size()[0]), get_rand(0, a->_world->size()[1])});
+        a->world->set_current_state({get_rand(0, a->world->size()[0]), get_rand(0, a->world->size()[1])});
     }
 
     virtual void notify_post_event(void* const) { }
@@ -58,31 +58,35 @@ int main(int, char**) {
     thread_pool.push_back(std::async(std::launch::async, [&exiting]() { while(!exiting) { updateseed(); std::this_thread::sleep_for(std::chrono::milliseconds(100));}} ));
 
     execute_tests();
+    vector<maze> worlds;
     vector<agent<2, 1>> agents;
-    maze world({6, 6});
-    world.define_values({
-        // define a goal
-        {{1, 5}, block(10, 1, 1)},
-        {{3, 5}, block(10, 1, 1)},
-        {{5, 0}, block(10, 1, 1)},
-        // define walls
-        {{1, 0}, block(-1, 0, 0)},
-        {{1, 1}, block(-1, 0, 0)},
-        {{1, 2}, block(-1, 0, 0)},
-        {{2, 4}, block(-1, 0, 0)},
-        {{2, 5}, block(-1, 0, 0)},
-        {{4, 2}, block(-1, 0, 0)},
-        {{4, 3}, block(-1, 0, 0)},
-        {{4, 4}, block(-1, 0, 0)},
-
-    });
-    learner_maze leaner({world.size()[0], world.size()[1], world.action_no()});
+    vector<learner_maze> learners;
     for(size_t i = 0; i < AGENT_COUNT; i++) {
-        agents.push_back(agent<2, 1>(&world, &leaner));
-        agents.back() += new print_maze_world();
+        worlds.push_back(maze({6, 6}));
+        worlds.back().define_values({
+            // define a goal
+            {{1, 5}, block(10, 1, 1)},
+            {{3, 5}, block(10, 1, 1)},
+            {{5, 0}, block(10, 1, 1)},
+            // define walls
+            {{1, 0}, block(-1, 0, 0)},
+            {{1, 1}, block(-1, 0, 0)},
+            {{1, 2}, block(-1, 0, 0)},
+            {{2, 4}, block(-1, 0, 0)},
+            {{2, 5}, block(-1, 0, 0)},
+            {{4, 2}, block(-1, 0, 0)},
+            {{4, 3}, block(-1, 0, 0)},
+            {{4, 4}, block(-1, 0, 0)},
+        });
+        learners.push_back(learner_maze({worlds.back().size()[0], worlds.back().size()[1], worlds.back().action_no()}));
+    }
+
+    for(size_t i = 0; i < AGENT_COUNT; i++) {
+        agents.push_back(agent<2, 1>(&worlds[i], &learners[i]));
+        agents.back() += {"maze printer", new print_maze_world()};
     }
     for(size_t i = 0; i < agents.size(); i++)
-        agents[i].execute(100, false);
+        agents[i].execute(100, agents.size() > 1);
     for(size_t i = 0; i < agents.size(); i++)
         agents[i].wait_to_execute();
 
