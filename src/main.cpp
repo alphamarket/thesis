@@ -4,13 +4,13 @@
 #include "inc/unit.tests.hpp"
 #include "inc/learner.maze.hpp"
 
-#define AGENT_COUNT 2
+#define AGENT_COUNT 1
 
-class print_maze_world : public IPlugin {
+class print_maze_world : public plugin {
 
     inline agent<2, 1>* get_agent(void* const in) const { return static_cast<agent<2, 1>*>(in); }
 
-    virtual void notify_deinit_event(void* const in) {
+    virtual void notify_exit_event(void* const in) {
         auto a = this->get_agent(in);
         auto p = a->learner->get_policy();
 
@@ -30,20 +30,10 @@ class print_maze_world : public IPlugin {
         cerr << endl << "***************" << endl;
     }
 
-    virtual void notify_enter_event(void* const) { }
-
-    virtual void notify_pre_event(void* const) { }
-
-    virtual void notify_on_event(void* const) { }
-
     virtual void notify_init_event(void* const in) {
         auto a = this->get_agent(in);
         a->world->set_current_state({get_rand(0, a->world->size()[0]), get_rand(0, a->world->size()[1])});
     }
-
-    virtual void notify_post_event(void* const) { }
-
-    virtual void notify_exit_event(void* const) { }
 };
 
 /**

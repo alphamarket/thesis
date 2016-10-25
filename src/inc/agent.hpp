@@ -7,7 +7,7 @@
 #include <unordered_map>
 
 #include "iWorld.hpp"
-#include "iPlugin.hpp"
+#include "plugin.hpp"
 #include "iQlearner.hpp"
 
 template<size_t state_dim, size_t action_dim>
@@ -34,7 +34,7 @@ protected:
     /**
      * @brief _plugins The plugin map
      */
-    unordered_map<string, IPlugin* const> _plugins;
+    unordered_map<string, plugin* const> _plugins;
 public:
     /**
      * @brief _prev_q Previous Q value
@@ -127,7 +127,7 @@ public:
     /**
      * @brief operator += Adds new pluing
      */
-    inline agent& operator+=(pair<string, IPlugin* const> plugin) { this->_plugins.insert(plugin); return *this; }
+    inline agent& operator+=(pair<string, plugin* const> plugin) { this->_plugins.insert(plugin); return *this; }
     /**
      * @brief operator += Removes a pluing
      */
@@ -135,11 +135,11 @@ public:
     /**
      * @brief get_plugin Get a pluging by name
      */
-    inline IPlugin* get_plugin(const string& plugin) const { return this->_plugins[plugin]; }
+    inline plugin* get_plugin(const string& plugin) const { return this->_plugins[plugin]; }
     /**
      * @brief get_plugins Get all of plugins
      */
-    inline unordered_map<string, IPlugin* const> get_plugins() const { return this->_plugins; }
+    inline unordered_map<string, plugin* const> get_plugins() const { return this->_plugins; }
     /**
      * @brief execute Executes the agent
      * @param cycle The cycle#
