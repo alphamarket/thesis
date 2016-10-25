@@ -129,6 +129,35 @@ public:
 
     inline typename base::element operator()(const std::array<size_t, N>& l) const
     { return base::operator ()(l); }
+
+    template<size_t S>
+    matrix<T, N - S> slice(const std::array<size_t, S>& indices) const {
+        size_t start = 0;
+        std::array<size_t, N - S> dim;
+        for(size_t i = S, k = 0; i < N; i++, k++)
+        { dim[k] = this->shape()[i]; }
+        matrix<T, N - S> out(dim);
+        for(size_t i = 0; i < S; i++) {
+            BOOST_ASSERT_MSG(indices[i] < this->shape()[i], "index overflow!");
+            start += indices[i] * this->strides()[i];
+        }
+        std::for_each(out.data(), out.data() + out.num_elements(), [&](auto& i) { i = this->data()[start++]; });
+        return out;
+    }
+    template<size_t S>
+    matrix<T*, N - S> slice_ref(const std::array<size_t, S>& indices) {
+        size_t start = 0;
+        std::array<size_t, N - S> dim;
+        for(size_t i = S, k = 0; i < N; i++, k++)
+        { dim[k] = this->shape()[i]; }
+        matrix<T*, N - S> out(dim);
+        for(size_t i = 0; i < S; i++) {
+            BOOST_ASSERT_MSG(indices[i] < this->shape()[i], "index overflow!");
+            start += indices[i] * this->strides()[i];
+        }
+        std::for_each(out.data(), out.data() + out.num_elements(), [&](auto& i) { i = &(this->data()[start++]); });
+        return out;
+    }
 };
 
 template<class T, size_t N>
@@ -145,6 +174,9 @@ using matrix3D_t = matrixND_t<T, 3>;
 
 template<class T>
 using matrix4D_t = matrixND_t<T, 4>;
+
+template<size_t T>
+using slice = array<size_t, T>;
 
 using boost::indices;
 typedef boost::multi_array_types::index_range range;
