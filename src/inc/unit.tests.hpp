@@ -3,8 +3,8 @@
 
 #include <unordered_map>
 #include "colormod.hpp"
-#include "qlearner.hpp"
 #include "world.maze.hpp"
+#include "learner.maze.hpp"
 
 void test_world_maze() {
     auto m = maze({3, 4});
@@ -44,7 +44,7 @@ void test_qleaner() {
         beta = .1,
         gamma = .9,
         reward = 1.;
-    maze_learner ql({2, 2, 4});
+    learner_maze ql({2, 2, 4});
     assert(ql.update({0, 0, 0}, {1, 0}, reward, beta, gamma) == 0.1);
     assert(ql.update({0, 0, 0}, {1, 0}, reward, beta, gamma) == 0.19);
     assert(ql.update({1, 0, 2}, {1, 1}, reward, beta, gamma) == 0.1);

@@ -1,7 +1,7 @@
 #ifndef WORLD_MAZE_HPP
 #define WORLD_MAZE_HPP
 
-#include "iworld.hpp"
+#include "iWorld.hpp"
 
 class maze : public IWorld<2>
 {
