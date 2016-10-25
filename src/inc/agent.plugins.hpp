@@ -163,7 +163,7 @@ public:
 
     void notify_add_event(agent_t* const in) {
         if(!in->get_plugins().count(plugin_count_hop<state_dim, action_dim>().name()))
-            error("This plugin depends on `plugin_count_hop` plugin, but it is not manifested yet. Add the `plugin_count_hop` before this plugin.");
+            raise_error("This plugin depends on `plugin_count_hop` plugin, but it is not manifested yet. Add the `plugin_count_hop` before this plugin.");
         this->sep = new matrix<scalar, state_dim + action_dim>(in->learner->Q.size());
         this->shock = new matrix<size_t, state_dim + action_dim>(in->learner->Q.size());
 

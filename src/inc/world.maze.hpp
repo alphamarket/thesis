@@ -55,7 +55,7 @@ public:
             }
             return this->get_current_block()._value;
         default:
-            error("Undefined move# " + to_string(action_id[0]));
+            raise_error("Undefined move# " + to_string(action_id[0]));
         }
     }
 

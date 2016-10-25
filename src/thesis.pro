@@ -8,6 +8,8 @@ DEPENDPATH += . inc
 INCLUDEPATH += .
 CONFIG += c++14
 
+LIBS += -lboost_program_options
+
 # Input
 HEADERS += inc/colormod.hpp inc/stdafx.hpp \
     inc/matrix.hpp \
@@ -19,5 +21,8 @@ HEADERS += inc/colormod.hpp inc/stdafx.hpp \
     inc/iWorld.hpp \
     inc/learner.maze.hpp \
     inc/plugin.hpp \
-    inc/main.plugins.hpp
+    inc/main.extend.hpp \
+    inc/execute.agent.maze.hpp \
+    inc/agent.plugins.hpp \
+    inc/combine.hpp
 SOURCES += main.cpp

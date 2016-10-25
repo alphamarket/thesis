@@ -30,6 +30,13 @@ protected:
         _executing = 0,
         _threaded = 0;
     /**
+     * @brief the learning params
+     */
+    scalar
+        _tau,
+        _beta,
+        _gamma;
+    /**
      * @brief _thread The execution thread
      */
     future<void> _thread;
@@ -80,7 +87,7 @@ protected:
         case PHASE_DEINIT: foreach_elem(p, this->_plugins) p.second->notify_deinit_event(this); return;
         case PHASE_ENTER: foreach_elem(p, this->_plugins) p.second->notify_enter_event(this); return;
         case PHASE_EXIT: foreach_elem(p, this->_plugins) p.second->notify_exit_event(this); return;
-        default: error("Undefined phase#" + to_string(phase));
+        default: raise_error("Undefined phase#" + to_string(phase));
         }
     }
     /**
@@ -125,8 +132,8 @@ protected:
     }
 
 public:
-    agent(IWorld<state_dim, action_dim>* const world, IQlearner<state_dim, action_dim>* const learner)
-        :  _instance_id(++agent::_instance_count), world(world), learner(learner)
+    agent(IWorld<state_dim, action_dim>* const world, IQlearner<state_dim, action_dim>* const learner, scalar beta = 0.01, scalar gamma = .9, scalar tau = .4)
+        : _instance_id(++agent::_instance_count), _tau(tau), _beta(beta), _gamma(gamma), world(world), learner(learner)
     { }
     /**
      * @brief operator += Adds new pluing
@@ -164,7 +171,7 @@ public:
         _threaded = deattached;
         if(deattached) {
             if(this->_executing)
-                error("There is already a thread executing right now, cannot initiate new one!");
+                raise_error("There is already a thread executing right now, cannot initiate new one!");
             this->_thread = std::async(std::launch::async, exec, cycle);
         }
         else
