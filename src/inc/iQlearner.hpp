@@ -26,7 +26,10 @@ public:
 
     virtual action advise_action_boltzmann(const state& s, const scalar& tau) const = 0;
 
+    virtual vector<scalar> get_actions_q(const array<size_t, state_dim>& s) const = 0;
+
     virtual matrix<size_t, state_dim> get_policy() const = 0;
+
 };
 
 #endif // QLEARNER_HPP

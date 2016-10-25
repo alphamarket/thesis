@@ -27,6 +27,10 @@ protected:
     const array<size_t, state_dim> _size;
 
 public:
+    const static size_t STATE_DIM = state_dim;
+    const static size_t ACTION_DIM = action_dim;
+
+public:
 
     IWorld(const array<size_t, state_dim>& size, const size_t& actions_no)
         : _actions_no(actions_no), _maze(matrix<block, state_dim>(size)), _size(size)

@@ -6,9 +6,6 @@
 class learner_maze : public IQlearner<2, 1>
 {
     typedef IQlearner<2, 1> base;
-protected:
-    inline auto get_actions_q(const array<size_t, 2>& s) const
-    { return this->Q[indices[s[0]][s[1]][range(0, this->Q.size().back())]]; }
 
 public:
     learner_maze(const array<size_t, 3>& sizes)
@@ -61,6 +58,13 @@ public:
                 out({i, j}) = size_t(std::max_element(q.begin(), q.end()) - q.begin());
             }
         }
+        return out;
+    }
+
+    virtual vector<scalar> get_actions_q(const array<size_t, 2>& s) const {
+        vector<scalar> out;
+        auto q = this->Q[indices[s[0]][s[1]][range(0, this->Q.size().back())]];
+        out.insert(out.end(), q.begin(), q.end());
         return out;
     }
 };

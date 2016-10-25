@@ -107,6 +107,8 @@ protected:
                 this->world->make_move(this->_prev_action);
                 // get the reward
                 this->_current_reward = this->world->get_current_block()._value;
+                // get current state for the plugin call
+                this->_current_state = this->world->get_current_state();
                 // engage the ON plugins
                 this->pluging_execute(PHASE_ON);
                 // update the learner
@@ -129,11 +131,11 @@ public:
     /**
      * @brief operator += Adds new pluing
      */
-    inline agent& operator+=(pair<string, plugin<state_dim, action_dim>* const> plugin) { this->_plugins.insert(plugin); return *this; }
+    inline agent& operator+=(plugin<state_dim, action_dim>* const plugin) { this->_plugins.insert({plugin->name(), plugin}); plugin->notify_add_event(this); return *this; }
     /**
      * @brief operator += Removes a pluing
      */
-    inline agent& operator-=(const string& plugin) { this->_plugins.erase(plugin); return *this; }
+    inline agent& operator-=(const string& plugin) { this->_plugins[plugin].second->notify_add_event(this); this->_plugins.erase(plugin); return *this; }
     /**
      * @brief get_plugin Get a pluging by name
      */

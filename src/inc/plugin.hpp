@@ -12,6 +12,8 @@ class plugin
 public:
     virtual ~plugin() { }
 
+    virtual std::string name() const = 0;
+
     virtual void notify_on_event(agent<T, S>* const) { }
 
     virtual void notify_pre_event(agent<T, S>* const) { }
@@ -25,6 +27,10 @@ public:
     virtual void notify_enter_event(agent<T, S>* const) { }
 
     virtual void notify_deinit_event(agent<T, S>* const) { }
+
+    virtual void notify_add_event(agent<T, S>* const) { }
+
+    virtual void notify_remove_event(agent<T, S>* const) { }
 };
 
 #endif // IPLUGIN_HPP
