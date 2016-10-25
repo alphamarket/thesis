@@ -143,17 +143,15 @@ private:
         return cpd;
     }
 
-    void update_sep(agent<2, 1>* const) {
+    void update_sep(agent<state_dim, action_dim>* const) {
         auto cpd = this->get_cp_details_sorted();
         if(!cpd.size()) return;
         // make the step of the goal to zero
         // the next state of prev state should be the termination state
-        for(size_t i = 0; i < this->sep->size().back(); i++) this->sep->operator ()(this->combine_sa(cpd.front().next_state, array<size_t, 1>({i}))) = 0;
-        for(size_t i = 0; i < cpd.size(); i++) {
-            auto ind = (*this->sep)[indices[cpd[i].next_state[0]][cpd[i].next_state[1]][range{0, (long)this->sep->size().back()}]];
-            auto _min = *min_element(ind.begin(), ind.end());
-            this->sep->operator ()(this->combine_sa(cpd[i].prev_state, cpd[i].action)) = _min + 1;
-        }
+        auto ref = this->sep->slice_ref(slice<state_dim>(cpd.front().next_state));
+        for_each(ref.data(), ref.data() + ref.num_elements(), [](const auto& i) { *i = 0; });
+        for(size_t i = 0; i < cpd.size(); i++)
+            this->sep->operator ()(this->combine_sa(cpd[i].prev_state, cpd[i].action)) = this->sep->slice(cpd[i].next_state).min() + 1;
     }
 public:
     string name() const { return "plugin_SEP"; }
