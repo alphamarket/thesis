@@ -10,6 +10,7 @@ void execute_over_maze(array<array<array<scalar, TRIALS * CYCLES>, AGENTS>, ITER
     vector<maze> worlds;
     vector<agent<2, 1>> agents;
     vector<learner_maze> learners;
+    vector<vector<pair<string, plugin<2, 1>*>>> plugins;
     for(size_t i = 0; i < AGENTS; i++) {
         worlds.push_back(maze({6, 6}));
         worlds.back().define_values({
@@ -28,31 +29,41 @@ void execute_over_maze(array<array<array<scalar, TRIALS * CYCLES>, AGENTS>, ITER
             {{4, 4}, block(-1, 0, 0)},
         });
         learners.push_back(learner_maze({worlds.back().size()[0], worlds.back().size()[1], worlds.back().action_no()}));
+        plugins.push_back({
+            {"plugin_maze_reset_agent", new plugin_maze_reset_agent()},
+            {"plugin_maze_count_hop", new plugin_maze_count_hop()}
+        });
     }
-    vector<pair<string, plugin<2, 1>*>> plugins = {
-        {"plugin_maze_reset_agent", new plugin_maze_reset_agent()},
-        {"plugin_maze_count_hop", new plugin_maze_count_hop()}
-    };
-    agents.clear();
+    // contains previous hops
+    array<size_t, AGENTS> hop_sures;
     for(size_t i = 0; i < AGENTS; i++) {
+        hop_sures[i] = 0;
         agents.push_back(agent<2, 1>(&worlds[i], &learners[i]));
-        foreach_elem(_plugin, plugins) agents.back() += _plugin;
+        foreach_elem(_plugin, plugins[i]) agents.back() += _plugin;
     }
     for(size_t trial = 0; trial < TRIALS; trial++) {
         // execute
-        for(size_t i = 0; i < agents.size(); i++) agents[i].execute(CYCLES, agents.size() > 1);
-        // wait for combine
-        for(size_t i = 0; i < agents.size(); i++) agents[i].wait_to_execute();
+        for(size_t i = 0; i < AGENTS; i++) agents[i].execute(CYCLES, AGENTS > 1);
+        // wait agent to merge
+        for(size_t i = 0; i < AGENTS; i++) {
+            agents[i].wait_to_execute();
+            // check things went as expected
+            assert((agents[i].get_plugin<plugin_maze_count_hop>("plugin_maze_count_hop")->hops.size() - hop_sures[i]) == CYCLES);
+            // if az expected? update it
+            hop_sures[i] = agents[i].get_plugin<plugin_maze_count_hop>("plugin_maze_count_hop")->hops.size();
+        }
+        // here we do the combination
     }
-    for(size_t i = 0; i < agents.size(); i++) {
+    // export the collected data
+    for(size_t i = 0; i < AGENTS; i++) {
         auto h = agents[i].get_plugin<plugin_maze_count_hop>("plugin_maze_count_hop");
         assert(h->hops.size() == TRIALS * CYCLES);
+        // store the data
         std::copy(h->hops.begin(), h->hops.end(), data[CURRENT_ITER][i].begin());
-        h->hops.clear();
+        // release all plugin's resources
+        foreach_elem(_plugin, plugins[i])
+        { delete _plugin.second; }
     }
-    // release all plugin's resources
-    foreach_elem(_plugin, plugins)
-    { delete _plugin.second; }
 }
 
 /**
@@ -71,7 +82,7 @@ int main(int, char**) {
     const size_t ITERS = 20;
     const size_t CYCLES = 5;
     const size_t TRIALS = 200;
-    const size_t AGENT_COUNT = 1;
+    const size_t AGENT_COUNT = 3;
 
     // ITERS x AGENTS x [TRIALS * CYCLES]
     array<array<array<scalar, TRIALS * CYCLES>, AGENT_COUNT>, ITERS> data;
