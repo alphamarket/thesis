@@ -3,7 +3,7 @@
 
 #include "iWorld.hpp"
 
-class maze : public IWorld<2>
+class maze : public IWorld<2, 1>
 {
     const size_t ACTIONS_NO = 4;
 
@@ -13,55 +13,54 @@ public:
     enum moves { UP = 0, RIGHT, DOWN, LEFT };
 
     maze(const array<size_t, 2>& sizes)
-        : base(sizes, ACTIONS_NO), _maze(matrix2D_t<block>({sizes[0], sizes[1]}))
-    {
-        this->_maze = block(0, 0, 1);
-        this->set_current_state({0, 0});
-    }
+        : base(sizes, 4)
+    { this->set_current_state({0, 0}); }
 
-    inline matrix2D_t<block>& get_maze() { return this->_maze; }
-    inline matrix2D_t<block> get_maze() const { return this->_maze; }
-
-    inline bool is_terminated() const { return this->get_current_block()._is_terminal; }
-
-    inline block& get_current_block() { return this->_maze[this->_state[0]][this->_state[0]]; }
-    inline block get_current_block() const { return this->_maze[this->_state[0]][this->_state[0]]; }
-
-    bool make_move(const size_t& action_id) {
-        switch(action_id) {
+    scalar make_move(const state_t<1>& action_id) {
+        switch(action_id[0]) {
         case UP:
-            if(this->get_current_state().y() > 0) {
-                this->get_current_state().y()--;
-                return true;
+            if(this->get_current_state()[0] > 0) {
+                this->get_current_state()[0]--;
+                scalar value = this->get_current_block()._value;
+                if(!this->get_current_block()._is_moveable)
+                    this->get_current_state()[0]++;
+                return value;
             }
-            return false;
+            return this->get_current_block()._value;
         case RIGHT:
-            if(this->get_current_state().x() < this->size()[0] - 1) {
-                this->get_current_state().x()++;
-                return true;
+            if(this->get_current_state()[1] < this->size()[1] - 1) {
+                this->get_current_state()[1]++;
+                scalar value = this->get_current_block()._value;
+                if(!this->get_current_block()._is_moveable)
+                    this->get_current_state()[1]--;
+                return value;
             }
-            return false;
+            return this->get_current_block()._value;
         case DOWN:
-            if(this->get_current_state().y() < this->size()[1] - 1) {
-                this->get_current_state().y()++;
-                return true;
+            if(this->get_current_state()[0] < this->size()[0] - 1) {
+                this->get_current_state()[0]++;
+                scalar value = this->get_current_block()._value;
+                if(!this->get_current_block()._is_moveable)
+                    this->get_current_state()[0]--;
+                return value;
             }
-            return false;
+            return this->get_current_block()._value;
         case LEFT:
-            if(this->get_current_state().x() > 0) {
-                this->get_current_state().x()--;
-                return true;
+            if(this->get_current_state()[1] > 0) {
+                this->get_current_state()[1]--;
+                scalar value = this->get_current_block()._value;
+                if(!this->get_current_block()._is_moveable)
+                    this->get_current_state()[1]++;
+                return value;
             }
-            return false;
+            return this->get_current_block()._value;
         default:
-            error("Undefined move# " + to_string(action_id));
+            error("Undefined move# " + to_string(action_id[0]));
         }
     }
 
-    virtual void define_values(const vector<pair<state, block>>& values) {
-        foreach_elem(&psb, values)
-            this->_maze[psb.first[0]][psb.first[1]] = psb.second;
-    }
+    virtual string move_tostring(const state_t<1>& move) const
+    { string s[] = {"UP", "RIGHT", "DOWN", "LEFT"}; return s[move[0]]; }
 };
 
 #endif // WORLD_MAZE_HPP

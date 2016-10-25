@@ -10,7 +10,11 @@ public:
 
     virtual void notify_init_event(void* const) = 0;
 
-    virtual void notify_after_event(void* const) = 0;
+    virtual void notify_post_event(void* const) = 0;
+
+    virtual void notify_exit_event(void* const) = 0;
+
+    virtual void notify_enter_event(void* const) = 0;
 
     virtual void notify_deinit_event(void* const) = 0;
 };

@@ -6,25 +6,27 @@
 template<size_t state_dim, size_t action_dim>
 class IQlearner
 {
-public:
-    typedef array<size_t, state_dim> state_t;
-    typedef array<size_t, action_dim> action_t;
-    typedef matrix<scalar, state_dim + action_dim> qtable_t;
-    typedef array<size_t, state_dim + action_dim> state_action_t;
+protected:
+    typedef state_t<state_dim> state;
+    typedef state_t<action_dim> action;
+    typedef matrix<scalar, state_dim + action_dim> qtable;
+    typedef state_t<state_dim + action_dim> state_action;
 
 public:
-    qtable_t Q;
+    qtable Q;
 
 public:
     IQlearner(const array<size_t, state_dim + action_dim>& sizes)
-        : Q(qtable_t(sizes))
+        : Q(qtable(sizes))
     { this->Q = 0; }
 
-    virtual scalar update(const state_action_t& sa, const state_t& sprim, const scalar& reward, const scalar& beta, const scalar& gamma) = 0;
+    virtual scalar update(const state& s, const action& a, const state& sprim, const scalar& reward, const scalar& beta, const scalar& gamma) = 0;
 
-    virtual size_t advise_action_greedy(const state_t& s, const scalar& explore_rate) const = 0;
+    virtual action advise_action_greedy(const state& s, const scalar& explore_rate) const = 0;
 
-    virtual size_t advise_action_boltzmann(const state_t& s, const scalar& tau) const = 0;
+    virtual action advise_action_boltzmann(const state& s, const scalar& tau) const = 0;
+
+    virtual matrix<size_t, state_dim> get_policy() const = 0;
 };
 
 #endif // QLEARNER_HPP
