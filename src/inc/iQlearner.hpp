@@ -20,15 +20,55 @@ public:
         : Q(qtable(sizes))
     { this->Q = 0; }
 
-    virtual scalar update(const state& s, const action& a, const state& sprim, const scalar& reward, const scalar& beta, const scalar& gamma) = 0;
-
-    virtual action advise_action_greedy(const state& s, const scalar& explore_rate) const = 0;
-
-    virtual action advise_action_boltzmann(const state& s, const scalar& tau) const = 0;
-
-    virtual vector<scalar> get_actions_q(const array<size_t, state_dim>& s) const = 0;
-
     virtual matrix<size_t, state_dim> get_policy() const = 0;
+
+    virtual inline matrix<scalar, action_dim> get_actions_q(const array<size_t, state_dim>& s) const { return this->Q.slice(slice<state_dim>(s)); }
+
+    virtual scalar update(const state& s, const action& a, const state& sprim, const scalar& reward, const scalar& beta, const scalar& gamma) {
+        auto q = this->get_actions_q(sprim);
+        auto sa = this->combine_state_action(s, a);
+        this->Q(sa) = (1 - beta) * this->Q(sa) + beta * (reward + gamma * *std::max_element(q.begin(), q.end()));
+        return this->Q(sa);
+    }
+
+    virtual action advise_action_greedy(const state& s, const scalar& explore_rate) const {
+        if(frand() < explore_rate) return {get_rand(0, this->Q.size().back())};
+        auto q = this->get_actions_q(s);
+        return {size_t(std::max_element(q.begin(), q.end()) - q.begin())};
+    }
+
+    virtual action advise_action_boltzmann(const state& s, const scalar& tau) const {
+        scalar sum = 0;
+        size_t index = 0;
+        scalar p = frand();
+        vector<pair<size_t, scalar>> eq;
+        // get current action values
+        auto q = this->get_actions_q(s);
+        // calc the exp(Q/tau)
+        foreach_elem(act, q) {
+            auto pp = make_pair(index++, exp(act / tau));
+            eq.push_back(pp);
+            sum += eq.back().second;
+        }
+        // if the sum is inf, assign the biggest value possible to be able to proceed
+        sum = min(sum, numeric_limits<scalar>::max());
+        // normalize them
+        foreach_elem(&e, eq) e.second /= sum;
+        // sort in ascending order
+        sort(eq.begin(), eq.end(), [](auto i, auto j) { return i.second < j.second; });
+        // find the probed index
+        sum = 0; foreach_elem(e, eq) { if(p < sum + e.second) return {e.first}; sum += e.second; }
+        // we never should reach this line!
+        throw runtime_error("The PC should not reach this!");
+    }
+
+    template<size_t ss, size_t aa>
+    inline array<size_t, ss + aa> combine_state_action(const array<size_t, ss>& s, const array<size_t, aa>& a) const {
+        array<size_t, ss + aa> sa;
+        copy_n(s.begin(), ss, sa.begin());
+        copy_n(a.begin(), aa, sa.begin() + ss);
+        return sa;
+    }
 
 };
 
