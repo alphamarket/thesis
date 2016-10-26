@@ -101,17 +101,8 @@ public:
 
 private:
 
-    template<size_t ss, size_t aa>
-    array<size_t, ss + aa> combine_sa(const array<size_t, ss>& s, const array<size_t, aa>& a) const {
-        array<size_t, ss + aa> sa;
-        size_t i = 0;
-        for(; i < ss; i++) sa[i] = s[i];
-        for(size_t j = 0; j < sa.size(); j++, i++) sa[i] = a[j];
-        return sa;
-    }
-
     void update_shock(agent_t* const in) {
-        auto sa = this->combine_sa(in->_prev_state, in->_prev_action);
+        auto sa = in->learner->combine_state_action(in->_prev_state, in->_prev_action);
         auto cb = in->world->get_current_block();
         auto q = in->learner->get_actions_q(in->_current_state);
         if(accumulate(q.begin(), q.end(), 0.) > 0 || (cb._is_terminal && cb._value > 0))
@@ -143,15 +134,17 @@ private:
         return cpd;
     }
 
-    void update_sep(agent<state_dim, action_dim>* const) {
+    void update_sep(agent_t* const in) {
         auto cpd = this->get_cp_details_sorted();
         if(!cpd.size()) return;
         // make the step of the goal to zero
         // the next state of prev state should be the termination state
-        auto ref = this->sep->slice_ref(slice<state_dim>(cpd.front().next_state));
-        for_each(ref.data(), ref.data() + ref.num_elements(), [](const auto& i) { *i = 0; });
-        for(size_t i = 0; i < cpd.size(); i++)
-            this->sep->operator ()(this->combine_sa(cpd[i].prev_state, cpd[i].action)) = this->sep->slice(cpd[i].next_state).min() + 1;
+        this->sep->slice_ref(slice<state_dim>(cpd.front().next_state)).for_each([](auto* i) { *i = 0; });
+        for(size_t i = 0; i < cpd.size(); i++) {
+            if(this->sep->slice(cpd[i].next_state).min() == numeric_limits<scalar>::infinity())
+                cerr << "INF ";
+            this->sep->operator ()(in->learner->combine_state_action(cpd[i].prev_state, cpd[i].action)) = this->sep->slice(cpd[i].next_state).min() + 1;
+        }
     }
 public:
     string name() const { return "plugin_SEP"; }
