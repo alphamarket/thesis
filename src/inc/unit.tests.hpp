@@ -67,6 +67,18 @@ void test_matrix() {
                     if(i == 2 && j == 3) assert(m({i, j, k}) == 14);
                     else assert(m({i, j, k}) == 13);
     }
+    // test listing indices
+    {
+        matrix<size_t, 2> m({2, 3});
+        assert(m.list_indices<1>().size() == 2);
+        for(size_t i = 0; i < m.size()[0]; i++)
+            assert(m.list_indices<1>()[i][0] == i);
+        auto l = m.list_indices();
+        assert(l.size() == 6);
+        for(size_t i = 0, k = 0; i < m.size()[0]; i++)
+            for(size_t j = 0; j < m.size()[1]; j++, k++)
+                assert(l[k].size() == m.size().size() && l[k][0] == i && l[k][1] == j);
+    }
 }
 
 void test_world_maze() {

@@ -224,6 +224,42 @@ public:
         out.for_each([&](auto& i) { i = &(this->data()[start++]); });
         return out;
     }
+
+    template<size_t sub_dim = N>
+    std::vector<std::array<size_t, sub_dim>> list_indices() {
+        // fetch the total # of states that are exist
+        size_t len = 1; for(size_t i = 0; i < sub_dim; i++) len *= this->size()[i];
+        // the output states vector
+        std::vector<std::array<size_t, sub_dim>> out;
+        // the init state
+        // while not all states listed do:
+        while(out.size() < len) {
+            out.push_back(std::array<size_t, sub_dim>());
+            std::fill_n(out.back().begin(), sub_dim, 0);
+        }
+        // compute the increment factors considering the size of matrix
+        std::vector<size_t> factors = { 1 };
+        for(size_t j = sub_dim - 1; j ; j--)
+            factors.push_back(factors.back() * this->size()[j]);
+        // the incremental reference array
+        std::array<size_t, sub_dim> ref;
+        std::fill_n(ref.begin(), sub_dim, 0);
+        // compute indices of all elements
+        for(size_t o = 1; o < out.size(); o++) {
+            for(size_t j = 0, i = sub_dim - 1; j < sub_dim ; j++, i--) {
+                out[o][i] = out[ref[i]][i];
+                // if we need to increment the value of curret dimension?
+                if(o % factors[j] == 0) {
+                    // recall the reference element for this dimension
+                    ref[i] = o;
+                    // increment current dimension with it's limit in consider
+                    out[o][i] = (out[o][i] + 1) % this->size()[i];
+                }
+            }
+        }
+        // return this indices
+        return out;
+    }
 };
 
 template<class T, size_t N>
