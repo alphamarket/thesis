@@ -13,10 +13,12 @@
 #include "inc/plugins/plugin_reset_agent.hpp"
 #include "inc/plugins/plugin_checkpoints.hpp"
 
-template<size_t ITERS, size_t AGENTS, size_t TRIALS, size_t CYCLES>
 void execute_agent_maze(
-        array<array<array<scalar, TRIALS * CYCLES>, AGENTS>, ITERS>& data,
+        matrix3D_t<scalar>& data,
         const size_t& CURRENT_ITER,
+        const size_t& AGENTS,
+        const size_t& TRIALS,
+        const size_t& CYCLES,
         const scalar& beta,
         const scalar& gamma,
         const scalar& tau,
@@ -70,7 +72,7 @@ void execute_agent_maze(
         plugins.back().push_back(new plugin_reset_agent<maze::STATE_DIM, maze::ACTION_DIM>());
     }
     // contains previous hops
-    array<size_t, AGENTS> hop_sures;
+    matrix1D_t<size_t> hop_sures({AGENTS});
     for(size_t i = 0; i < AGENTS; i++) {
         hop_sures[i] = 0;
         agents.push_back(agent<2, 1>(&worlds[i], &learners[i], beta, gamma, tau));
