@@ -20,7 +20,7 @@ int main(int argc, char** argv) {
     const size_t ITERS = 20;
     const size_t CYCLES = 5;
     const size_t TRIALS = 200;
-    const size_t AGENT_COUNT = 3;
+    const size_t AGENT_COUNT = 1;
 
     auto opt = process_args(argc, argv);
 

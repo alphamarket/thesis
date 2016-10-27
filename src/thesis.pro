@@ -24,5 +24,10 @@ HEADERS += inc/colormod.hpp inc/stdafx.hpp \
     inc/main.extend.hpp \
     inc/execute.agent.maze.hpp \
     inc/agent.plugins.hpp \
-    inc/combine.hpp
+    inc/combine.hpp \
+    inc/plugins/plugin_maze_print_policy.hpp \
+    inc/plugins/plugin_reset_agent.hpp \
+    inc/plugins/plugin_count_hop.hpp \
+    inc/plugins/plugin_sep.hpp \
+    inc/plugins/plugin_checkpoints.hpp
 SOURCES += main.cpp

@@ -8,6 +8,11 @@
 #include "inc/learner.maze.hpp"
 #include "inc/agent.plugins.hpp"
 
+#include "inc/plugins/plugin_sep.hpp"
+#include "inc/plugins/plugin_count_hop.hpp"
+#include "inc/plugins/plugin_reset_agent.hpp"
+#include "inc/plugins/plugin_checkpoints.hpp"
+
 template<size_t ITERS, size_t AGENTS, size_t TRIALS, size_t CYCLES>
 void execute_agent_maze(
         array<array<array<scalar, TRIALS * CYCLES>, AGENTS>, ITERS>& data,
@@ -40,9 +45,10 @@ void execute_agent_maze(
         });
         learners.push_back(learner_maze({worlds.back().size()[0], worlds.back().size()[1], worlds.back().action_no()}));
         plugins.push_back({
-            { new plugin_count_hop<maze::STATE_DIM, maze::ACTION_DIM>() },
-            { new plugin_reset_agent<maze::STATE_DIM, maze::ACTION_DIM>() },
-            { new plugin_SEP<maze::STATE_DIM, maze::ACTION_DIM>() }
+            new plugin_checkpoints<maze::STATE_DIM, maze::ACTION_DIM>(),
+            new plugin_count_hop<maze::STATE_DIM, maze::ACTION_DIM>(),
+            new plugin_SEP<maze::STATE_DIM, maze::ACTION_DIM>(),
+            new plugin_reset_agent<maze::STATE_DIM, maze::ACTION_DIM>(),
         });
     }
     // contains previous hops
@@ -59,16 +65,16 @@ void execute_agent_maze(
         for(size_t i = 0; i < AGENTS; i++) {
             agents[i].wait_to_execute();
             // check things went as expected
-            assert((agents[i].get_plugin<plugin_count_hop<maze::STATE_DIM, maze::ACTION_DIM>>(plugin_count_hop<maze::STATE_DIM, maze::ACTION_DIM>().name())->hops.size() - hop_sures[i]) == CYCLES);
+            assert((agents[i].get_plugin<plugin_count_hop>()->hops.size() - hop_sures[i]) == CYCLES);
             // if az expected? update it
-            hop_sures[i] = agents[i].get_plugin<plugin_count_hop<maze::STATE_DIM, maze::ACTION_DIM>>(plugin_count_hop<maze::STATE_DIM, maze::ACTION_DIM>().name())->hops.size();
+            hop_sures[i] = agents[i].get_plugin<plugin_count_hop>()->hops.size();
         }
         // here we do the combination
-        combine<maze::STATE_DIM, maze::ACTION_DIM>(agents, method, fci_method);
+        combine(agents, method, fci_method);
     }
     // export the collected data
     for(size_t i = 0; i < AGENTS; i++) {
-        auto h = agents[i].get_plugin<plugin_count_hop<maze::STATE_DIM, maze::ACTION_DIM>>(plugin_count_hop<maze::STATE_DIM, maze::ACTION_DIM>().name());
+        auto h = agents[i].get_plugin<plugin_count_hop>();
         assert(h->hops.size() == TRIALS * CYCLES);
         // store the data
         std::copy(h->hops.begin(), h->hops.end(), data[CURRENT_ITER][i].begin());

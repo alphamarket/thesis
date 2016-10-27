@@ -152,11 +152,12 @@ public:
     /**
      * @brief get_plugin Get a pluging by name
      */
-    template<typename T>
-    inline T* get_plugin(const string& plugin) const {
+    template<template <size_t, size_t> class T>
+    inline T<state_dim, action_dim>* get_plugin() const {
+        const string plugin = T<state_dim, action_dim>().name();
         for(size_t i = 0; i < this->_plugins.size(); i++)
             if(this->_plugins[i].first == plugin)
-                return static_cast<T*>(this->_plugins.at(i).second);
+                return static_cast<T<state_dim, action_dim>*>(this->_plugins.at(i).second);
         return nullptr;
     }
     /**
