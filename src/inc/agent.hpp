@@ -43,7 +43,7 @@ protected:
     /**
      * @brief _plugins The plugin map
      */
-    unordered_map<string, plugin<state_dim, action_dim>* const> _plugins;
+    vector<pair<string, plugin<state_dim, action_dim>* const>> _plugins;
 public:
     /**
      * @brief _prev_q Previous Q value
@@ -138,20 +138,35 @@ public:
     /**
      * @brief operator += Adds new pluing
      */
-    inline agent& operator+=(plugin<state_dim, action_dim>* const plugin) { this->_plugins.insert({plugin->name(), plugin}); plugin->notify_add_event(this); return *this; }
+    inline agent& operator+=(plugin<state_dim, action_dim>* const plugin) { this->_plugins.push_back({plugin->name(), plugin}); plugin->notify_add_event(this); return *this; }
     /**
-     * @brief operator += Removes a pluing
+     * @brief operator -= Removes a pluing
      */
-    inline agent& operator-=(const string& plugin) { this->_plugins[plugin].second->notify_add_event(this); this->_plugins.erase(plugin); return *this; }
+    inline agent& operator-=(const string& plugin) {
+        long e = -1;
+        for(size_t i = 0; i < this->_plugins.size(); i++)
+            if(this->_plugins[i].first == plugin) { e = i; break; }
+        if(e >= 0) { this->_plugins[e].second->notify_add_event(this); this->_plugins.erase(e); }
+        return *this;
+    }
     /**
      * @brief get_plugin Get a pluging by name
      */
     template<typename T>
-    inline T* get_plugin(const string& plugin) const { return static_cast<T*>(this->_plugins.at(plugin)); }
+    inline T* get_plugin(const string& plugin) const {
+        for(size_t i = 0; i < this->_plugins.size(); i++)
+            if(this->_plugins[i].first == plugin)
+                return static_cast<T*>(this->_plugins.at(i).second);
+        return nullptr;
+    }
     /**
      * @brief get_plugins Get all of plugins
      */
-    inline unordered_map<string, plugin<state_dim, action_dim>* const> get_plugins() const { return this->_plugins; }
+    inline unordered_map<string, plugin<state_dim, action_dim>* const> get_plugins() const {
+        unordered_map<string, plugin<state_dim, action_dim>* const> out;
+        for(auto i : this->_plugins) out.insert({i.first, i.second});
+        return out;
+    }
     /**
      * @brief execute Executes the agent
      * @param cycle The cycle#
