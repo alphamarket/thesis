@@ -172,22 +172,28 @@ public:
     { return base::operator ()(l); }
 
     template<typename callback>
-    inline void for_each(callback c) { for(size_t i = 0; i < this->num_elements(); i++) c(this->data()[i]); }
+    inline matrix<T, N>& for_each(callback c) { for(size_t i = 0; i < this->num_elements(); i++) c(this->data()[i]); return *this; }
 
     template<typename callback>
-    inline void for_each(callback c) const { for(size_t i = 0; i < this->num_elements(); i++) c(this->data()[i]); }
+    inline matrix<T, N> for_each(callback c) const { for(size_t i = 0; i < this->num_elements(); i++) c(this->data()[i]); return *this; }
 
     template<typename callback>
-    inline void all_of(callback c) { for(size_t i = 0; i < this->num_elements(); i++) if(!c(this->data()[i])) break; }
+    inline matrix<T, N>& all_of(callback c) { for(size_t i = 0; i < this->num_elements(); i++) if(!c(this->data()[i])) break; return *this; }
 
     template<typename callback>
-    inline void all_of(callback c) const { for(size_t i = 0; i < this->num_elements(); i++) if(!c(this->data()[i])) break; }
+    inline matrix<T, N> all_of(callback c) const { for(size_t i = 0; i < this->num_elements(); i++) if(!c(this->data()[i])) break; return *this; }
 
     inline T min() const
     { T x = *this->data(); this->for_each([&x](const auto& i) { if(i < x) x = i; }); return x; }
 
     inline T max() const
     { T x = *this->data(); this->for_each([&x](const auto& i) { if(i > x) x = i; }); return x; }
+
+    inline T sum() const
+    { T x = T(); this->for_each([&x](const auto& i) { x += i; }); return x; }
+
+    inline T mean() const
+    { return this->sum() / this->num_elements(); }
 
     inline matrix<T, N> abs() const
     { matrix<T, N> out = *this; out.for_each([](auto& i) { i = ((i < 0) ? i * -1 : i); }); return out; }

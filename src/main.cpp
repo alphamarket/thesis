@@ -24,6 +24,8 @@ int main(int argc, char** argv) {
 
     auto opt = process_args(argc, argv);
 
+    fprintf(stderr, "Running %zu agents with %zu iterations %zu times....\n", AGENT_COUNT, TRIALS * CYCLES, ITERS);
+
     // ITERS x AGENTS x [TRIALS * CYCLES]
     array<array<array<scalar, TRIALS * CYCLES>, AGENT_COUNT>, ITERS> data;
 
@@ -32,7 +34,7 @@ int main(int argc, char** argv) {
         execute_agent_maze<ITERS, AGENT_COUNT, TRIALS, CYCLES>(
                     data,  iter,
                     opt["beta"].as<scalar>(), opt["gamma"].as<scalar>(), opt["tau"].as<scalar>(),
-                    opt["method"].as<string>(), opt["fci-combine-method"].as<string>()
+                    opt["method"].as<string>(), opt["fci-method"].as<string>()
                 );
 
     // try to average data over AGENTS and ITERs

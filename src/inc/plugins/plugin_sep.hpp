@@ -132,6 +132,17 @@ public:
     void notify_on_event(agent_t* const in) override {
         // don't count the stay-put situations
         if(std::equal(in->_prev_state.begin(), in->_prev_state.end(), in->_current_state.begin())) return;
+        // try to alter the next state/actions with prob. of 4-3 page 36
+        if(frand() < exp(-this->shock.slice(slice<state_dim>(in->_prev_state)).template as<scalar>().mean())) {
+            // pick a random action
+            in->_prev_action = {in->learner->advise_boltzmann(this->sep.slice(in->_prev_state).for_each([](auto& i) { i = 1 / (i + 1); }), .5)};
+            // move the action
+            in->world->make_move(in->_prev_action);
+            // get the reward
+            in->_current_reward = in->world->get_current_block()._value;
+            // get current state for the plugin call
+            in->_current_state = in->world->get_current_state();
+        }
         // update the current path matrix
         this->update_cp(in);
         // update the shock matrix

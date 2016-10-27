@@ -30,11 +30,15 @@ po::variables_map process_args(int argc, char** argv) {
     };
     desc.add_options()
             ("help", "Produces this help message.")
-            ("beta,b", po::value<scalar>()->default_value(.01, ".01")->notifier(prob_checker("beta")), "The learning rate(beta) rate, should be in range of [0,1].")
-            ("gamma,g", po::value<scalar>()->default_value(.9, ".90")->notifier(prob_checker("gamma")), "The discount rate(gamma) rate, should be in range of [0,1].")
-            ("tau,t", po::value<scalar>()->default_value(.4, ".40"), "The temperature rate(gamma) value.")
-            ("greedy-explore-rate,g", po::value<scalar>()->default_value(.2, ".20")->notifier(prob_checker("ger")), "The greedy action picker exploration rate, should be in range of [0,1].")
-            ("fci-combine-method,f", po::value<string>()->default_value("k-mean")->notifier(fci_checker("fci-combine-method")), "The FCI combinator method, could be [k-mean, mean, max].")
+            ("agents", po::value<size_t>()->default_value(1), "The number of agents to run.")
+            ("iters", po::value<size_t>()->default_value(20), "The iterations that the program should run itself.")
+            ("trials", po::value<size_t>()->default_value(200), "The agents' trials at each program iteration.")
+            ("cycles", po::value<size_t>()->default_value(5), "The number of agents learning cycle.")
+            ("beta", po::value<scalar>()->default_value(.01, ".01")->notifier(prob_checker("beta")), "The learning rate(beta) rate, should be in range of [0,1].")
+            ("gamma", po::value<scalar>()->default_value(.9, ".90")->notifier(prob_checker("gamma")), "The discount rate(gamma) rate, should be in range of [0,1].")
+            ("tau", po::value<scalar>()->default_value(.4, ".40"), "The temperature rate(gamma) value.")
+            ("greedy-explore-rate", po::value<scalar>()->default_value(.2, ".20")->notifier(prob_checker("ger")), "The greedy action picker exploration rate, should be in range of [0,1].")
+            ("fci-method", po::value<string>()->default_value("k-mean")->notifier(fci_checker("fci-method")), "The FCI combinator method, could be [k-mean, mean, max].")
             ("method", po::value<string>()->default_value("fci")->notifier(method_checker("method")), "The combiner method, could be [fci, sep].")
         ;
     po::variables_map vm;

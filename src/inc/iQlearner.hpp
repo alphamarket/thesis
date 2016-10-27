@@ -38,12 +38,16 @@ public:
     }
 
     virtual action advise_action_boltzmann(const state& s, const scalar& tau) const {
+        // get current action values
+        return {this->advise_boltzmann(this->get_actions_q(s), tau)};
+    }
+
+    template<typename T, size_t sdim>
+    size_t advise_boltzmann(const matrix<T, sdim>& q, const scalar& tau) const {
         scalar sum = 0;
         size_t index = 0;
         scalar p = frand();
         vector<pair<size_t, scalar>> eq;
-        // get current action values
-        auto q = this->get_actions_q(s);
         // calc the exp(Q/tau)
         foreach_elem(act, q) {
             auto pp = make_pair(index++, exp(act / tau));
@@ -57,7 +61,7 @@ public:
         // sort in ascending order
         sort(eq.begin(), eq.end(), [](auto i, auto j) { return i.second < j.second; });
         // find the probed index
-        sum = 0; foreach_elem(e, eq) { if(p < sum + e.second) return {e.first}; sum += e.second; }
+        sum = 0; foreach_elem(e, eq) { if(p < sum + e.second) return e.first; sum += e.second; }
         // we never should reach this line!
         throw runtime_error("The PC should not reach this!");
     }

@@ -23,17 +23,22 @@ void execute_agent_maze(
         const string& method,
         const string& fci_method) {
     vector<maze> worlds;
-    vector<agent<2, 1>> agents;
     vector<learner_maze> learners;
-    vector<vector<plugin<2, 1>*>> plugins;
+    vector<agent<maze::STATE_DIM, maze::ACTION_DIM>> agents;
+    vector<vector<plugin<maze::STATE_DIM, maze::ACTION_DIM>*>> plugins;
+    auto norm = [](const state_t<2>& i, const state_t<2>& j) { return sqrt(pow(i[0] - j[0], 2) + pow(i[1] - j[1], 2)); };
+    // define new values for each agent
     for(size_t i = 0; i < AGENTS; i++) {
         worlds.push_back(maze({6, 6}));
-        worlds.back().define_values({
-            // define a goal
+        vector<pair<state_t<2>, block>> _goals = {
             {{1, 5}, block(10, 1, 1)},
             {{3, 5}, block(10, 1, 1)},
             {{5, 0}, block(10, 1, 1)},
-            // define walls
+        };
+        // define a goal
+        worlds.back().define_values(_goals);
+        // define walls
+        worlds.back().define_values({
             {{1, 0}, block(-1, 0, 0)},
             {{1, 1}, block(-1, 0, 0)},
             {{1, 2}, block(-1, 0, 0)},
@@ -43,13 +48,26 @@ void execute_agent_maze(
             {{4, 3}, block(-1, 0, 0)},
             {{4, 4}, block(-1, 0, 0)},
         });
+        for(auto ii : worlds.back().get_maze().list_indices()) {
+            block* b = &worlds.back().get_maze()(ii);
+            if(b->_value == 0) {
+                scalar _min = numeric_limits<scalar>::infinity();
+                for(auto g : _goals) _min = min(norm(g.first, ii), _min);
+                b->_value = 1 / _min;
+            }
+        }
+        // define the new learner
         learners.push_back(learner_maze({worlds.back().size()[0], worlds.back().size()[1], worlds.back().action_no()}));
+        // add default plugins
         plugins.push_back({
             new plugin_checkpoints<maze::STATE_DIM, maze::ACTION_DIM>(),
-            new plugin_count_hop<maze::STATE_DIM, maze::ACTION_DIM>(),
-            new plugin_SEP<maze::STATE_DIM, maze::ACTION_DIM>(),
-            new plugin_reset_agent<maze::STATE_DIM, maze::ACTION_DIM>(),
+            new plugin_count_hop<maze::STATE_DIM, maze::ACTION_DIM>()
         });
+        // if plugin SEP requested?
+        if(method == "sep")
+            plugins.back().push_back(new plugin_SEP<maze::STATE_DIM, maze::ACTION_DIM>());
+        // needs to be added after plugin_SEP
+        plugins.back().push_back(new plugin_reset_agent<maze::STATE_DIM, maze::ACTION_DIM>());
     }
     // contains previous hops
     array<size_t, AGENTS> hop_sures;

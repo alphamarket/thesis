@@ -138,7 +138,8 @@ public:
     /**
      * @brief operator += Adds new pluing
      */
-    inline agent& operator+=(plugin<state_dim, action_dim>* const plugin) { this->_plugins.push_back({plugin->name(), plugin}); plugin->notify_add_event(this); return *this; }
+    inline agent& operator+=(plugin<state_dim, action_dim>* const plugin)
+    { this->_plugins.push_back({plugin->name(), plugin}); plugin->notify_add_event(this); return *this; }
     /**
      * @brief operator -= Removes a pluing
      */
