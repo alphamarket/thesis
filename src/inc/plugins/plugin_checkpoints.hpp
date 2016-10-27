@@ -9,8 +9,10 @@ __DEFINE_PLUGIN__(checkpoints) {
     string name() const override { return "plugin_checkpoints"; }
 
     void notify_on_event(agent_t* const in) override {
-        assert(!in->world->get_maze()(in->_prev_state)._is_terminal);
-        assert(in->world->get_maze()(in->_current_state)._is_moveable);
+        if(in) {
+            assert(!in->world->get_maze()(in->_prev_state)._is_terminal);
+            assert(in->world->get_maze()(in->_current_state)._is_moveable);
+        } else raise_error("didn't expect that the agent's pointer be null!");
     }
 };
 

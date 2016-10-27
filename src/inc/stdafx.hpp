@@ -8,9 +8,9 @@
 #endif
 
 #ifdef __GNUC__
-#   define __unused __attribute__((unused))
+#   define unused __attribute__((unused))
 #else
-#   define __unused
+#   define unused
 #endif
 
 #if __cplusplus < 201400

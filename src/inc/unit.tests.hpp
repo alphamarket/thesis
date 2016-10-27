@@ -82,7 +82,7 @@ void test_world_maze() {
         {maze::RIGHT, {1, 2}}
     };
     // test the valid movements
-    foreach_elem(a, actions) {
+    foreach_elem(unused a, actions) {
         assert(m.make_move({a.first}) == 0);
         assert(m.get_current_state() == a.second);
         m.set_current_state(defstate);
@@ -103,11 +103,11 @@ void test_world_maze() {
 }
 
 void test_qleaner() {
-    const scalar
+    const unused scalar
         beta = .1,
         gamma = .9,
         reward = 1.;
-    learner_maze ql({2, 2, 4});
+    unused learner_maze ql({2, 2, 4});
     assert(ql.update({0, 0}, {0}, {1, 0}, reward, beta, gamma) == 0.1);
     assert(ql.update({0, 0}, {0}, {1, 0}, reward, beta, gamma) == 0.19);
     assert(ql.update({1, 0}, {2}, {1, 1}, reward, beta, gamma) == 0.1);
