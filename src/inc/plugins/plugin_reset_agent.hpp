@@ -11,6 +11,11 @@ __DEFINE_PLUGIN__(reset_agent) {
 public:
     string name() const override { return "plugin_reset_agent"; }
 
+    plugin_reset_agent()
+    { flag_workflow(); }
+    /**
+     * @brief notify_init_event resets the agent's location at the proper location at the begining of each learning cycle
+     */
     void notify_init_event(agent_t* const in) override
     {
         size_t i = in->world->get_maze().num_elements();

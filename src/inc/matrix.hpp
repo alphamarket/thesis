@@ -202,6 +202,12 @@ public:
     inline T norm2() const
     { T x = T(); this->for_each([&x](const auto& i) { x += i * i; }); return x; }
 
+    inline std::vector<T> to_vector() const
+    { std::vector<T> out; this->for_each([&out](const auto& i) { out.push_back(i); }); return out; }
+    /**
+     * @brief slice Get a copy matrix of sliced elements
+     * @param indices Whatever element that it's indexing starts with this given indices will be returned
+     */
     template<size_t S>
     matrix<T, N - S> slice(const std::array<size_t, S>& indices) const {
         size_t start = 0;
@@ -216,7 +222,10 @@ public:
         out.for_each([&](auto& i) { i = this->data()[start++]; });
         return out;
     }
-
+    /**
+     * @brief slice Get a reference matrix of sliced elements
+     * @param indices Whatever element that it's indexing starts with this given indices will be returned
+     */
     template<size_t S>
     matrix<T*, N - S> slice_ref(const std::array<size_t, S>& indices) {
         size_t start = 0;
@@ -231,7 +240,9 @@ public:
         out.for_each([&](auto& i) { i = &(this->data()[start++]); });
         return out;
     }
-
+    /**
+     * @brief list_indices Lists all elements' index dimensional independent
+     */
     template<size_t sub_dim = N>
     std::vector<std::array<size_t, sub_dim>> list_indices() {
         // fetch the total # of states that are exist

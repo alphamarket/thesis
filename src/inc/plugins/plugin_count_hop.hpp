@@ -11,6 +11,9 @@ __DEFINE_PLUGIN__(count_hop) {
 public:
     vector<size_t> hops;
 
+    plugin_count_hop()
+    { flag_workflow(); }
+
     string name() const override { return "plugin_count_hop"; }
 
     void notify_init_event(agent_t* const) override

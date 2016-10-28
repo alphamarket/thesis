@@ -63,7 +63,7 @@ public:
         // find the probed index
         sum = 0; for(auto e : eq) { if(p < sum + e.second) return e.first; sum += e.second; }
         // we never should reach this line!
-        throw runtime_error("The PC should not reach this!");
+        raise_error("The PC should not reach this!");
     }
 
     template<size_t ss, size_t aa>

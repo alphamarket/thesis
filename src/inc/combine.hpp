@@ -3,8 +3,10 @@
 
 #include "stdafx.hpp"
 
+#include "fci.hpp"
 #include "agent.hpp"
 #include "plugins/plugin_sep.hpp"
+#include "plugins/plugin_reference_counter.hpp"
 
 #include <unordered_map>
 
@@ -14,13 +16,19 @@ public:
     template<size_t state_dim, size_t action_dim>
     combine(vector<agent<state_dim, action_dim>>& agents, const string& method, const string& second_method)
     {
+        flag_workflow();
         assert(agents.size() != 0);
         if(method == "sep") this->sep_combiner(agents);
         else if(method == "fci") this->fci_combiner(agents, second_method);
         else raise_error("Undefined method# " + method);
     }
+protected:
+    /**
+     * @brief The SEP combiner
+     */
     template<size_t state_dim, size_t action_dim>
     void sep_combiner(vector<agent<state_dim, action_dim>>& agents, const string& = "") {
+        flag_workflow();
         for_each(agents.begin(), agents.end(), [](const auto& a) {
             if(a.template get_plugin<plugin_SEP>() == nullptr)
                 raise_error("The `plugin_SEP` not found!");
@@ -89,9 +97,77 @@ public:
             }
         }
     }
+    /**
+     * @brief The FCI method combiner
+     */
     template<size_t state_dim, size_t action_dim>
-    void fci_combiner(vector<agent<state_dim, action_dim>>&, const string& = "")  {
+    void fci_combiner(vector<agent<state_dim, action_dim>>& agents, const string& method = "")  {
+        flag_workflow();
+        for_each(agents.begin(), agents.end(), [](const auto& a) {
+            if(a.template get_plugin<plugin_reference_counter>() == nullptr)
+                raise_error("The `plugin_SEP` not found!");
+        });
+        vector<matrix<size_t, state_dim>*> refs;
+        vector<matrix<scalar, state_dim + action_dim>*> Qs;
+        plugin_reference_counter<state_dim, action_dim>* refmat = nullptr;
+        matrix<scalar, state_dim + action_dim> QCO(agents.front().learner->Q.size());
+        for(size_t i = 0; i < agents.size(); i++) {
+            refmat = agents[i].template get_plugin<plugin_reference_counter>();
+            refs.push_back(&refmat->refmat);
+            Qs.push_back(&agents[i].learner->Q);
+        }
+        // combiner methods manifest
+        unordered_map<string, fci_combiner_func_t> method_manifest = {
+            {"", fci::combiner_k_mean},
+            {"max", fci::combiner_max},
+            {"mean", fci::combiner_mean},
+            {"k-mean", fci::combiner_k_mean},
+        };
+        if(!method_manifest.count(method))
+            raise_error("undefined fci method `"+method+"`");
 
+        // fetch the combiner methone
+        auto combine_method = method_manifest.at(method);
+
+        // get all states indices
+        auto li = QCO.template list_indices<state_dim>();
+        // foreach state
+        for(auto ii : li) {
+            auto ss = refmat->ref_state(ii);
+            vector<scalar> factors;
+            // compute the impact factors of each agant
+            {
+                matrix1D_t<size_t> aref({ agents.size() });
+                size_t k = 0;
+                for(auto r : refs) aref[k++] = (r->operator()(ss) + 1);
+                factors = ((aref.normalize() * -1) + 1).to_vector();
+            }
+            assert(factors.size() == agents.size());
+            // Q value for every actions of current state of all agents
+            vector<vector<scalar>> qa;
+            for(auto q : Qs) qa.push_back(q->slice(ii).to_vector());
+            size_t k = 0;
+            // for each action in this state
+            QCO.slice_ref(ii).for_each([&k, &qa, &factors, &combine_method](auto* i) {
+                vector<scalar> q;
+                for(auto qq : qa) q.push_back(qq[k]);
+                // now we have:
+                //      Q value for current state/action/agent  [q]
+                //      Ref value for current state/agent       [factors]
+                // calculate the combined value for current state/action
+                *i = fci::combine(q, factors, combine_method);
+                assert(!isnan(*i));
+                k += 1;
+            });
+        }
+        size_t k = 0;
+        // copy the Q table to all agents
+        QCO.for_each([&k, &Qs](const auto& i){
+            for(auto q : Qs)
+                q->data()[k] = i;
+            k += 1;
+        });
+        assert(k == QCO.num_elements());
     }
 };
 

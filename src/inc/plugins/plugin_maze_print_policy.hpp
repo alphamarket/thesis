@@ -11,6 +11,9 @@ __DEFINE_MAZE_PLUGIN__(print_policy) {
 public:
     string name() const override { return "plugin_print_policy"; }
 
+    plugin_maze_print_policy()
+    { flag_workflow(); }
+
     void notify_exit_event(agent_t* const in) override {
         auto p = in->learner->get_policy();
         cerr << "------------------" << endl;

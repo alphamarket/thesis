@@ -35,7 +35,8 @@ int main(int argc, char** argv) {
                     data,  iter,
                     AGENT_COUNT, TRIALS, CYCLES,
                     opt["beta"].as<scalar>(), opt["gamma"].as<scalar>(), opt["tau"].as<scalar>(),
-                    opt["method"].as<string>(), opt["fci-method"].as<string>()
+                    opt["method"].as<string>(), opt["fci-method"].as<string>(),
+                    opt["refmat-grind"].as<size_t>()
                 );
 
     // try to average data over AGENTS and ITERs

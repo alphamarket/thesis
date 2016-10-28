@@ -111,6 +111,9 @@ private:
 public:
     string name() const override { return "plugin_SEP"; }
 
+    plugin_SEP()
+    { flag_workflow(); }
+
     void notify_deinit_event(agent_t* const in) override
     { this->update_sep(in); }
 

@@ -29,9 +29,13 @@ HEADERS += inc/colormod.hpp inc/stdafx.hpp \
     inc/plugins/plugin_count_hop.hpp \
     inc/plugins/plugin_sep.hpp \
     inc/plugins/plugin_checkpoints.hpp \
-    inc/unit.tests.hpp
+    inc/unit.tests.hpp \
+    inc/fci.hpp \
+    inc/plugins/plugin_reference_counter.hpp
 SOURCES += main.cpp \
     src/execute.agent.maze.cpp \
     src/learner.maze.cpp \
     src/main.extend.cpp \
-    src/unit.tests.cpp
+    src/unit.tests.cpp \
+    src/fci.cpp \
+    src/stdafx.cpp

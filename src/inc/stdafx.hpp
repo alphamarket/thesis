@@ -60,6 +60,9 @@ typedef double scalar;
 #   endif
 #endif
 
+void flag_pass(const string& s);
+
+#define flag_workflow() flag_pass("> " + string(__FUNCTION__))
 #define raise_error(s) throw runtime_error("[" + string(__FUNCTION__) + "] " + s)
 
 #include "state.hpp"

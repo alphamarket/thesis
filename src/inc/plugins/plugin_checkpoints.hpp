@@ -6,6 +6,10 @@
 __DEFINE_PLUGIN__(checkpoints) {
     __PLUGIN_COMMONS__
 
+public:
+    plugin_checkpoints()
+    { flag_workflow(); }
+
     string name() const override { return "plugin_checkpoints"; }
 
     void notify_on_event(agent_t* const in) override {

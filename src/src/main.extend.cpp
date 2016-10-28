@@ -30,6 +30,7 @@ po::variables_map process_args(int argc, char** argv) {
             ("iters", po::value<size_t>()->default_value(20), "The iterations that the program should run itself.")
             ("trials", po::value<size_t>()->default_value(200), "The agents' trials at each program iteration.")
             ("cycles", po::value<size_t>()->default_value(5), "The number of agents learning cycle.")
+            ("refmat-grind", po::value<size_t>()->default_value(3), "The grind value of fci method.")
             ("beta", po::value<scalar>()->default_value(.01, ".01")->notifier(prob_checker("beta")), "The learning rate(beta) rate, should be in range of [0,1].")
             ("gamma", po::value<scalar>()->default_value(.9, ".90")->notifier(prob_checker("gamma")), "The discount rate(gamma) rate, should be in range of [0,1].")
             ("tau", po::value<scalar>()->default_value(.4, ".40"), "The temperature rate(gamma) value.")

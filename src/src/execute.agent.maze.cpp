@@ -10,7 +10,8 @@ void execute_agent_maze(
         const scalar& gamma,
         const scalar& tau,
         const string& method,
-        const string& fci_method) {
+        const string& fci_method,
+        const size_t& grind) {
     vector<maze> worlds;
     vector<learner_maze> learners;
     vector<agent<maze::STATE_DIM, maze::ACTION_DIM>> agents;
@@ -55,6 +56,8 @@ void execute_agent_maze(
         // if plugin SEP requested?
         if(method == "sep")
             plugins.back().push_back(new plugin_SEP<maze::STATE_DIM, maze::ACTION_DIM>());
+        if(method == "fci")
+            plugins.back().push_back(new plugin_reference_counter<maze::STATE_DIM, maze::ACTION_DIM>(grind));
         // needs to be added after plugin_SEP
         plugins.back().push_back(new plugin_reset_agent<maze::STATE_DIM, maze::ACTION_DIM>());
     }
