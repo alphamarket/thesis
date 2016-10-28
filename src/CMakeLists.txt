@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.6)
 SET(CMAKE_CXX_FLAGS "-std=c++14 -pthread")
 
 project(THESIS)
-set(CMAKE_BUILD_TYPE Debug)
+set(CMAKE_BUILD_TYPE Release)
 
 find_program(CCACHE_FOUND ccache)
 if(CCACHE_FOUND)
