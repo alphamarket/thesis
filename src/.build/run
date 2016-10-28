@@ -1,2 +1,0 @@
-#!/bin/bash
-clear && cmake -DCMAKE_BUILD_TYPE=Release .. && make -j8 && ./thesis
