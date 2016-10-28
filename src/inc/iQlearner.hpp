@@ -49,7 +49,7 @@ public:
         scalar p = frand();
         vector<pair<size_t, scalar>> eq;
         // calc the exp(Q/tau)
-        foreach_elem(act, q) {
+        for(auto act : q) {
             auto pp = make_pair(index++, exp(act / tau));
             eq.push_back(pp);
             sum += eq.back().second;
@@ -57,11 +57,11 @@ public:
         // if the sum is inf, assign the biggest value possible to be able to proceed
         sum = min(sum, numeric_limits<scalar>::max());
         // normalize them
-        foreach_elem(&e, eq) e.second /= sum;
+        for(auto &e : eq) e.second /= sum;
         // sort in ascending order
         sort(eq.begin(), eq.end(), [](auto i, auto j) { return i.second < j.second; });
         // find the probed index
-        sum = 0; foreach_elem(e, eq) { if(p < sum + e.second) return e.first; sum += e.second; }
+        sum = 0; for(auto e : eq) { if(p < sum + e.second) return e.first; sum += e.second; }
         // we never should reach this line!
         throw runtime_error("The PC should not reach this!");
     }

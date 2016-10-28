@@ -16,7 +16,6 @@ HEADERS += inc/colormod.hpp inc/stdafx.hpp \
     inc/agent.hpp \
     inc/state.hpp \
     inc/world.maze.hpp \
-    inc/unit.tests.hpp \
     inc/iQlearner.hpp \
     inc/iWorld.hpp \
     inc/learner.maze.hpp \
@@ -29,5 +28,10 @@ HEADERS += inc/colormod.hpp inc/stdafx.hpp \
     inc/plugins/plugin_reset_agent.hpp \
     inc/plugins/plugin_count_hop.hpp \
     inc/plugins/plugin_sep.hpp \
-    inc/plugins/plugin_checkpoints.hpp
-SOURCES += main.cpp
+    inc/plugins/plugin_checkpoints.hpp \
+    inc/unit.tests.hpp
+SOURCES += main.cpp \
+    src/execute.agent.maze.cpp \
+    src/learner.maze.cpp \
+    src/main.extend.cpp \
+    src/unit.tests.cpp

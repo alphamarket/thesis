@@ -54,7 +54,7 @@ public:
     virtual inline block get_current_block() const { return this->_maze[this->_state[0]][this->_state[1]]; }
 
     virtual inline void define_values(const vector<pair<state_t<state_dim>, block>>& values)
-    { foreach_elem(&psb, values) this->_maze[psb.first[0]][psb.first[1]] = psb.second; }
+    { for(auto &psb : values) this->_maze[psb.first[0]][psb.first[1]] = psb.second; }
 
 public:
 

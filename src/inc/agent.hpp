@@ -80,13 +80,13 @@ protected:
      */
     void pluging_execute(const size_t phase) {
         switch(phase) {
-        case PHASE_INIT: foreach_elem(p, this->_plugins) p.second->notify_init_event(this); return;
-        case PHASE_PRE: foreach_elem(p, this->_plugins) p.second->notify_pre_event(this); return;
-        case PHASE_ON: foreach_elem(p, this->_plugins) p.second->notify_on_event(this); return;
-        case PHASE_POST: foreach_elem(p, this->_plugins) p.second->notify_post_event(this); return;
-        case PHASE_DEINIT: foreach_elem(p, this->_plugins) p.second->notify_deinit_event(this); return;
-        case PHASE_ENTER: foreach_elem(p, this->_plugins) p.second->notify_enter_event(this); return;
-        case PHASE_EXIT: foreach_elem(p, this->_plugins) p.second->notify_exit_event(this); return;
+        case PHASE_INIT: for(auto p : this->_plugins) p.second->notify_init_event(this); return;
+        case PHASE_PRE: for(auto p : this->_plugins) p.second->notify_pre_event(this); return;
+        case PHASE_ON: for(auto p : this->_plugins) p.second->notify_on_event(this); return;
+        case PHASE_POST: for(auto p : this->_plugins) p.second->notify_post_event(this); return;
+        case PHASE_DEINIT: for(auto p : this->_plugins) p.second->notify_deinit_event(this); return;
+        case PHASE_ENTER: for(auto p : this->_plugins) p.second->notify_enter_event(this); return;
+        case PHASE_EXIT: for(auto p : this->_plugins) p.second->notify_exit_event(this); return;
         default: raise_error("Undefined phase#" + to_string(phase));
         }
     }

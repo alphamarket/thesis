@@ -1,6 +1,7 @@
 #ifndef MATRIX_HPP
 #define MATRIX_HPP
 
+#include <array>
 #include <vector>
 #include <ostream>
 #include <algorithm>
@@ -284,7 +285,7 @@ template<class T>
 using matrix4D_t = matrixND_t<T, 4>;
 
 template<size_t T>
-using slice = array<size_t, T>;
+using slice = std::array<size_t, T>;
 
 using boost::indices;
 typedef boost::multi_array_types::index_range range;

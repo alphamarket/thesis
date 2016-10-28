@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.6)
 SET(CMAKE_CXX_FLAGS "-std=c++14 -pthread")
 
 project(THESIS)
+set(CMAKE_BUILD_TYPE Release)
 
 find_program(CCACHE_FOUND ccache)
 if(CCACHE_FOUND)
@@ -19,7 +20,7 @@ foreach (_headerFile ${IHEADER})
 endforeach()
 list(REMOVE_DUPLICATES IINCLUDE_DIRS)
 
-include_directories(${IINCLUDE_DIRS} "." "/usr/include/eigen3")
+include_directories(${IINCLUDE_DIRS} ".")
 
 add_executable (thesis main.cpp ${ISOURCES})
 
