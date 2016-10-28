@@ -4,6 +4,11 @@ SET(CMAKE_CXX_FLAGS "-std=c++14 -pthread")
 
 project(THESIS)
 
+find_program(CCACHE_FOUND ccache)
+if(CCACHE_FOUND)
+    SET(CMAKE_CXX_COMPILER_LAUNCHER "ccache")
+endif(CCACHE_FOUND)
+
 file(GLOB_RECURSE ISOURCES "src/*.cpp")
 file(GLOB_RECURSE IHEADER "inc/*.hpp" "inc/*.h")
 
