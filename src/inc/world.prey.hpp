@@ -25,10 +25,7 @@ public:
 
     hunter_prey()
         : base({17}, 16)
-    {
-        this->set_hunter_location({ scalar(get_rand(0, size_t(this->_grid_size[0]))) + frand(), scalar(get_rand(0, size_t(this->_grid_size[1]))) + frand() });
-        this->set_prey_location({ scalar(get_rand(0, size_t(this->_grid_size[0]))) + frand(), scalar(get_rand(0, size_t(this->_grid_size[1]))) + frand() });
-    }
+    { this->set_random_state(); }
 
     inline void set_prey_location(array<scalar, 2> _loc) { this->_loc_prey = _loc; this->update_current_state(); }
     inline void set_hunter_location(array<scalar, 2> _loc) { this->_loc_hunter = _loc; this->update_current_state(); }
@@ -63,9 +60,10 @@ public:
         return s[move[0]];
     }
 
-
-    inline state_t<1> get_random_state() const
-    { return {get_rand(0, this->size()[0])}; }
+    inline void set_random_state() {
+        this->set_hunter_location({ scalar(get_rand(0, size_t(this->_grid_size[0]))) + frand(), scalar(get_rand(0, size_t(this->_grid_size[1]))) + frand() });
+        this->set_prey_location({ scalar(get_rand(0, size_t(this->_grid_size[0]))) + frand(), scalar(get_rand(0, size_t(this->_grid_size[1]))) + frand() });
+    }
 };
 
 #endif // PREY_H

@@ -20,11 +20,9 @@ public:
     {
         size_t i = in->world->get_maze().num_elements();
         while(i--) {
-            auto s = in->world->get_random_state();
-            if(!in->world->get_maze()(s)._is_terminal && in->world->get_maze()(s)._is_moveable) {
-                in->world->set_current_state(s);
+            in->world->set_random_state();
+            if(!in->world->get_current_block()._is_terminal && in->world->get_current_block()._is_moveable)
                 return;
-            }
         }
         raise_error("Timeout on setting the agent at right position!");
     }
