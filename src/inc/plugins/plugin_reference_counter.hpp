@@ -59,6 +59,8 @@ public:
      */
     void notify_add_event(agent_t* const in) {
         this->_dim = this->arr_divide(in->learner->Q.size(), this->_grind);
+        // a safety incremanet on dimensions
+        for(auto &d : this->_dim) d += 1;
         this->_recall.resize(this->_dim);
         this->refmat.resize(this->_dim);
         this->_recall = 0;
