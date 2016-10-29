@@ -12,6 +12,7 @@ void execute_agent_maze(
         const string& method,
         const string& fci_method,
         const size_t& grind) {
+    flag_workflow();
     vector<maze> worlds;
     vector<learner_maze> learners;
     vector<agent<maze::STATE_DIM, maze::ACTION_DIM>> agents;

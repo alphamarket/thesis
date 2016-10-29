@@ -33,7 +33,8 @@ HEADERS += inc/colormod.hpp inc/stdafx.hpp \
     inc/fci.hpp \
     inc/plugins/plugin_reference_counter.hpp \
     inc/world.prey.hpp \
-    inc/execute.agent.prey.hpp
+    inc/execute.agent.prey.hpp \
+    inc/learner.hunter.hpp
 SOURCES += main.cpp \
     src/execute.agent.maze.cpp \
     src/learner.maze.cpp \
@@ -42,4 +43,5 @@ SOURCES += main.cpp \
     src/fci.cpp \
     src/stdafx.cpp \
     src/world.prey.cpp \
-    src/execute.agent.prey.cpp
+    src/execute.agent.prey.cpp \
+    src/learner.hunter.cpp

@@ -24,7 +24,7 @@ public:
     enum moves { m0_05 = 0, m0_10, m45_05, m45_10, m90_05, m90_10, m135_05, m135_10, m180_05, m180_10, m225_05, m225_10, m270_05, m270_10, m315_05, m315_10 };
 
     hunter_prey()
-        : base({STATE_NO}, ACTIONS_NO)
+        : base({17}, 16)
     {
         this->set_hunter_location({ scalar(get_rand(0, size_t(this->_grid_size[0]))) + frand(), scalar(get_rand(0, size_t(this->_grid_size[1]))) + frand() });
         this->set_prey_location({ scalar(get_rand(0, size_t(this->_grid_size[0]))) + frand(), scalar(get_rand(0, size_t(this->_grid_size[1]))) + frand() });
