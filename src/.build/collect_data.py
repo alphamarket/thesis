@@ -2,33 +2,34 @@
 import os
 
 iters = 20;
+env = "prey";
 trials = 200;
 
 # collecting with different configs
 configs = [
-	['--method fci --fci-method max --refmat-grind 1', '../data/fci_max_1'],
-	['--method fci --fci-method max --refmat-grind 2', '../data/fci_max_2'],
-	['--method fci --fci-method max --refmat-grind 3', '../data/fci_max_3'],
-	['--method fci --fci-method max --refmat-grind 4', '../data/fci_max_4'],
-	['--method fci --fci-method max --refmat-grind 5', '../data/fci_max_5'],
-	['--method fci --fci-method max --refmat-grind 6', '../data/fci_max_6'],
+	['--env %s --method fci --fci-method max --refmat-grind 1' %env, '../data/%s/fci_max_1' %env],
+	['--env %s --method fci --fci-method max --refmat-grind 2' %env, '../data/%s/fci_max_2' %env],
+	['--env %s --method fci --fci-method max --refmat-grind 3' %env, '../data/%s/fci_max_3' %env],
+	['--env %s --method fci --fci-method max --refmat-grind 4' %env, '../data/%s/fci_max_4' %env],
+	['--env %s --method fci --fci-method max --refmat-grind 5' %env, '../data/%s/fci_max_5' %env],
+	['--env %s --method fci --fci-method max --refmat-grind 6' %env, '../data/%s/fci_max_6' %env],
 
-	['--method fci --fci-method mean --refmat-grind 1', '../data/fci_mean_1'],
-	['--method fci --fci-method mean --refmat-grind 2', '../data/fci_mean_2'],
-	['--method fci --fci-method mean --refmat-grind 3', '../data/fci_mean_3'],
-	['--method fci --fci-method mean --refmat-grind 4', '../data/fci_mean_4'],
-	['--method fci --fci-method mean --refmat-grind 5', '../data/fci_mean_5'],
-	['--method fci --fci-method mean --refmat-grind 6', '../data/fci_mean_6'],
+	['--env %s --method fci --fci-method mean --refmat-grind 1' %env, '../data/%s/fci_mean_1' %env],
+	['--env %s --method fci --fci-method mean --refmat-grind 2' %env, '../data/%s/fci_mean_2' %env],
+	['--env %s --method fci --fci-method mean --refmat-grind 3' %env, '../data/%s/fci_mean_3' %env],
+	['--env %s --method fci --fci-method mean --refmat-grind 4' %env, '../data/%s/fci_mean_4' %env],
+	['--env %s --method fci --fci-method mean --refmat-grind 5' %env, '../data/%s/fci_mean_5' %env],
+	['--env %s --method fci --fci-method mean --refmat-grind 6' %env, '../data/%s/fci_mean_6' %env],
 
-	['--method fci --fci-method k-mean --refmat-grind 1', '../data/fci_k-mean_1'],
-	['--method fci --fci-method k-mean --refmat-grind 2', '../data/fci_k-mean_2'],
-	['--method fci --fci-method k-mean --refmat-grind 3', '../data/fci_k-mean_3'],
-	['--method fci --fci-method k-mean --refmat-grind 4', '../data/fci_k-mean_4'],
-	['--method fci --fci-method k-mean --refmat-grind 5', '../data/fci_k-mean_5'],
-	['--method fci --fci-method k-mean --refmat-grind 6', '../data/fci_k-mean_6'],
+	['--env %s --method fci --fci-method k-mean --refmat-grind 1' %env, '../data/%s/fci_k-mean_1' %env],
+	['--env %s --method fci --fci-method k-mean --refmat-grind 2' %env, '../data/%s/fci_k-mean_2' %env],
+	['--env %s --method fci --fci-method k-mean --refmat-grind 3' %env, '../data/%s/fci_k-mean_3' %env],
+	['--env %s --method fci --fci-method k-mean --refmat-grind 4' %env, '../data/%s/fci_k-mean_4' %env],
+	['--env %s --method fci --fci-method k-mean --refmat-grind 5' %env, '../data/%s/fci_k-mean_5' %env],
+	['--env %s --method fci --fci-method k-mean --refmat-grind 6' %env, '../data/%s/fci_k-mean_6' %env],
 
-	['--method sep', '../data/sep'],
-	['--method il', '../data/il'],
+	['--env %s --method sep' %env, '../data/%s/sep' %env],
+	['--env %s --method il' %env, '../data/%s/il' %env],
 ];
 
 
