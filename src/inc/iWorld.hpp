@@ -50,11 +50,11 @@ public:
 
     virtual inline bool is_terminated() const { return this->get_current_block()._is_terminal; }
 
-    virtual inline block& get_current_block() { return this->_maze[this->_state[0]][this->_state[1]]; }
-    virtual inline block get_current_block() const { return this->_maze[this->_state[0]][this->_state[1]]; }
+    virtual inline block& get_current_block() { return this->_maze(this->_state); }
+    virtual inline block get_current_block() const { return this->_maze(this->_state); }
 
     virtual inline void define_values(const vector<pair<state_t<state_dim>, block>>& values)
-    { for(auto &psb : values) this->_maze[psb.first[0]][psb.first[1]] = psb.second; }
+    { for(auto &psb : values) this->_maze(psb.first) = psb.second; }
 
 public:
 

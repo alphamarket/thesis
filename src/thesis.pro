@@ -31,11 +31,15 @@ HEADERS += inc/colormod.hpp inc/stdafx.hpp \
     inc/plugins/plugin_checkpoints.hpp \
     inc/unit.tests.hpp \
     inc/fci.hpp \
-    inc/plugins/plugin_reference_counter.hpp
+    inc/plugins/plugin_reference_counter.hpp \
+    inc/world.prey.hpp \
+    inc/execute.agent.prey.hpp
 SOURCES += main.cpp \
     src/execute.agent.maze.cpp \
     src/learner.maze.cpp \
     src/main.extend.cpp \
     src/unit.tests.cpp \
     src/fci.cpp \
-    src/stdafx.cpp
+    src/stdafx.cpp \
+    src/world.prey.cpp \
+    src/execute.agent.prey.cpp

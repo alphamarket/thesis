@@ -2,6 +2,7 @@
 #include "inc/unit.tests.hpp"
 #include "inc/main.extend.hpp"
 #include "inc/execute.agent.maze.hpp"
+#include "inc/execute.agent.prey.hpp"
 
 /**
  * @brief main The main entry of program
@@ -31,13 +32,22 @@ int main(int argc, char** argv) {
 
     // execute for each iteration and collect the data
     for(size_t iter = 0; iter < ITERS; iter++)
-        execute_agent_maze(
-                    data,  iter,
-                    AGENT_COUNT, TRIALS, CYCLES,
-                    opt["beta"].as<scalar>(), opt["gamma"].as<scalar>(), opt["tau"].as<scalar>(),
-                    opt["method"].as<string>(), opt["fci-method"].as<string>(),
-                    opt["refmat-grind"].as<size_t>()
-                );
+        if(opt["env"].as<string>() == "maze")
+            execute_agent_maze(
+                        data,  iter,
+                        AGENT_COUNT, TRIALS, CYCLES,
+                        opt["beta"].as<scalar>(), opt["gamma"].as<scalar>(), opt["tau"].as<scalar>(),
+                        opt["method"].as<string>(), opt["fci-method"].as<string>(),
+                        opt["refmat-grind"].as<size_t>()
+                    );
+        else
+            execute_agent_prey(
+                        data,  iter,
+                        AGENT_COUNT, TRIALS, CYCLES,
+                        opt["beta"].as<scalar>(), opt["gamma"].as<scalar>(), opt["tau"].as<scalar>(),
+                        opt["method"].as<string>(), opt["fci-method"].as<string>(),
+                        opt["refmat-grind"].as<size_t>()
+                    );
 
     // try to average data over AGENTS and ITERs
     matrix1D_t<scalar> avg_data({TRIALS * CYCLES});

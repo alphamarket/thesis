@@ -7,8 +7,6 @@ class maze : public IWorld<2, 1>
 {
     const size_t ACTIONS_NO = 4;
 
-    matrix2D_t<block> _maze;
-
 public:
     enum moves { UP = 0, RIGHT, DOWN, LEFT };
 

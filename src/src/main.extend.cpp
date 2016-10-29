@@ -24,6 +24,13 @@ po::variables_map process_args(int argc, char** argv) {
                 throw po::validation_error(po::validation_error::invalid_option_value, opt_name, v);
         };
     };
+    auto env_checker = [](char const * const opt_name) {
+        return [opt_name](const string& v) {
+            unordered_map<string, void*> mp = {{"maze", nullptr}, {"prey", nullptr}};
+            if(!mp.count(boost::to_lower_copy(v)))
+                throw po::validation_error(po::validation_error::invalid_option_value, opt_name, v);
+        };
+    };
     desc.add_options()
             ("help", "Produces this help message.")
             ("agents", po::value<size_t>()->default_value(1), "The number of agents to run.")
@@ -37,6 +44,7 @@ po::variables_map process_args(int argc, char** argv) {
             ("greedy-explore-rate", po::value<scalar>()->default_value(.2, ".20")->notifier(prob_checker("ger")), "The greedy action picker exploration rate, should be in range of [0,1].")
             ("fci-method", po::value<string>()->default_value("k-mean")->notifier(fci_checker("fci-method")), "The FCI combinator method, could be [k-mean, mean, max].")
             ("method", po::value<string>()->default_value("fci")->notifier(method_checker("method")), "The combiner method, could be [fci, sep, il].")
+            ("env", po::value<string>()->default_value("maze")->notifier(env_checker("env")), "The combiner method, could be [fci, sep, il].")
         ;
     po::variables_map vm;
     try {

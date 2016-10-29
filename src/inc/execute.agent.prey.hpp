@@ -1,11 +1,12 @@
-#ifndef EXECUTE_AGENT_MAZE_HPP
-#define EXECUTE_AGENT_MAZE_HPP
+#ifndef EXECUTE_AGENT_PREY_HPP
+#define EXECUTE_AGENT_PREY_HPP
+
 
 #include "inc/stdafx.hpp"
 #include "inc/agent.hpp"
 #include "inc/combine.hpp"
-#include "inc/world.maze.hpp"
-#include "inc/learner.maze.hpp"
+#include "inc/world.prey.hpp"
+//#include "inc/learner.maze.hpp"
 #include "inc/agent.plugins.hpp"
 #include "inc/plugins/plugin_sep.hpp"
 #include "inc/plugins/plugin_count_hop.hpp"
@@ -13,7 +14,7 @@
 #include "inc/plugins/plugin_checkpoints.hpp"
 #include "inc/plugins/plugin_reference_counter.hpp"
 
-void execute_agent_maze(matrix3D_t<scalar>& data,
+void execute_agent_prey(matrix3D_t<scalar>& data,
         const size_t& CURRENT_ITER,
         const size_t& AGENTS,
         const size_t& TRIALS,
@@ -25,4 +26,4 @@ void execute_agent_maze(matrix3D_t<scalar>& data,
         const string& fci_method,
         const size_t& grind);
 
-#endif // EXECUTE_AGENT_MAZE_HPP
+#endif // EXECUTE_AGENT_PREY_HPP

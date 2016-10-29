@@ -6,6 +6,7 @@
 #include "inc/matrix.hpp"
 #include "inc/colormod.hpp"
 #include "inc/world.maze.hpp"
+#include "inc/world.prey.hpp"
 #include "inc/learner.maze.hpp"
 
 #include <unordered_map>
@@ -117,6 +118,93 @@ void test_world_maze() {
     }
 }
 
+void test_world_prey() {
+    hunter_prey hp;
+    array<scalar, 2> defstate = {5, 6};
+    hp.set_hunter_location(defstate);
+    hp.set_prey_location({defstate[0] + .25, defstate[1] + .25});
+    // since they are almost at the same position, the state should be 1
+    assert(hp.get_current_state()[0] == 1);
+    assert(hp.get_prey_location()[0] == defstate[0] + .25 && hp.get_prey_location()[1] == defstate[1] + .25);
+    assert(hp.get_hunter_location()[0] == defstate[0] && hp.get_hunter_location()[1] == defstate[1]);
+    vector<pair<hunter_prey::moves, array<scalar, 2>>> actions = {
+        {hunter_prey::m0_05, {5.5, 6}},
+        {hunter_prey::m0_10, {6, 6}},
+        {hunter_prey::m45_05, {5.5, 6.5}},
+        {hunter_prey::m45_10, {6, 7}},
+        {hunter_prey::m90_05, {5, 6.5}},
+        {hunter_prey::m90_10, {5, 7}},
+        {hunter_prey::m135_05, {4.5, 6.5}},
+        {hunter_prey::m135_10, {4, 7}},
+        {hunter_prey::m180_05, {4.5, 6}},
+        {hunter_prey::m180_10, {4, 6}},
+        {hunter_prey::m225_05, {4.5, 5.5}},
+        {hunter_prey::m225_10, {4, 5}},
+        {hunter_prey::m270_05, {5, 5.5}},
+        {hunter_prey::m270_10, {5, 5}},
+        {hunter_prey::m315_05, {5.5, 5.5}},
+        {hunter_prey::m315_10, {6, 5}}
+    };
+    // test the valid movements
+    for(auto unused a : actions) {
+        assert(hp.make_move({a.first}) == 0);
+        assert(hp.get_hunter_location()[0] == a.second[0] && hp.get_hunter_location()[1] == a.second[1]);
+        hp.set_hunter_location(defstate);
+    }
+    vector<pair<array<scalar, 2>, pair<hunter_prey::moves, array<scalar, 2>>>> limit_actions = {
+        // down
+        {{0, 0}, {hunter_prey::m270_05, {0, 0}}},
+        // left
+        {{0, 0}, {hunter_prey::m180_05, {0, 0}}},
+        // right
+        {{10, 10}, {hunter_prey::m0_05, {10, 10}}},
+        // up
+        {{10, 10}, {hunter_prey::m90_05, {10, 10}}},
+    };
+    // test the invalid movements
+    for(auto unused a : limit_actions) {
+        hp.set_hunter_location(a.first);
+        assert(hp.make_move({a.second.first}) == 0);
+        assert(hp.get_hunter_location()[0] == a.second.second[0] && hp.get_hunter_location()[1] == a.second.second[1]);
+    }
+    // foreach hunter move the prey moves randomly too,
+    // since it's random there no need to test the movement, which can fail randomly
+    vector<pair<pair<array<scalar, 2>, array<scalar, 2>>, size_t>> states = {
+        {{{5, 5}, {5.25, 5.25}}, 1},
+        {{{5, 5}, {5.75, 5.75}}, 2},
+        {{{5, 5}, {6.25, 6.25}}, 3},
+        {{{5, 5}, {6.75, 6.75}}, 4},
+
+        {{{5, 5}, {5.25, 4.75}}, 5},
+        {{{5, 5}, {5.75, 4.25}}, 6},
+        {{{5, 5}, {6.25, 3.75}}, 7},
+        {{{5, 5}, {6.75, 3.25}}, 8},
+
+        {{{5, 5}, {4.75, 4.75}}, 9},
+        {{{5, 5}, {4.25, 4.25}}, 10},
+        {{{5, 5}, {3.75, 3.75}}, 11},
+        {{{5, 5}, {3.25, 3.25}}, 12},
+
+        {{{5, 5}, {4.75, 5.25}}, 13},
+        {{{5, 5}, {4.25, 5.75}}, 14},
+        {{{5, 5}, {3.75, 6.25}}, 15},
+        {{{5, 5}, {3.25, 6.75}}, 16},
+
+        {{{5, 5}, {6.00, 7.00}}, 4},
+
+        {{{5, 5}, {5.00, 7.25}}, 0},
+        {{{5, 5}, {1, 1}}, 0},
+        {{{5, 5}, {9, 9}}, 0},
+        {{{5, 5}, {3, 9}}, 0},
+    };
+    // test states depending on locations
+    for(auto unused a : states) {
+        hp.set_prey_location(a.first.second);
+        hp.set_hunter_location(a.first.first);
+        assert(hp.get_current_state()[0] == a.second);
+    }
+}
+
 void test_qleaner() {
     const unused scalar
         beta = .1,
@@ -138,6 +226,7 @@ void execute_tests() {
     vector<pair<string, function<void(void)>>> tests = {
         {"matrix.hpp", test_matrix},
         {"world.maze.hpp", test_world_maze},
+        {"world.prey.hpp", test_world_prey},
         {"qlearner.hpp", test_qleaner}
     };
 //    cerr << Color::Modifier(Color::FG_YELLOW) << "Engaging the tests..." << Color::Modifier(Color::FG_DEFAULT) << endl;
