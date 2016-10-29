@@ -1,12 +1,13 @@
 clc, clear, close all
 d = [];
+env = 'hunter-prey';
 l = {'k-mean', 'max', 'mean'};
-minl = [4.880400, 5.200850, 5.327730];
-minlj = [2, 5, 3];
+minl = [inf, inf, inf];
+minlj = [0, 0, 0];
 mm = inf;
-jj = 2;
-ii = 1;
-ll = 'k-mean';
+jj = 0;
+ii = 0;
+ll = '';
 for i=1:size(l, 2)
     m = [];
     k = {};
@@ -31,7 +32,7 @@ for i=1:size(l, 2)
     legend(k);
     ylabel('Avg. Moves')
     xlabel('Trials')
-    title(sprintf('Comparing the grind effect to FCI `%s` combiner method over maze', l{i}))
+    title(sprintf('Comparing the grind effect to FCI `%s` combiner method over %s', l{i}, env))
     %pause
 end
 
@@ -50,7 +51,7 @@ ylim([0, max(max(m))])
 legend(k);
 ylabel('Avg. Moves')
 xlabel('Trials')
-title('Comparing the best results of 3 FCI combiner method K-MEAN/MEAN/MAX over maze')
+title(sprintf('Comparing the best results of 3 FCI combiner method K-MEAN/MEAN/MAX over %s', env))
 legend(k);
 %pause
 
@@ -66,4 +67,4 @@ ylim([0, max(max(m))])
 legend(sprintf('FCI K-MEAN (%f)', m(1, end)), sprintf('FCI MAX (%f)', m(2, end)), sprintf('FCI MEAN (%f)', m(3, end)), sprintf('SEP (%f)', m(4, end)), sprintf('IL (%f)', m(5, end)));
 ylabel('Avg. Moves')
 xlabel('Trials')
-title('Comparing the FCI/IL/SEP methods')
+title(sprintf('Comparing the FCI/IL/SEP methods over %s', env))

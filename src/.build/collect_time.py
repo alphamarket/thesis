@@ -2,14 +2,15 @@
 import numpy as np
 import os, time, subprocess
 
+env = "prey"
 iters = 20.;
 max_trials = 100;
 
 # collecting with different configs
 configs = [
-	['--method fci --fci-method k-mean --refmat-grind 2'],
-	['--method sep'],
-	['--method il'],
+	['--method fci --fci-method k-mean --refmat-grind 2 --env %s' %env],
+	['--method sep --env %s' %env],
+	['--method il --env %s' %env],
 ];
 
 times = np.zeros((3, max_trials))
