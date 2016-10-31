@@ -21,8 +21,11 @@ class agent {
      */
     static size_t _instance_count;
 
-    enum phases { PHASE_INIT = 0, PHASE_PRE, PHASE_ON, PHASE_POST, PHASE_DEINIT, PHASE_ENTER, PHASE_EXIT };
 protected:
+    /**
+     * @brief The phases enum
+     */
+    enum phases { PHASE_ENTER = 0, PHASE_INIT, PHASE_PRE, PHASE_ON, PHASE_POST, PHASE_DEINIT, PHASE_EXIT };
     /**
      * @brief _executing Check if the thread is executing or not?
      */
@@ -44,6 +47,7 @@ protected:
      * @brief _plugins The plugin map
      */
     vector<pair<string, plugin<state_dim, action_dim>* const>> _plugins;
+
 public:
     /**
      * @brief _prev_q Previous Q value
