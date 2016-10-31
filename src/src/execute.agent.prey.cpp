@@ -13,7 +13,6 @@ void execute_agent_prey(
         const string& fci_method,
         const size_t& grind) {
     flag_workflow();
-    hunter_prey hp;
     vector<hunter_prey> worlds;
     vector<learner_hunter> learners;
     vector<agent<hunter_prey::STATE_DIM, hunter_prey::ACTION_DIM>> agents;
@@ -40,9 +39,9 @@ void execute_agent_prey(
             new plugin_count_hop<hunter_prey::STATE_DIM, hunter_prey::ACTION_DIM>()
         });
         // if plugin SEP requested?
-        if(method == "sep")
+        if(method == "sep" || method == "sep-fci")
             plugins.back().push_back(new plugin_SEP<hunter_prey::STATE_DIM, hunter_prey::ACTION_DIM>());
-        if(method == "fci")
+        if(method == "fci" || method == "sep-fci")
             plugins.back().push_back(new plugin_reference_counter<hunter_prey::STATE_DIM, hunter_prey::ACTION_DIM>(grind));
         // needs to be added after plugin_SEP
         plugins.back().push_back(new plugin_reset_agent<hunter_prey::STATE_DIM, hunter_prey::ACTION_DIM>());

@@ -55,9 +55,9 @@ void execute_agent_maze(
             new plugin_count_hop<maze::STATE_DIM, maze::ACTION_DIM>()
         });
         // if plugin SEP requested?
-        if(method == "sep")
+        if(method == "sep" || method == "sep-fci")
             plugins.back().push_back(new plugin_SEP<maze::STATE_DIM, maze::ACTION_DIM>());
-        if(method == "fci")
+        if(method == "fci" || method == "sep-fci")
             plugins.back().push_back(new plugin_reference_counter<maze::STATE_DIM, maze::ACTION_DIM>(grind));
         // needs to be added after plugin_SEP
         plugins.back().push_back(new plugin_reset_agent<maze::STATE_DIM, maze::ACTION_DIM>());

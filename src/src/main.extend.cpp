@@ -19,7 +19,7 @@ po::variables_map process_args(int argc, char** argv) {
     };
     auto method_checker = [](char const * const opt_name) {
         return [opt_name](const string& v) {
-            unordered_map<string, void*> mp = {{"fci", nullptr}, {"sep", nullptr}, {"il", nullptr}};
+            unordered_map<string, void*> mp = {{"fci", nullptr}, {"sep", nullptr}, {"il", nullptr}, {"sep-fci", nullptr}};
             if(!mp.count(boost::to_lower_copy(v)))
                 throw po::validation_error(po::validation_error::invalid_option_value, opt_name, v);
         };
@@ -43,8 +43,8 @@ po::variables_map process_args(int argc, char** argv) {
             ("tau", po::value<scalar>()->default_value(.4, ".40"), "The temperature rate(gamma) value.")
             ("greedy-explore-rate", po::value<scalar>()->default_value(.2, ".20")->notifier(prob_checker("ger")), "The greedy action picker exploration rate, should be in range of [0,1].")
             ("fci-method", po::value<string>()->default_value("k-mean")->notifier(fci_checker("fci-method")), "The FCI combinator method, could be [k-mean, mean, max].")
-            ("method", po::value<string>()->default_value("fci")->notifier(method_checker("method")), "The combiner method, could be [fci, sep, il].")
-            ("env", po::value<string>()->default_value("maze")->notifier(env_checker("env")), "The combiner method, could be [fci, sep, il].")
+            ("method", po::value<string>()->default_value("fci")->notifier(method_checker("method")), "The combiner method, could be [fci, sep, il, sep-fci].")
+            ("env", po::value<string>()->default_value("maze")->notifier(env_checker("env")), "The combiner method, could be [maze, prey].")
         ;
     po::variables_map vm;
     try {

@@ -20,6 +20,10 @@ public:
         assert(agents.size() != 0);
         if(method == "sep") this->sep_combiner(agents);
         else if(method == "fci") this->fci_combiner(agents, second_method);
+        else if(method == "sep-fci") {
+            this->sep_combiner(agents);
+            this->fci_combiner(agents, second_method);
+        }
         else raise_error("Undefined method# " + method);
     }
 protected:
