@@ -1,7 +1,6 @@
 #include "inc/execute.agent.maze.hpp"
 
-void execute_agent_maze(
-        matrix3D_t<scalar>& data,
+void execute_agent_maze(matrix3D_t<scalar>& data,
         const size_t& CURRENT_ITER,
         const size_t& AGENTS,
         const size_t& TRIALS,
@@ -11,7 +10,8 @@ void execute_agent_maze(
         const scalar& tau,
         const string& method,
         const string& fci_method,
-        const size_t& grind) {
+        const size_t& grind,
+        const boost::program_options::variables_map& opt) {
     flag_workflow();
     vector<maze> worlds;
     vector<learner_maze> learners;
@@ -55,9 +55,9 @@ void execute_agent_maze(
             new plugin_count_hop<maze::STATE_DIM, maze::ACTION_DIM>()
         });
         // if plugin SEP requested?
-        if(method == "sep" || method == "sep-fci")
+        if(method == "sep" || method == "sep-refmat")
             plugins.back().push_back(new plugin_SEP<maze::STATE_DIM, maze::ACTION_DIM>());
-        if(method == "fci" || method == "sep-fci")
+        if(method == "refmat" || method == "sep-refmat")
             plugins.back().push_back(new plugin_reference_counter<maze::STATE_DIM, maze::ACTION_DIM>(grind));
         // needs to be added after plugin_SEP
         plugins.back().push_back(new plugin_reset_agent<maze::STATE_DIM, maze::ACTION_DIM>());
@@ -80,7 +80,7 @@ void execute_agent_maze(
             // if az expected? update it
             hop_sures[i] = agents[i].get_plugin<plugin_count_hop>()->hops.size();
         }
-        if(AGENTS > 1)
+        if(AGENTS > 1 || method == "sep")
             // here we do the combination
             combine(agents, method, fci_method);
     }
@@ -92,5 +92,11 @@ void execute_agent_maze(
         std::copy(h->hops.begin(), h->hops.end(), data[CURRENT_ITER][i].begin());
         // release all plugin's resources
         for(auto _plugin : plugins[i]) delete _plugin;
+    }
+    // if q table requested?
+    if(opt.count("print-qtable-only")) {
+        // print one of the agents' Q-Table since in the last TRIAL they are merged
+        agents.front().learner->Q.for_each([](const auto& i){ cout << i << " "; });
+        cout << endl;
     }
 }

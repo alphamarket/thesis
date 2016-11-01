@@ -19,10 +19,10 @@ public:
         flag_workflow();
         assert(agents.size() != 0);
         if(method == "sep") this->sep_combiner(agents);
-        else if(method == "fci") this->fci_combiner(agents, second_method);
-        else if(method == "sep-fci") {
+        else if(method == "refmat") this->refmat_combiner(agents, second_method);
+        else if(method == "sep-refmat") {
             this->sep_combiner(agents);
-            this->fci_combiner(agents, second_method);
+            this->refmat_combiner(agents, second_method);
         }
         else raise_error("Undefined method# " + method);
     }
@@ -105,7 +105,7 @@ protected:
      * @brief The FCI method combiner
      */
     template<size_t state_dim, size_t action_dim>
-    void fci_combiner(vector<agent<state_dim, action_dim>>& agents, const string& method = "")  {
+    void refmat_combiner(vector<agent<state_dim, action_dim>>& agents, const string& method = "")  {
         flag_workflow();
         for_each(agents.begin(), agents.end(), [](const auto& a) {
             if(a.template get_plugin<plugin_reference_counter>() == nullptr)
@@ -115,6 +115,7 @@ protected:
         vector<matrix<scalar, state_dim + action_dim>*> Qs;
         plugin_reference_counter<state_dim, action_dim>* refmat = nullptr;
         matrix<scalar, state_dim + action_dim> QCO(agents.front().learner->Q.size());
+        QCO = 0;
         for(size_t i = 0; i < agents.size(); i++) {
             refmat = agents[i].template get_plugin<plugin_reference_counter>();
             refs.push_back(&refmat->refmat);
@@ -122,16 +123,16 @@ protected:
         }
         // combiner methods manifest
         unordered_map<string, fci_combiner_func_t> method_manifest = {
-            {"", fci::combiner_k_mean},
-            {"max", fci::combiner_max},
-            {"mean", fci::combiner_mean},
-            {"k-mean", fci::combiner_k_mean},
+            {"wsum", nullptr},
+            {"fci-max", fci::combiner_max},
+            {"fci-mean", fci::combiner_mean},
+            {"fci-k-mean", fci::combiner_k_mean},
         };
         if(!method_manifest.count(method))
             raise_error("undefined fci method `"+method+"`");
 
         // fetch the combiner methone
-        auto combine_method = method_manifest.at(method);
+        auto fci_combine_method = method_manifest.at(method);
 
         // get all states indices
         auto li = QCO.template list_indices<state_dim>();
@@ -151,15 +152,22 @@ protected:
             vector<vector<scalar>> qa;
             for(auto q : Qs) qa.push_back(q->slice(ii).to_vector());
             size_t k = 0;
+            scalar factors_sum = accumulate(factors.begin(), factors.end(), 0.0);
             // for each action in this state
-            QCO.slice_ref(ii).for_each([&k, &qa, &factors, &combine_method](auto* i) {
+            QCO.slice_ref(ii).for_each([&k, &qa, &factors, &fci_combine_method, method, factors_sum](auto* i) {
                 vector<scalar> q;
                 for(auto qq : qa) q.push_back(qq[k]);
                 // now we have:
                 //      Q value for current state/action/agent  [q]
                 //      Ref value for current state/agent       [factors]
                 // calculate the combined value for current state/action
-                *i = fci::combine(q, factors, combine_method);
+                if(fci_combine_method != nullptr)
+                    *i = fci::combine(q, factors, fci_combine_method);
+                else if(method == "wsum") {
+                    // do the weighted sum
+                    for(size_t j = 0; j < q.size(); j++) *i += q[j] * factors[j] / factors_sum;
+                } else
+                    raise_error("undefined method `"+method+"`");
                 assert(!isnan(*i));
                 k += 1;
             });

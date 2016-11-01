@@ -12,14 +12,14 @@ po::variables_map process_args(int argc, char** argv) {
     };
     auto fci_checker = [](char const * const opt_name) {
         return [opt_name](const string& v) {
-            unordered_map<string, void*> mp = {{"k-mean", nullptr}, {"mean", nullptr}, {"max", nullptr}};
+            unordered_map<string, void*> mp = {{"fci-k-mean", nullptr}, {"fci-mean", nullptr}, {"fci-max", nullptr}, {"wsum", nullptr}};
             if(!mp.count(boost::to_lower_copy(v)))
                 throw po::validation_error(po::validation_error::invalid_option_value, opt_name, v);
         };
     };
     auto method_checker = [](char const * const opt_name) {
         return [opt_name](const string& v) {
-            unordered_map<string, void*> mp = {{"fci", nullptr}, {"sep", nullptr}, {"il", nullptr}, {"sep-fci", nullptr}};
+            unordered_map<string, void*> mp = {{"refmat", nullptr}, {"sep", nullptr}, {"il", nullptr}, {"sep-refmat", nullptr}};
             if(!mp.count(boost::to_lower_copy(v)))
                 throw po::validation_error(po::validation_error::invalid_option_value, opt_name, v);
         };
@@ -42,9 +42,10 @@ po::variables_map process_args(int argc, char** argv) {
             ("gamma", po::value<scalar>()->default_value(.9, ".90")->notifier(prob_checker("gamma")), "The discount rate(gamma) rate, should be in range of [0,1].")
             ("tau", po::value<scalar>()->default_value(.4, ".40"), "The temperature rate(gamma) value.")
             ("greedy-explore-rate", po::value<scalar>()->default_value(.2, ".20")->notifier(prob_checker("ger")), "The greedy action picker exploration rate, should be in range of [0,1].")
-            ("fci-method", po::value<string>()->default_value("k-mean")->notifier(fci_checker("fci-method")), "The FCI combinator method, could be [k-mean, mean, max].")
-            ("method", po::value<string>()->default_value("fci")->notifier(method_checker("method")), "The combiner method, could be [fci, sep, il, sep-fci].")
+            ("refmat-combinator", po::value<string>()->default_value("fci-k-mean")->notifier(fci_checker("refmat-combinator")), "The REFMAT combinator method, could be [k-mean, mean, max, wsum].")
+            ("method", po::value<string>()->default_value("refmat")->notifier(method_checker("method")), "The combiner method, could be [refmat, sep, il, sep-refmat].")
             ("env", po::value<string>()->default_value("maze")->notifier(env_checker("env")), "The combiner method, could be [maze, prey].")
+            ("print-qtable-only", "Print the Q-table at the end of each iteration")
         ;
     po::variables_map vm;
     try {

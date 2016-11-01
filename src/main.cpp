@@ -37,31 +37,35 @@ int main(int argc, char** argv) {
                         data,  iter,
                         AGENT_COUNT, TRIALS, CYCLES,
                         opt["beta"].as<scalar>(), opt["gamma"].as<scalar>(), opt["tau"].as<scalar>(),
-                        opt["method"].as<string>(), opt["fci-method"].as<string>(),
-                        opt["refmat-grind"].as<size_t>()
+                        opt["method"].as<string>(), opt["refmat-combinator"].as<string>(),
+                        opt["refmat-grind"].as<size_t>(),
+                        opt
                     );
         else
             execute_agent_prey(
                         data,  iter,
                         AGENT_COUNT, TRIALS, CYCLES,
                         opt["beta"].as<scalar>(), opt["gamma"].as<scalar>(), opt["tau"].as<scalar>(),
-                        opt["method"].as<string>(), opt["fci-method"].as<string>(),
-                        opt["refmat-grind"].as<size_t>()
+                        opt["method"].as<string>(), opt["refmat-combinator"].as<string>(),
+                        opt["refmat-grind"].as<size_t>(),
+                        opt
                     );
-
-    // try to average data over AGENTS and ITERs
-    matrix1D_t<scalar> avg_data({TRIALS * CYCLES});
-    for(size_t k = 0; k < TRIALS * CYCLES; k++) {
-        for(size_t i = 0; i < ITERS; i++) {
-            for(size_t j = 0; j < AGENT_COUNT; j++) {
-                avg_data[k] += data[i][j][k] / (AGENT_COUNT * ITERS);
+    // if didn't ask for printing Q-Tables? then print avg. moves
+    if(!opt.count("print-qtable-only")) {
+        // try to average data over AGENTS and ITERs
+        matrix1D_t<scalar> avg_data({TRIALS * CYCLES});
+        for(size_t k = 0; k < TRIALS * CYCLES; k++) {
+            for(size_t i = 0; i < ITERS; i++) {
+                for(size_t j = 0; j < AGENT_COUNT; j++) {
+                    avg_data[k] += data[i][j][k] / (AGENT_COUNT * ITERS);
+                }
             }
         }
-    }
 
-    // print accumulate the sums of avg data
-    for(size_t i = 0; i < avg_data.num_elements(); i++)
-        cout << accumulate(avg_data.begin(), avg_data.begin() + i + 1, 0.0) / (i + 1) << " ";
+        // print accumulate the sums of avg data
+        for(size_t i = 0; i < avg_data.num_elements(); i++)
+            cout << accumulate(avg_data.begin(), avg_data.begin() + i + 1, 0.0) / (i + 1) << " ";
+    }
 
     // exit the program
     exiting = true;

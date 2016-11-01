@@ -14,6 +14,8 @@
 #include "inc/plugins/plugin_checkpoints.hpp"
 #include "inc/plugins/plugin_reference_counter.hpp"
 
+#include <boost/program_options.hpp>
+
 void execute_agent_prey(matrix3D_t<scalar>& data,
         const size_t& CURRENT_ITER,
         const size_t& AGENTS,
@@ -24,6 +26,7 @@ void execute_agent_prey(matrix3D_t<scalar>& data,
         const scalar& tau,
         const string& method,
         const string& fci_method,
-        const size_t& grind);
+        const size_t& grind,
+        const boost::program_options::variables_map&);
 
 #endif // EXECUTE_AGENT_PREY_HPP

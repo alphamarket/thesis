@@ -11,7 +11,8 @@ void execute_agent_prey(
         const scalar& tau,
         const string& method,
         const string& fci_method,
-        const size_t& grind) {
+        const size_t& grind,
+        const boost::program_options::variables_map& opt) {
     flag_workflow();
     vector<hunter_prey> worlds;
     vector<learner_hunter> learners;
@@ -64,7 +65,7 @@ void execute_agent_prey(
             // if az expected? update it
             hop_sures[i] = agents[i].get_plugin<plugin_count_hop>()->hops.size();
         }
-        if(AGENTS > 1)
+        if(AGENTS > 1 || method == "sep")
             // here we do the combination
             combine(agents, method, fci_method);
     }
@@ -76,5 +77,11 @@ void execute_agent_prey(
         std::copy(h->hops.begin(), h->hops.end(), data[CURRENT_ITER][i].begin());
         // release all plugin's resources
         for(auto _plugin : plugins[i]) delete _plugin;
+    }
+    // if q table requested?
+    if(opt.count("print-qtable-only")) {
+        // print one of the agents' Q-Table since in the last TRIAL they are merged
+        agents.front().learner->Q.for_each([](const auto& i){ cout << i << " "; });
+        cout << endl;
     }
 }
