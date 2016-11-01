@@ -1,31 +1,83 @@
 #!/usr/bin/env python2.7
-import numpy as np
-import os, time, subprocess
+import time, itertools, os;
 
-env = "prey"
-iters = 20.;
+iters = 20
 max_trials = 100;
 
-# collecting with different configs
-configs = [
-	['--method fci --fci-method k-mean --refmat-grind 2 --env %s' %env],
-	['--method sep --env %s' %env],
-	['--method il --env %s' %env],
-];
+configs = {
+    "--method" : {
+        "refmat" : {
+            "--env" : {
+                "prey" : {
+                    "--agents" : [3],
+                    "--refmat-grind" : [9],
+                    "--trials" : range(1, max_trials + 1),
+                    "--refmat-combinator" : ["fci-k-mean", "wsum"],
+                },
+                "maze" : {
+                    "--agents" : [3],
+                    "--refmat-grind" : [3],
+                    "--trials" : range(1, max_trials + 1),
+                    "--refmat-combinator" : ["fci-k-mean", "fci-mean", "fci-max", "wsum"],
+                }
+            }
+        },
+        "sep" : {
+            "--env" : {
+                "prey" : {
+                    "--agents" : [3],
+                    "--trials" : range(1, max_trials + 1)
+                },
+                "prey" : {
+                    "--agents" : [3],
+                    "--trials" : range(1, max_trials + 1)
+                }
+            }
+        },
+        "il" : {
+            "--env" : {
+                "prey" : {
+                    "--agents" : [1],
+                    "--trials" : range(1, max_trials + 1)
+                },
+                "prey" : {
+                    "--agents" : [1],
+                    "--trials" : range(1, max_trials + 1)
+                }
+            }
+        }
+    }
+};
 
-times = np.zeros((3, max_trials))
+def build_commands(configs):
+    commands = [];
+    for method in configs["--method"]:
+        for env in configs["--method"][method]["--env"]:
+            opt = [configs["--method"][method]["--env"][env][i] for i in configs["--method"][method]["--env"][env].keys()]
+            for c in itertools.product(*opt):
+                command = []
+                l = [("--iters", iters), ("--env", env), ("--method", method)];
+                l.extend(zip(configs["--method"][method]["--env"][env].keys(), c))
+                for t in l: command.extend([str(tt) for tt in t]);
+                commands.append((" ".join(command), str(method)))
+    return commands
 
-for idx, config in enumerate(configs):
-	for trials in xrange(0, max_trials):
-		command = "cd %s && make -j8 -l8 && ./thesis --agent 3 --iters %i --trials %i %s &>/dev/null" %(os.path.dirname(os.path.realpath(__file__)), iters, trials, config[0]);
-		print "executing `\033[33m%s\033[m`" %command,
-		start_time = time.time()
-		proc = subprocess.Popen([command, ""], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-		(out, err) = proc.communicate()
-		times[idx, trials] = ((time.time() - start_time) * 1e+3) / iters
-		print "%.2f ms" %times[idx, trials]
+times = {
+    "il": [],
+    "sep": [],
+    "refmat": []
+}
 
-for i in xrange(0, 3):
-	for j in xrange(0, max_trials):
-		print times[i, j],
-	print
+for c in build_commands(configs):
+    command = "make -j8 -l8 1>/dev/null && ./thesis %s 1>/dev/null 2>/dev/null" %(c[0]);
+    print "executing: `\033[33m%s\033[m`" %command,
+    start_time = time.time()
+    os.system(command);
+    times[c[1]].append(((time.time() - start_time) * 1e+3) / iters)
+    print "%.2f ms" %times[c[1]][-1]
+
+print "\n------------\n"
+
+for k, v in times.iteritems():
+    print "%s =" %k, v, ";"
+    print
