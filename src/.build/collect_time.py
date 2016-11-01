@@ -10,7 +10,7 @@ configs = {
             "--env" : {
                 "prey" : {
                     "--agents" : [3],
-                    "--refmat-grind" : [9],
+                    "--refmat-grind" : [4],
                     "--trials" : range(1, max_trials + 1),
                     "--refmat-combinator" : ["fci-k-mean", "wsum"],
                 },
@@ -18,7 +18,7 @@ configs = {
                     "--agents" : [3],
                     "--refmat-grind" : [3],
                     "--trials" : range(1, max_trials + 1),
-                    "--refmat-combinator" : ["fci-k-mean", "fci-mean", "fci-max", "wsum"],
+                    "--refmat-combinator" : ["fci-k-mean", "wsum"],
                 }
             }
         },
@@ -28,7 +28,7 @@ configs = {
                     "--agents" : [3],
                     "--trials" : range(1, max_trials + 1)
                 },
-                "prey" : {
+                "maze" : {
                     "--agents" : [3],
                     "--trials" : range(1, max_trials + 1)
                 }
@@ -40,7 +40,7 @@ configs = {
                     "--agents" : [1],
                     "--trials" : range(1, max_trials + 1)
                 },
-                "prey" : {
+                "maze" : {
                     "--agents" : [1],
                     "--trials" : range(1, max_trials + 1)
                 }
@@ -68,9 +68,11 @@ times = {
     "refmat": []
 }
 
-for c in build_commands(configs):
+commands = build_commands(configs);
+
+for idx, c in enumerate(commands):
     command = "make -j8 -l8 1>/dev/null && ./thesis %s 1>/dev/null 2>/dev/null" %(c[0]);
-    print "executing: `\033[33m%s\033[m`" %command,
+    print "[%.2f] executing: `\033[33m%s\033[m`" %((idx + 1) * 100. / len(commands), command)
     start_time = time.time()
     os.system(command);
     times[c[1]].append(((time.time() - start_time) * 1e+3) / iters)

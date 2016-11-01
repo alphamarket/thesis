@@ -24,7 +24,7 @@ configs = {
                 "prey" : {
                     "--agents" : [3]
                 },
-                "prey" : {
+                "maze" : {
                     "--agents" : [3]
                 }
             }
@@ -34,7 +34,7 @@ configs = {
                 "prey" : {
                     "--agents" : [1]
                 },
-                "prey" : {
+                "maze" : {
                     "--agents" : [1]
                 }
             }
@@ -55,11 +55,14 @@ def build_commands(configs):
                 commands.append((" ".join(command), "method/%s/env/%s" %(method, env)))
     return commands
 
-for c in build_commands(configs):
+commands = build_commands(configs);
+
+
+for idx, c in enumerate(commands):
     redir_dir  = "../data/%s" %c[1]
     redir_file = "'%s/%s.mat'" %(redir_dir, c[0])
     exe = "make -j8 -l8 && ./thesis %s" %(c[0]);
-    print "executing: `\033[33m%s\033[m`" %exe
+    print "[%.2f%%] executing: `\033[33m%s\033[m`" %((idx + 1) * 100. / len(commands), exe)
     print "output file: `\033[33m%s\033[m`" %redir_file
     if(not os.path.isdir(redir_dir)):
         os.system("mkdir -p %s" %redir_dir)
