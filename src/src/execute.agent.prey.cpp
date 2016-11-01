@@ -40,9 +40,9 @@ void execute_agent_prey(
             new plugin_count_hop<hunter_prey::STATE_DIM, hunter_prey::ACTION_DIM>()
         });
         // if plugin SEP requested?
-        if(method == "sep" || method == "sep-fci")
+        if(method == "sep" || method == "sep-refmat")
             plugins.back().push_back(new plugin_SEP<hunter_prey::STATE_DIM, hunter_prey::ACTION_DIM>());
-        if(method == "fci" || method == "sep-fci")
+        if(method == "refmat" || method == "sep-refmat")
             plugins.back().push_back(new plugin_reference_counter<hunter_prey::STATE_DIM, hunter_prey::ACTION_DIM>(grind));
         // needs to be added after plugin_SEP
         plugins.back().push_back(new plugin_reset_agent<hunter_prey::STATE_DIM, hunter_prey::ACTION_DIM>());

@@ -109,7 +109,7 @@ protected:
         flag_workflow();
         for_each(agents.begin(), agents.end(), [](const auto& a) {
             if(a.template get_plugin<plugin_reference_counter>() == nullptr)
-                raise_error("The `plugin_SEP` not found!");
+                raise_error("The `plugin_reference_counter` not found!");
         });
         vector<matrix<size_t, state_dim>*> refs;
         vector<matrix<scalar, state_dim + action_dim>*> Qs;
