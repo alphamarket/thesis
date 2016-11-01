@@ -12,13 +12,13 @@ configs = {
                     "--agents" : [3],
                     "--refmat-grind" : [4],
                     "--trials" : range(1, max_trials + 1),
-                    "--refmat-combinator" : ["fci-k-mean", "wsum"],
+                    "--refmat-combinator" : ["fci-k-mean"],
                 },
                 "maze" : {
                     "--agents" : [3],
                     "--refmat-grind" : [3],
                     "--trials" : range(1, max_trials + 1),
-                    "--refmat-combinator" : ["fci-k-mean", "wsum"],
+                    "--refmat-combinator" : ["fci-k-mean"],
                 }
             }
         },
@@ -59,27 +59,38 @@ def build_commands(configs):
                 l = [("--iters", iters), ("--env", env), ("--method", method)];
                 l.extend(zip(configs["--method"][method]["--env"][env].keys(), c))
                 for t in l: command.extend([str(tt) for tt in t]);
-                commands.append((" ".join(command), str(method)))
+                commands.append((" ".join(command), str(method), str(env)))
     return commands
 
 times = {
-    "il": [],
-    "sep": [],
-    "refmat": []
+    "il": {
+        "prey": [],
+        "maze": []
+    },
+    "sep":  {
+        "prey": [],
+        "maze": []
+    },
+    "refmat":  {
+        "prey": [],
+        "maze": []
+    }
 }
 
 commands = build_commands(configs);
 
 for idx, c in enumerate(commands):
     command = "make -j8 -l8 1>/dev/null && ./thesis %s 1>/dev/null 2>/dev/null" %(c[0]);
-    print "[%.2f] executing: `\033[33m%s\033[m`" %((idx + 1) * 100. / len(commands), command)
+    print "[%.2f%%] executing: `\033[33m%s\033[m`" %((idx + 1) * 100. / len(commands), command),
     start_time = time.time()
     os.system(command);
-    times[c[1]].append(((time.time() - start_time) * 1e+3) / iters)
-    print "%.2f ms" %times[c[1]][-1]
+    times[c[1]][c[2]].append(((time.time() - start_time) * 1e+3) / iters)
+    print "%.2f ms" %times[c[1]][c[2]][-1]
 
 print "\n------------\n"
 
 for k, v in times.iteritems():
-    print "%s =" %k, v, ";"
-    print
+    print k
+    for k2, e in v.iteritems():
+        print "%s =" %k2, e, ";"
+        print
