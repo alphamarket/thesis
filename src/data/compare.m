@@ -1,70 +1,35 @@
 clc, clear, close all
-d = [];
-env = 'hunter-prey';
-l = {'k-mean', 'max', 'mean'};
-minl = [inf, inf, inf];
-minlj = [0, 0, 0];
-mm = inf;
-jj = 0;
-ii = 0;
-ll = '';
-for i=1:size(l, 2)
-    m = [];
-    k = {};
-    for j=1:6
-        m(end+1, :) = load(sprintf('fci_%s_%i.dat', l{i}, j));
-        k{end+1} = sprintf('grind %i', j);
-        if(m(end, end) < mm) 
-            d = m(end, :);
-            mm = m(end, end);
-            ll = l{i};
-            ii = i;
-            jj = j;
+
+action_pickers = {'boltzmann', 'greedy'};
+
+selected_action_picker = action_pickers{1};
+
+envs_ = {'prey', 'maze'};
+methods_ = {'fci-k-mean', 'fci-mean', 'fci-max', 'wsum'};
+
+il_path = 'il';
+sep_path = 'sep';
+refmat_path = 'refmat';
+
+for e = 1:size(envs_, 2)
+    for m = 1:size(methods_, 2)
+        path_ = sprintf('%s/method/%s/env/%s/%s', selected_action_picker, refmat_path, envs_{e}, methods_{m});
+        ll = dir(sprintf('%s/*.mat', path_));
+        data = [];
+        legend_ = {};
+        for li = 1:size(ll, 1)
+            data(end+1, :) = load(sprintf('%s/%s', path_, ll(li).name), '-ascii');
+            legend_{end+1} = regexp(ll(li).name, '--refmat-grind \d+', 'match');
+            legend_{end} = legend_{end}{1};
         end
-        if(m(end, end) < minl(i))
-            minl(i) = m(end, end);
-            minlj(i) = j;
-        end
+        figure('units','normalized','outerposition',[0 0 1 1])
+        set(gcf, 'Visible', 'off')
+        plot(data', 'LineWidth', 2), grid
+        legend(legend_);
+        title(sprintf('The grind comparison of `%s` method over %s', methods_{m}, envs_{e}));
+        xlabel('Trials')
+        ylabel('Avg. Moves');
+        savefig(sprintf('%s/%s-%s-grind-compare.fig', path_, envs_{e}, methods_{m}))
+        print(sprintf('%s/%s-%s-grind-compare.png', path_, envs_{e}, methods_{m}), '-r300', '-dpng')
     end
-    plot(m', 'LineWidth', 2)
-    grid on
-    ylim([0, max(max(m))])
-    legend(k);
-    ylabel('Avg. Moves')
-    xlabel('Trials')
-    title(sprintf('Comparing the grind effect to FCI `%s` combiner method over %s', l{i}, env))
-    %pause
 end
-
-fprintf('Winning of the races is %s with %i grind\n', ll, jj);
-
-k = {};
-p = [];
-for i=1:size(l, 2)
-    fprintf('The winning grind of %s combiner method is %i with value of %f\n', l{i}, minlj(i), minl(i));
-    p(end+1, :) = load(sprintf('fci_%s_%i.dat', l{i}, minlj(i)));
-    k{end+1} = sprintf('method: [%s] grind: [%i] best: [%f]', l{i}, minlj(i), minl(i));
-end
-plot(p', 'LineWidth', 2)
-grid on
-ylim([0, max(max(m))])
-legend(k);
-ylabel('Avg. Moves')
-xlabel('Trials')
-title(sprintf('Comparing the best results of 3 FCI combiner method K-MEAN/MEAN/MAX over %s', env))
-legend(k);
-%pause
-
-m = [];
-m(end+1, :) = p(1, :);
-m(end+1, :) = p(2, :);
-m(end+1, :) = p(3, :);
-m(end+1, :) = load('sep.dat');
-m(end+1, :) = load('il.dat');
-plot(m', 'LineWidth', 2)
-grid
-ylim([0, max(max(m))])
-legend(sprintf('FCI K-MEAN (%f)', m(1, end)), sprintf('FCI MAX (%f)', m(2, end)), sprintf('FCI MEAN (%f)', m(3, end)), sprintf('SEP (%f)', m(4, end)), sprintf('IL (%f)', m(5, end)));
-ylabel('Avg. Moves')
-xlabel('Trials')
-title(sprintf('Comparing the FCI/IL/SEP methods over %s', env))
