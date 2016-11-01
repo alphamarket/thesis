@@ -3,7 +3,7 @@ function compare()
 
     action_pickers = {'boltzmann', 'greedy'};
 
-    selected_action_picker = action_pickers{1};
+    selected_action_picker = action_pickers{2};
 
     envs_ = {'prey', 'maze'};
     methods_ = {'fci-k-mean', 'fci-mean', 'fci-max', 'wsum'};
@@ -12,15 +12,11 @@ function compare()
     sep_path = 'sep';
     refmat_path = 'refmat';
 
-    min_overall = { };
-    min_overall_legends = { };
-
-
     for e = 1:size(envs_, 2)
         min_methods = { };
         min_legends = { };
         for m = 1:size(methods_, 2)
-            fprintf('> %s / %s\n', envs_{e}, methods_{m});
+            fprintf('> %s / %s / %s\n', selected_action_picker, envs_{e}, methods_{m});
             path_ = sprintf('%s/method/%s/env/%s/%s', selected_action_picker, refmat_path, envs_{e}, methods_{m});
             ll = dir(sprintf('%s/*.mat', path_));
             data = [];
@@ -41,7 +37,7 @@ function compare()
             close, open_hidden_fig()
             plot(data', 'LineWidth', 2), grid
             legend(legend_);
-            title(sprintf('The grind comparison of `%s` method over %s', methods_{m}, envs_{e}));
+            title(sprintf('The grind comparison of `%s` method over `%s` with `%s` as action picker method', methods_{m}, envs_{e}, selected_action_picker));
             xlabel('Trials')
             ylabel('Avg. Moves');
             savefig(sprintf('%s/%s-%s-grind-compare.fig', path_, envs_{e}, methods_{m}))
@@ -54,14 +50,14 @@ function compare()
         legend(min_legends)
         xlabel('Trials')
         ylabel('Avg. Moves');
-        title(sprintf('The methods comparison over %s', methods_{m}, envs_{e}));
+        title(sprintf('The methods comparison over `%s` with `%s` as action picker method', methods_{m}, envs_{e}, selected_action_picker));
         path_ = sprintf('%s/method/%s/env/%s', selected_action_picker, refmat_path, envs_{e});
         savefig(sprintf('%s/%s-methods-compare.fig', path_, envs_{e}))
         print(sprintf('%s/%s-methods-compare.png', path_, envs_{e}), '-r300', '-dpng')
 
         % compare methods with SEP & IL
         agents = {3, 1};
-        opt = {'sep', 'il'};
+        opt = {sep_path, il_path};
         for i = 1:size(opt, 2)
             path_ = sprintf('%s/method/%s/env/%s', selected_action_picker, opt{i}, envs_{e});
             data(end+1, :) = load(sprintf('%s/--iters 20 --env %s --method %s --agents %i.mat', path_, envs_{e}, opt{i}, agents{i}), '-ascii');
@@ -76,7 +72,7 @@ function compare()
         legend(min_legends)
         xlabel('Trials')
         ylabel('Avg. Moves');
-        title(sprintf('The REFMAT/SEP/IL comparison over %s', envs_{e}));
+        title(sprintf('The REFMAT/SEP/IL comparison over `%s` with `%s` as action picker method', envs_{e}, selected_action_picker));
         path_ = sprintf('%s', selected_action_picker);
         savefig(sprintf('%s/%s-compare.fig', path_, envs_{e}))
         print(sprintf('%s/%s-compare.png', path_, envs_{e}), '-r300', '-dpng')
