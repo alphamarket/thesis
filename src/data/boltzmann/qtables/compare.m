@@ -2,7 +2,6 @@ function compare()
     clear, clc, close all
 
     envs_ = {'maze', 'prey'};
-    methods_ = {'fci-k-mean', 'fci-mean', 'fci-max', 'wsum'};
 
     il_path = 'il';
     sep_path = 'sep';
