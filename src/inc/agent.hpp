@@ -113,7 +113,7 @@ protected:
                 // engage the PRE plugins
                 this->pluging_execute(PHASE_PRE);
                 // pick an action
-                this->_prev_action = this->learner->advise_action_boltzmann(this->world->get_current_state(), .4);
+                this->_prev_action = this->learner->advise_action_boltzmann(this->world->get_current_state(), this->_tau);
                 // move the action
                 this->world->make_move(this->_prev_action);
                 // get the reward
@@ -123,7 +123,7 @@ protected:
                 // engage the ON plugins
                 this->pluging_execute(PHASE_ON);
                 // update the learner
-                this->_prev_q = this->learner->update(this->_prev_state, this->_prev_action, this->world->get_current_state(), this->_current_reward, .01, .9);
+                this->_prev_q = this->learner->update(this->_prev_state, this->_prev_action, this->world->get_current_state(), this->_current_reward, this->_beta, this->_gamma);
                 // engage the POST plugins
                 this->pluging_execute(PHASE_POST);
             }
