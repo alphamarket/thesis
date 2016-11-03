@@ -45,7 +45,8 @@ po::variables_map process_args(int argc, char** argv) {
             ("refmat-combinator", po::value<string>()->default_value("fci-k-mean")->notifier(fci_checker("refmat-combinator")), "The REFMAT combinator method, could be [k-mean, mean, max, wsum].")
             ("method", po::value<string>()->default_value("refmat")->notifier(method_checker("method")), "The combiner method, could be [refmat, sep, il, sep-refmat].")
             ("env", po::value<string>()->default_value("maze")->notifier(env_checker("env")), "The combiner method, could be [maze, prey].")
-            ("print-qtable-only", "Print the Q-table at the end of each iteration")
+            ("print-qtable-only", "Print the Q-table at the end of each iteration.")
+            ("print-qtable-max", "Prints the Q-table's maximum value at the end of each trial.")
         ;
     po::variables_map vm;
     try {

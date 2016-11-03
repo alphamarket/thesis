@@ -68,7 +68,11 @@ void execute_agent_prey(
         if(AGENTS > 1 || method == "sep")
             // here we do the combination
             combine(agents, method, fci_method);
+        if(opt.count("print-qtable-max"))
+            cout << agents.front().learner->Q.max() << " ";
     }
+    if(opt.count("print-qtable-max"))
+        cout << endl;
     // export the collected data
     for(size_t i = 0; i < AGENTS; i++) {
         auto h = agents[i].get_plugin<plugin_count_hop>();
