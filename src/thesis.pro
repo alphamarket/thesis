@@ -34,7 +34,8 @@ HEADERS += inc/colormod.hpp inc/stdafx.hpp \
     inc/plugins/plugin_reference_counter.hpp \
     inc/world.prey.hpp \
     inc/execute.agent.prey.hpp \
-    inc/learner.hunter.hpp
+    inc/learner.hunter.hpp \
+    inc/execute.agents.hpp
 SOURCES += main.cpp \
     src/execute.agent.maze.cpp \
     src/learner.maze.cpp \

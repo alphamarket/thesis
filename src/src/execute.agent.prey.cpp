@@ -1,4 +1,5 @@
 #include "inc/execute.agent.prey.hpp"
+#include "inc/execute.agents.hpp"
 
 void execute_agent_prey(
         matrix3D_t<scalar>& data,
@@ -48,44 +49,10 @@ void execute_agent_prey(
         plugins.back().push_back(new plugin_reset_agent<hunter_prey::STATE_DIM, hunter_prey::ACTION_DIM>());
     }
     // contains previous hops
-    matrix1D_t<size_t> hop_sures({AGENTS});
     for(size_t i = 0; i < AGENTS; i++) {
-        hop_sures[i] = 0;
         agents.push_back(agent<hunter_prey::STATE_DIM, hunter_prey::STATE_DIM>(&worlds[i], &learners[i], beta, gamma, tau));
         for(auto _plugin : plugins[i]) agents.back() += _plugin;
     }
-    for(size_t trial = 0; trial < TRIALS; trial++) {
-        // execute
-        for(size_t i = 0; i < AGENTS; i++) agents[i].execute(CYCLES, AGENTS > 1);
-        // wait agent to merge
-        for(size_t i = 0; i < AGENTS; i++) {
-            agents[i].wait_to_execute();
-            // check things went as expected
-            assert((agents[i].get_plugin<plugin_count_hop>()->hops.size() - hop_sures[i]) == CYCLES);
-            // if az expected? update it
-            hop_sures[i] = agents[i].get_plugin<plugin_count_hop>()->hops.size();
-        }
-        if(AGENTS > 1 || method == "sep")
-            // here we do the combination
-            combine(agents, method, fci_method);
-        if(opt.count("print-qtable-max"))
-            cout << agents.front().learner->Q.max() << " ";
-    }
-    if(opt.count("print-qtable-max"))
-        cout << endl;
-    // export the collected data
-    for(size_t i = 0; i < AGENTS; i++) {
-        auto h = agents[i].get_plugin<plugin_count_hop>();
-        assert(h->hops.size() == TRIALS * CYCLES);
-        // store the data
-        std::copy(h->hops.begin(), h->hops.end(), data[CURRENT_ITER][i].begin());
-        // release all plugin's resources
-        for(auto _plugin : plugins[i]) delete _plugin;
-    }
-    // if q table requested?
-    if(opt.count("print-qtable-only")) {
-        // print one of the agents' Q-Table since in the last TRIAL they are merged
-        agents.front().learner->Q.for_each([](const auto& i){ cout << i << " "; });
-        cout << endl;
-    }
+    // execute the agents
+    execute_agents(agents, data, CURRENT_ITER, AGENTS, TRIALS, CYCLES, method, fci_method, opt);
 }
