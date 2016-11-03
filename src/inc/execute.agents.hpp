@@ -34,11 +34,10 @@ void execute_agents(
         if(AGENTS > 1 || method == "sep")
             // here we do the combination
             combine(agents, method, fci_method);
-        if(opt.count("print-qtable-max"))
+        if(opt["output"].as<string>() == "qtable-max")
             cout << agents.front().learner->Q.max() << " ";
     }
-    if(opt.count("print-qtable-max"))
-        cout << endl;
+    if(opt["output"].as<string>() == "qtable-max") cout << endl;
     // export the collected data
     for(size_t i = 0; i < AGENTS; i++) {
         auto h = agents[i].template get_plugin<plugin_count_hop>();
@@ -49,8 +48,8 @@ void execute_agents(
         for(auto _plugin : agents[i].get_plugins()) delete _plugin.second;
     }
     // if q table requested?
-    if(opt.count("print-qtable-only")) {
-        // print one of the agents' Q-Table since in the last TRIAL they are merged
+    if(opt["output"].as<string>() == "qtable") {
+        // output one of the agents' Q-Table since in the last TRIAL they are merged
         agents.front().learner->Q.for_each([](const auto& i){ cout << i << " "; });
         cout << endl;
     }

@@ -25,7 +25,8 @@ int main(int argc, char** argv) {
     const size_t TRIALS = opt["trials"].as<size_t>();
     const size_t AGENT_COUNT = opt["agents"].as<size_t>();
 
-    fprintf(stderr, "Running %zu agents with %zu iterations %zu times....\n", AGENT_COUNT, TRIALS * CYCLES, ITERS);
+    fprintf(stderr, "Method: %s\nEnvironment: %s\n", opt["method"].as<string>().c_str(), opt["env"].as<string>().c_str());
+    fprintf(stderr, "Running %zu agents with %zu iterations %zu times ....\n", AGENT_COUNT, TRIALS * CYCLES, ITERS);
 
     // ITERS x AGENTS x [TRIALS * CYCLES]
     matrix3D_t<scalar> data({ ITERS, AGENT_COUNT, TRIALS * CYCLES });
@@ -51,7 +52,7 @@ int main(int argc, char** argv) {
                         opt
                     );
     // if didn't ask for printing Q-Tables? then print avg. moves
-    if(!opt.count("print-qtable-only")) {
+    if(opt["output"].as<string>() == "avg-moves") {
         // try to average data over AGENTS and ITERs
         matrix1D_t<scalar> avg_data({TRIALS * CYCLES});
         for(size_t k = 0; k < TRIALS * CYCLES; k++) {
