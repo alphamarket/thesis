@@ -25,7 +25,11 @@ protected:
     /**
      * @brief The phases enum
      */
-    enum phases { PHASE_ENTER = 0, PHASE_INIT, PHASE_PRE, PHASE_ON, PHASE_POST, PHASE_DEINIT, PHASE_EXIT };
+    enum phases_t { PHASE_ENTER = 0, PHASE_INIT, PHASE_PRE, PHASE_ON, PHASE_POST, PHASE_DEINIT, PHASE_EXIT };
+    /**
+     * @brief The action_advisor_method enum
+     */
+    enum action_advisor_method_t { BOLTZMANN = 0, GREEDY };
     /**
      * @brief _executing Check if the thread is executing or not?
      */
@@ -38,7 +42,12 @@ protected:
     scalar
         _tau,
         _beta,
-        _gamma;
+        _gamma,
+        _epsilon;
+    /**
+     * @brief _action_advisor_method The action advisor method
+     */
+    action_advisor_method_t _action_advisor_method;
     /**
      * @brief _thread The execution thread
      */
@@ -112,8 +121,19 @@ protected:
                 this->_prev_state = this->world->get_current_state();
                 // engage the PRE plugins
                 this->pluging_execute(PHASE_PRE);
-                // pick an action
-                this->_prev_action = this->learner->advise_action_boltzmann(this->world->get_current_state(), this->_tau);
+                // pick an action considering the defined method
+                switch(this->_action_advisor_method) {
+                case BOLTZMANN:
+                    // pick an action
+                    this->_prev_action = this->learner->advise_action_boltzmann(this->world->get_current_state(), this->_tau);
+                    break;
+                case GREEDY:
+                    // pick an action
+                    this->_prev_action = this->learner->advise_action_greedy(this->world->get_current_state(), this->_epsilon);
+                    break;
+                default:
+                    raise_error("Invalid action picker method `" + to_string(this->_action_advisor_method) + "`");
+                }
                 // move the action
                 this->world->make_move(this->_prev_action);
                 // get the reward
@@ -136,9 +156,20 @@ protected:
     }
 
 public:
-    agent(IWorld<state_dim, action_dim>* const world, IQlearner<state_dim, action_dim>* const learner, scalar beta = 0.01, scalar gamma = .9, scalar tau = .4)
-        : _instance_id(++agent::_instance_count), _tau(tau), _beta(beta), _gamma(gamma), world(world), learner(learner)
-    { }
+    agent(
+        IWorld<state_dim, action_dim>* const world,
+        IQlearner<state_dim, action_dim>* const learner,
+        const string action_advisor_method = "boltzmann",
+        const scalar beta = 0.01,
+        const scalar gamma = .9,
+        const scalar tau = .4,
+        const scalar epsilon = .2)
+        : _instance_id(++agent::_instance_count), _tau(tau), _beta(beta), _gamma(gamma), _epsilon(epsilon), world(world), learner(learner)
+    {
+        if(action_advisor_method == "boltzmann") this->_action_advisor_method = BOLTZMANN;
+        else if(action_advisor_method == "greedy") this->_action_advisor_method = GREEDY;
+        else raise_error("Invalid action picker method `" + action_advisor_method + "`");
+    }
     /**
      * @brief operator += Adds new pluing
      */

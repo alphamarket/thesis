@@ -25,7 +25,7 @@ int main(int argc, char** argv) {
     const size_t TRIALS = opt["trials"].as<size_t>();
     const size_t AGENT_COUNT = opt["agents"].as<size_t>();
 
-    fprintf(stderr, "Method: %s\nEnvironment: %s\n", opt["method"].as<string>().c_str(), opt["env"].as<string>().c_str());
+    fprintf(stderr, "Method: %s\nEnvironment: %s\nRL Action Advisor: %s\n", opt["method"].as<string>().c_str(), opt["env"].as<string>().c_str(), opt["rl-action-advisor"].as<string>().c_str());
     fprintf(stderr, "Running %zu agents with %zu iterations %zu times ....\n", AGENT_COUNT, TRIALS * CYCLES, ITERS);
 
     // ITERS x AGENTS x [TRIALS * CYCLES]
@@ -37,7 +37,7 @@ int main(int argc, char** argv) {
             execute_agent_maze(
                         data,  iter,
                         AGENT_COUNT, TRIALS, CYCLES,
-                        opt["beta"].as<scalar>(), opt["gamma"].as<scalar>(), opt["tau"].as<scalar>(),
+                        opt["beta"].as<scalar>(), opt["gamma"].as<scalar>(), opt["tau"].as<scalar>(), opt["epsilon"].as<scalar>(),
                         opt["method"].as<string>(), opt["refmat-combinator"].as<string>(),
                         opt["refmat-grind"].as<size_t>(),
                         opt
@@ -46,7 +46,7 @@ int main(int argc, char** argv) {
             execute_agent_prey(
                         data,  iter,
                         AGENT_COUNT, TRIALS, CYCLES,
-                        opt["beta"].as<scalar>(), opt["gamma"].as<scalar>(), opt["tau"].as<scalar>(),
+                        opt["beta"].as<scalar>(), opt["gamma"].as<scalar>(), opt["tau"].as<scalar>(), opt["epsilon"].as<scalar>(),
                         opt["method"].as<string>(), opt["refmat-combinator"].as<string>(),
                         opt["refmat-grind"].as<size_t>(),
                         opt

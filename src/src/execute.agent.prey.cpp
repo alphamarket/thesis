@@ -10,6 +10,7 @@ void execute_agent_prey(
         const scalar& beta,
         const scalar& gamma,
         const scalar& tau,
+        const scalar& epsilon,
         const string& method,
         const string& fci_method,
         const size_t& grind,
@@ -50,7 +51,7 @@ void execute_agent_prey(
     }
     // contains previous hops
     for(size_t i = 0; i < AGENTS; i++) {
-        agents.push_back(agent<hunter_prey::STATE_DIM, hunter_prey::STATE_DIM>(&worlds[i], &learners[i], beta, gamma, tau));
+        agents.push_back(agent<hunter_prey::STATE_DIM, hunter_prey::STATE_DIM>(&worlds[i], &learners[i], opt["rl-action-advisor"].as<string>(), beta, gamma, tau, epsilon));
         for(auto _plugin : plugins[i]) agents.back() += _plugin;
     }
     // execute the agents
