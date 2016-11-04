@@ -60,13 +60,13 @@ po::variables_map process_args(int argc, char** argv) {
 
             ("tau",
                 po::value<scalar>()
-                ->default_value(.4, ".40"),
+                    ->default_value(.4, ".40"),
             "The temperature rate(gamma) value.")
 
             ("epsilon",
                 po::value<scalar>()
                     ->default_value(.2, ".20")
-                    ->notifier(prob_checker("ger")),
+                    ->notifier(prob_checker("epsilon")),
              "The greedy action picker exploration rate, should be in range of [0,1].")
 
             ("refmat-combinator",
@@ -78,7 +78,7 @@ po::variables_map process_args(int argc, char** argv) {
             ("method",
                 po::value<string>()
                     ->default_value("il")
-                ->notifier(avail_options("method", {"refmat", "sep", "il", "sep-refmat"})),
+                    ->notifier(avail_options("method", {"refmat", "sep", "il", "sep-refmat"})),
              "The combiner method, could be [refmat, sep, il, sep-refmat].")
 
             ("env",
@@ -104,9 +104,9 @@ po::variables_map process_args(int argc, char** argv) {
         po::store(po::parse_command_line(argc, argv, desc), vm);
         po::notify(vm);
     } catch(po::error& e) {
-      std::cerr << "ERROR: " << e.what() << std::endl << std::endl;
-      std::cerr << desc << std::endl;
-      exit(EXIT_FAILURE);
+        std::cerr << "ERROR: " << e.what() << std::endl << std::endl;
+        std::cerr << desc << std::endl;
+        exit(EXIT_FAILURE);
     }
     if (vm.count("help")) { cout << desc << endl; exit(EXIT_SUCCESS); }
     // one agent if the method is IL
