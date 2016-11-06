@@ -69,7 +69,7 @@ private:
         auto sa = in->learner->combine_state_action(in->_prev_state, in->_prev_action);
         // if the current state is terminal and goal
         // or there is already a shock value in this state
-        if(accumulate(q.begin(), q.end(), 0.) > 0 || (cb._is_terminal && cb._value > 0))
+        if(this->shock.slice(in->_current_state).sum() > 0 || (cb._is_terminal && cb._value > 0))
             // increament the shock
             this->shock.operator ()(sa)++;
     }

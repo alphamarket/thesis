@@ -79,7 +79,7 @@ protected:
             scalar gw[2] = {0, 0};
             for(size_t i = 0; i < 2; i++) {
                 for(auto _g : g[i]) {
-                    gw[i] += (shocks[_g]->slice(ii).sum() + 1);
+                    gw[i] += (shocks[_g]->slice(ii).sum());
                 }
             }
             // calculate the Qco values from agents' Qs
@@ -87,7 +87,8 @@ protected:
                 for(auto _g : g[i]) {
                     size_t k = 0;
                     auto q = Qs[_g]->slice(ii);
-                    scalar w = (shocks[_g]->slice(ii).sum() + 1) / gw[i];
+                    scalar w = 1 / g[i].size();
+                    if(gw[i] != 0) w = (shocks[_g]->slice(ii).sum()) / gw[i];
                     QCO[i].slice_ref(ii).for_each([&w, &q, &k](auto* i) { *i += w * q.data()[k++]; });
                 }
             }
@@ -99,6 +100,11 @@ protected:
                     agents[_g].learner->Q.slice_ref(ii).for_each([&q, &k](auto* const i) { *i = q.data()[k++]; });
                 }
             }
+        }
+        // replace combined SEPs
+        for(size_t i = 0; i < agents.size(); i++) {
+            auto sepp = agents[i].template get_plugin<plugin_SEP>();
+            sepp->sep = combined_sep;
         }
     }
     /**
