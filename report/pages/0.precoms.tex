@@ -6,7 +6,8 @@
 % add space before citation
 \renewcommand{\مرجع}[1]{ \cite{#1}\relax}
 
-\def\جام{اجتناب از مانع }
+\def\رفمت{\lr{REFMAT}\relax}
+\def\رسمت{\lr{RCMAT}\relax}
 
 \newcommand{\fig}[3][0.5]{\begin{figure}
 \centering
@@ -14,3 +15,17 @@
 \caption{#3}
 \label{fig:#2}
 \end{figure}}
+
+% define the default line stretch 
+\def\thebaselinestretch{2.0}
+\renewcommand{\baselinestretch}{\thebaselinestretch} 
+
+% the definition styling
+\theoremstyle{definition}
+\newtheorem{definition}{تعریف}[chapter]
+% the theorem styling
+\theoremstyle{theorem}
+\newtheorem{theorem}{تئوری}[chapter]
+% reset the definition# at every chapter
+\let\OldChapter\chapter
+\renewcommand{\chapter}{\setcounter{definition}{0}\setcounter{theorem}{0}\OldChapter}
