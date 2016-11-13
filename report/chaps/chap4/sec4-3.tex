@@ -5,7 +5,105 @@
 این پایان‌نامه آورده شده است ما از به دلایل فنی از انتگرال فازی چوکت استفاده می‌کنیم که در بخش‌ های بعدی این دلایل نیز بطور مفصل شرح داده می‌شود.
 
 \زیرقسمت{الگوریتم پیشنهادی}
+در این قسمت به معرفی الگوریتم پیشنهادی می‌پردازیم. آنچه که در الگوریتم
+\ref{alg:proposed}
+آمده است به دو قسمت تشکیل شده است، یک قسمت که مربوط یادگیری مستقل (خطوط ۵ تا ۱۰) و قسمت دیگری مربوط به یادگیری مشارکتی (خطوط ۱۲ تا ۱۵) می‌باشد. ورودی الگوریتم تعداد عامل‌ها می‌باشد و در ابتدا ماتریس‌های $Q$ و \رفمت\ و \رسمت\ مقداردهی می‌شود. سپس تا زمانی که یادگیری پایان نیافته است ابتدا عامل‌ها در قسمت یادگیری مستقل به صورت جدا گانه در محیط فعالیت می‌کنند که رویه‌های آورده شده در خطوط ۵ تا ۸ و همچنین خط ۱۰ همان الگوریتم یادگیری $Q$ متعارف می‌باشد\مرجع{sutton1998reinforcement}. در قسمت یادگیری مستقل تنها خط ۹ می‌باشد که در روش پیشنهادی به شبه‌کد اضافه شده است و این تنها یک وظیفه‌ی بسیار ساده را انجام می‌دهد و آن شمارش میزان حضور عامل در هر کدام از نواحی از پیش تعیین شده است؛ $\phi(\cdot)$ یک تابع نگاشت از یک موقعیت به یک ناحیه از محیط می‌باشد.\بند
 
-\زیرقسمت{چرخه یادگیری مستقل}
+\begin{algorithm}[t]\setstretch{1.2}
+\caption{\rl{الگوریتم پیشنهادی یادگیری مشارکتی برمبنای ماتریس \رفمت\ و انتگرال فازی}}\label{alg:proposed}
+\begin{latin}
+\begin{algorithmic}[1]
+\Procedure{REFMAT-COOPERATIVE-LEARNING}{$m$}
+\Require $m > 1$ \Comment {The number of agents.}
+\Ensure {Intialize the $Q$ matrix}
+\Ensure {Intialize the $\text{RCMAT} \gets 0$}
+\While {not End Of Learning}
+	\State {$\text{REFMAT} \gets 0$}
+	\If {In individual learning mode} %\Comment {Individual learing mode for each agent \textbf{independently}.}
+		\State {Visit the state $s$;}
+		\State {Select an action $a$ based on an action selection policy;} %\Comment{e.g base on Boltzmann, $\epsilon$-greedy, etc.}
+		\State {Carry out the $a$ and observe a reward $r$ at the new state $s'$;}
+		\State {$Q[s,a] \gets Q[s,a] + \alpha (r + \lambda \max\limits_{a'}(Q[s',a']) - Q[s,a])$;}
+		\State {Increment $\text{REFMAT}(\phi(s'))$ by one;} %\Comment{Update the region $r$'s REFMAT value where $s'$ is in it.}
+		\State {$s \gets s'$;}		
+	\ElsIf {In cooperative learning mode}
+		\State REFMAT, RCMAT $\gets$ \Call{Swap}{REFMAT, RCMAT};
+		\State $\text{CoQ}_{\text{FCI}} \gets$ \Call{FCI\_Combiner}{All agents' Q and REFMAT matrices};
+		\For {each agent $i \gets 1, m$}
+			\State $Q_i \gets \text{CoQ}_{\text{FCI}}$;
+		\EndFor
+	\EndIf
+\EndWhile 
+\EndProcedure
+\end{algorithmic}
+\end{latin}
+\end{algorithm}
 
-\زیرقسمت{چرخه همکاری}
+بعد از طی یادگیری مستقل عامل‌ها به قسمت اشتراک گذاری دانش‌های خود(جداول $Q$) می‌رسند (خطوط ۱۲ تا ۱۵). در قسمت یادگیری مشترک ابتدا طبق آنچه که در در قسمت آورده شده است جداول \رفمت\ و \رسمت\ به صورت مشترک بروزرسانی می‌شود و سپس جداول $Q$ و \رفمت\ تمامی عامل‌ها به مدل ترکیب کننده فازی معرفی شده در این پژوهش فرستاده می‌شود و مدل ترکیب کننده فازی وظیفه‌ی استخراج یک دانش جدید با در نظر گرفتن ورودی‌های آن برای جایگزینی دانش قابلی عامل‌ها می‌باشد.
+
+الگوریتم تابع بسیار ساده می‌باشد و مقادیر غیر صفر ماتریس ارجاع را در ماتریس خاطره کپی می‌کند و مقادیر صفر ماتریس ارجاع را از ماتریس خاطره جایگزین می‌کند. این تابع در الگوریتم
+\ref{alg:swap_func}
+آمده است.
+
+\begin{algorithm}[t]\setstretch{1.2}
+\caption{تابع \مق{Swap} معرفی شده در الگوریتم \ref{alg:proposed}}\label{alg:swap_func}
+\begin{latin}
+\begin{algorithmic}[1]
+\Procedure{Swap}{REFMAT, RCMAT}
+\Require \Call{size}{REFMAT} = \Call{size}{RCMAT}
+	\For {each element $r$ in REFMAT and its corresponding element $c$ in RCMAT}
+		\If {$r = 0$}
+			\State $r = c$;
+		\Else
+			\State $c = r$;
+		\EndIf
+	\EndFor
+\EndProcedure
+\end{algorithmic}
+\end{latin}
+\end{algorithm}
+
+در این پژوهش در دوقسمت نوآوری صورت گرفته است، قسمت اول ارائه‌ی معیاری جدید برای سنجش معیار خبرگی که طبق تعریف
+\ref{experties_definition}
+این معیار در خط ۹ الگوریتم
+\ref{alg:proposed}
+پیاده‌سازی شده است؛ نوآوری دوم نحوه‌ی ترکیب اطلاعات دانش عامل‌ها با استفاده از انتگرال فازی که خط ۱۳ الگوریتم
+\ref{alg:proposed}
+آمده است؛ که شرح جزییات نحوه‌ی ترکیب اطلاعات عامل‌ها در الگوریتم
+\ref{alg:fci_combinator}
+آمده است.
+
+\begin{algorithm}[t]\setstretch{1.2}
+\caption{تابع \مق{FCI\_Combiner} معرفی شده در الگوریتم \ref{alg:proposed}}\label{alg:fci_combinator}
+\begin{latin}
+\begin{algorithmic}[1]
+\Procedure{FCI\_Combiner}{$\vec{K}$, $\vec{R}$}
+\Require \Call{length}{$\vec{K}$} = \Call{length}{$\vec{R}$} = $m$
+\Ensure {Initialize $\text{CoQ}_{\text{FCI}}$}
+	\For {each state $s$}
+		\State $\vec{q} \gets \{\}$; \Comment {Contains the $Q$ values of every actions in state $s$ for all agents}
+		\State $\vec{f} \gets \{\}$; \Comment {Contains the normalized valued of REFMATs' value for state $s$ for all agents}
+		\For {each REFMAT in $\vec{R}$}
+			\State $\vec{f}.add(\text{REFMAT}(\phi(s)))$;
+		\EndFor
+		\State $\vec{A} \gets 1 - $ \Call{normalize}{$\vec{f}$};
+		\For {each $Q$ in $\vec{K}$}
+			\State $\vec{q}.add(Q(s, \cdot))$;
+		\EndFor
+		\For {each possible action $a$ in state $s$}
+			\State $\vec{x} \gets Q$ values for current action $a$ in $\vec{q}$ for all agents;
+			\State $\text{CoQ}_{\text{FCI}}[s, a] \gets \sum_{i = 1}^{m} \left( f(x_{\pi_{(i)}}) - f(x_{\pi_{(i-1)}}) \right) \cdot g(A_i)$ \Comment{The Choquet Integral}
+		\EndFor
+	\EndFor
+\Statex
+\Return $\text{CoQ}_{\text{FCI}}$;
+\EndProcedure
+\end{algorithmic}
+\end{latin}
+\end{algorithm}
+
+ورودی‌های الگوریتم
+\ref{alg:fci_combinator}
+به ترتیب مجموعه‌ای از جداول $Q$ و ماتریس‌های ارجاع(\رفمت) به ازای کلیه‌ی عامل‌ها می‌باشد بطوری که در ازای هر جدول $Q$ یک ماتریس \رفمت\ متناظر وجود دارد. خروجی این الگوریتم یک جدول $Q$ می‌باشد که از ترکیب جداول $Q$ ورودی با درنظر گرفتن میزان خبرگی هرکدام از عامل‌ها که توسط ماتریس‌های \رفمت\ آن‌ها تعیین می‌شود. الگوریتم
+\ref{alg:fci_combinator}
+به ازای کلیه‌ی موقعیت‌ها (خط ۲) ابتدا مقادیر \رفمت\ کلیه‌ی عامل‌ها در ناحیه‌ای که آن موقعیت در آن واقع است، استخراج می‌شود و در متغییر $f$ ذخیره می‌شود (خطوط ۵ و ۶) سپس در خط ۷ 
