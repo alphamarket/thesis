@@ -94,8 +94,7 @@
 			\State $\text{CoQ}_{\text{FCI}}[s, a] \gets \sum_{i = 1}^{m} \left( f(x_{\pi_{(i)}}) - f(x_{\pi_{(i-1)}}) \right) \cdot g(\vec{A}_i)$ \Comment{The Choquet Integral} \label{alg:fci_combinator:line:fci}
 		\EndFor
 	\EndFor
-\Statex
-\Return $\text{CoQ}_{\text{FCI}}$;
+\State \Return $\text{CoQ}_{\text{FCI}}$;
 \EndProcedure
 \end{algorithmic}
 \end{latin}
@@ -116,3 +115,78 @@
 f(\omega) = a\omega + b
 \end{equation}
 متغییر‌های $a$ و $b$ در \ref{eq:fci_f_func} می‌تواند به عنوان پارامترهای سازگار\زیرنویس{\مق{Addaptive Parameters}} در میزان کیفیت جدول $Q$ مشارکتی خروجی الگوریتم \ref{alg:fci_combinator} موثر واقع شود ولی با این‌حال در این پژوهش مقادیر $a$ و $b$ هردو به ترتیب مقادیر ثابت ۱ و صفر در نظر گرفته شده‌اند که یعنی از تابع همانی به عنوان تابع $f(\cdot)$ استفاده شده است.
+
+تابع $g(\cdot)$ یک ورودی مرتب شده طبق آنچه که در \ref{eq:fi_choquet_perm_val} آمده است می‌گیرد و در الگوریتم \ref{alg:fci_combinator} تعیین این تابع تاثیر زیادی بروی کیفیت خروجی الگوریتم خواهد داشت ولی چالش‌هایی برای تعیین این تابع داریم؛ تابع $g(\cdot)$ باید دارای ویژگی‌های زیر باشد:
+\begin{enumerate}
+\فقره \textbf{پویا\زیرنویس{Dynamic} باشد:} از آنجایی که تابع $g(\cdot)$ میزان ارزش غیرافزایشی منابع اطلاعاتی می‌باشد، نیاز داریم که تعیین کنیم که کدام منابع اطلاعاتی(در اینجا خبرگی عامل‌ها) در کنار هم ارزش افزوده‌ی بیشتری دارد؛ ولی از آنجایی که در حین یادگیری مشترک روشی برای تعیین این ارزش افزوده نداریم بنابراین باید تابع $g(\cdot)$ بصورت پویا بتوان مقادیر این ارزش افزوده را تخمین بزند.
+\فقره \textbf{قابل گسترش \زیرنویس{Expandable} باشد:} زیرا که تعداد عامل‌ها در محیط متغیر است لذا باید تابع $g(\cdot)$ بگونه‌ای باشد به ازای تغییر تعداد عامل‌ها (که تغییر در تعداد اعضای بردار $A$ را در پی دارد) قابل گسترش باشد.
+\end{enumerate}
+ یکی از روش‌ تخمین $g(\cdot)$ که دو ویژگی بالا را داشته باشد، تابع اندازه‌گیری-$\lambda$ سوگنو می‌باشد ولی این تابع نیاز به ریشه‌یابی روی متغییر $\lambda$ دارد که طبق آنچه که در \ref{eq:sugeno-lambda-measure:rooting} آمده است به ازای تعداد عامل‌های مختلف نیاز به ریشه‌یابی معادلات غیرخطی دارد که بدلیل پیچدگی محاسباتی این ریشه‌‌یابی و همچنین طبق نتایج حاصل از دستاوردهای این پژوهش که در فصل نتیجه‌گیری آورده شده است، در آزمایشات صورت گرفته در این پژوهش از تابع اندازه‌گیری-$\lambda$ سوگنو به عنوان تابع $g(\cdot)$ استفاده نشده است. یک سری توابع در این پژوهش بجهت استفاده و آزمایش به عنوان $g(\cdot)$ معرفی شده است که این توابع در الگوریتم‌های \ref{alg:g:const-one} تا \ref{alg:g:k-mean} آمده‌اند.
+
+\begin{algorithm}[t]\setstretch{1.2}
+\caption{الگوریتم \مق{Const-One} برای تخمین تابع $g(\cdot)$ در الگوریتم \ref{alg:fci_combinator}}\label{alg:g:const-one}
+\begin{latin}
+\begin{algorithmic}[1]
+\Procedure{Const-One}{$\vec{A}_i$}
+	\If {\Call{length}{$\vec{A}_i$} $\geq m$}
+		\State \Return 1;
+	\ElsIf {\Call{length}{$\vec{A}_i$} = 0}
+		\State \Return 0;
+	\Else
+		\State \Return $1$;
+	\EndIf
+\EndProcedure
+\end{algorithmic}
+\end{latin}
+\end{algorithm}
+
+\begin{algorithm}[t]\setstretch{1.2}
+\caption{الگوریتم \مق{Max} برای تخمین تابع $g(\cdot)$ در الگوریتم \ref{alg:fci_combinator}}\label{alg:g:max}
+\begin{latin}
+\begin{algorithmic}[1]
+\Procedure{Max}{$\vec{A}_i$}
+	\If {\Call{length}{$\vec{A}_i$} $\geq m$}
+		\State \Return 1;
+	\ElsIf {\Call{length}{$\vec{A}_i$} = 0}
+		\State \Return 0;
+	\Else
+		\State \Return $\max\limits_{\vec{A}_i}$;
+	\EndIf
+\EndProcedure
+\end{algorithmic}
+\end{latin}
+\end{algorithm}
+
+\begin{algorithm}[t]\setstretch{1.2}
+\caption{الگوریتم \مق{Mean} برای تخمین تابع $g(\cdot)$ در الگوریتم \ref{alg:fci_combinator}}\label{alg:g:mean}
+\begin{latin}
+\begin{algorithmic}[1]
+\Procedure{Mean}{$\vec{A}_i$}
+	\If {\Call{length}{$\vec{A}_i$} $\geq m$}
+		\State \Return 1;
+	\ElsIf {\Call{length}{$\vec{A}_i$} = 0}
+		\State \Return 0;
+	\Else
+		\State \Return ${\sum\limits_{j=i}^m \vec{A}_i(j) \over \Call{\text{length}}{\vec{A}_i}}$;
+	\EndIf
+\EndProcedure
+\end{algorithmic}
+\end{latin}
+\end{algorithm}
+
+\begin{algorithm}[t]\setstretch{1.2}
+\caption{الگوریتم \مق{K-Mean} برای تخمین تابع $g(\cdot)$ در الگوریتم \ref{alg:fci_combinator}}\label{alg:g:k-mean}
+\begin{latin}
+\begin{algorithmic}[1]
+\Procedure{K-Mean}{$\vec{A}_i$}
+	\If {\Call{length}{$\vec{A}_i$} $\geq m$}
+		\State \Return 1;
+	\ElsIf {\Call{length}{$\vec{A}_i$} = 0}
+		\State \Return 0;
+	\Else
+		\State \Return ${\sum\limits_{j=i, k = 1}^{m, \Call{\text{length}}{\vec{A}_i}}  k \cdot \vec{A}_i(j) \over {\sum\limits_{j=i}^{m} 1}}$;
+	\EndIf
+\EndProcedure
+\end{algorithmic}
+\end{latin}
+\end{algorithm}
