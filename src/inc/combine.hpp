@@ -133,6 +133,7 @@ protected:
             {"fci-max", fci::combiner_max},
             {"fci-mean", fci::combiner_mean},
             {"fci-k-mean", fci::combiner_k_mean},
+            {"fci-const-one", fci::combiner_const_one},
         };
         if(!method_manifest.count(method))
             raise_error("undefined fci method `"+method+"`");

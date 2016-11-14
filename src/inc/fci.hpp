@@ -64,6 +64,13 @@ public:
      */
     static scalar combiner_k_mean(const packages_t& packages, const size_t& i);
     /**
+     * @brief combiner_const_one Returns a constant 1
+     * @param packages The choquet packages vector
+     * @param i The i'th iteration of combination
+     * @return The combined value fo i'th iteration
+     */
+    static scalar combiner_const_one(const packages_t& packages, const size_t& i);
+    /**
      * @brief combine Combines the input with the values
      * @param ins The inputs
      * @param vals The values of inputs

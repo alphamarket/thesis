@@ -33,14 +33,14 @@ scalar fci::master_combiner(const packages_t& packages, const fci_combiner_func_
 scalar fci::combiner_max(const packages_t& packages, const size_t& i) {
     scalar _max = -INFINITY;
     auto vec = fci::range_vector(packages, i, 1);
-    for(size_t j = 0, k = 1; j < vec.size(); j++, k++) { _max = max(_max, packages[vec[j]]._val); }
+    for(size_t j = 0; j < vec.size(); j++) { _max = max(_max, packages[vec[j]]._val); }
     return _max;
 }
 
 scalar fci::combiner_mean(const packages_t& packages, const size_t& i) {
     scalar out = 0;
     auto vec = fci::range_vector(packages, i, 1);
-    for(size_t j = 0, k = 1; j < vec.size(); j++, k++) { out += packages[vec[j]]._val; }
+    for(size_t j = 0; j < vec.size(); j++) { out += packages[vec[j]]._val; }
     return out / vec.size();
 }
 
@@ -54,6 +54,8 @@ scalar fci::combiner_k_mean(const packages_t& packages, const size_t& i) {
     // make it less averaged!
     return out / (div - (div == 1 ? 0 : 1));
 }
+
+scalar fci::combiner_const_one(const packages_t&, const size_t&) { return 1.; }
 
 scalar fci::combine(const vector<scalar>& ins, const vector<scalar>& vals,  const fci_combiner_func_t &combiner_func) {
     scalar out = 0;

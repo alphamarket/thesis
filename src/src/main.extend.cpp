@@ -72,8 +72,8 @@ po::variables_map process_args(int argc, char** argv) {
             ("refmat-combinator",
                 po::value<string>()
                     ->default_value("fci-k-mean")
-                    ->notifier(avail_options("refmat-combinator", {"fci-k-mean", "fci-mean", "fci-max", "wsum"})),
-             "The REFMAT combinator method, could be [fci-k-mean, fci-mean, fci-max, wsum].")
+                    ->notifier(avail_options("refmat-combinator", {"fci-k-mean", "fci-mean", "fci-max", "fci-const-one", "wsum"})),
+             "The REFMAT combinator method, could be [fci-k-mean, fci-mean, fci-max, fci-const-one, wsum].")
 
             ("method",
                 po::value<string>()
