@@ -29,8 +29,8 @@
 	\ElsIf {In cooperative learning mode}
 		\State REFMAT, RCMAT $\gets$ \Call{Swap}{REFMAT, RCMAT};
 		\State $\text{CoQ}_{\text{FCI}} \gets$ \Call{FCI\_Combiner}{All agents' Q and REFMAT matrices};
-		\For {each agent $i \gets 1, m$}
-			\State $Q_i \gets \text{CoQ}_{\text{FCI}}$;
+		\For {each agent $i \gets 1, m$} 
+			\State $Q_i \gets \text{CoQ}_{\text{FCI}}$; \label{alg:proposed:QCO_replacement}
 		\EndFor
 	\EndIf
 \EndWhile 
@@ -67,9 +67,9 @@
 \ref{experties_definition}
 این معیار در خط ۹ الگوریتم
 \ref{alg:proposed}
-پیاده‌سازی شده است؛ نوآوری دوم نحوه‌ی ترکیب اطلاعات دانش عامل‌ها با استفاده از انتگرال فازی که خط ۱۳ الگوریتم
+پیاده‌سازی شده است؛ نوآوری دوم نحوه‌ی ترکیب اطلاعات دانش عامل‌ها با استفاده از انتگرال فازی که در خط ۱۳ الگوریتم
 \ref{alg:proposed}
-آمده است؛ که شرح جزییات نحوه‌ی ترکیب اطلاعات عامل‌ها در الگوریتم
+و شرح جزییات پیاده‌سازی آن در الگوریتم
 \ref{alg:fci_combinator}
 آمده است.
 
@@ -80,19 +80,18 @@
 \Procedure{FCI\_Combiner}{$\vec{K}$, $\vec{R}$}
 \Require \Call{length}{$\vec{K}$} = \Call{length}{$\vec{R}$} = $m$
 \Ensure {Initialize $\text{CoQ}_{\text{FCI}}$}
-	\For {each state $s$}
-		\State $\vec{q} \gets \{\}$; \Comment {Contains the $Q$ values of every actions in state $s$ for all agents}
+	\For {each state $s$} \label{alg:fci_combinator:line:foreach:state}
 		\State $\vec{f} \gets \{\}$; \Comment {Contains the normalized valued of REFMATs' value for state $s$ for all agents}
-		\For {each REFMAT in $\vec{R}$}
-			\State $\vec{f}.add(\text{REFMAT}(\phi(s)))$;
+		\For {each REFMAT in $\vec{R}$}\label{alg:fci_combinator:line:refmat:foreach}
+			\State $\vec{f}.add(\text{REFMAT}(\phi(s)))$;\label{alg:fci_combinator:line:refmat:foreach:loop}
 		\EndFor
-		\State $\vec{A} \gets 1 - $ \Call{normalize}{$\vec{f}$};
-		\For {each $Q$ in $\vec{K}$}
-			\State $\vec{q}.add(Q(s, \cdot))$;
-		\EndFor
-		\For {each possible action $a$ in state $s$}
-			\State $\vec{x} \gets Q$ values for current action $a$ in $\vec{q}$ for all agents;
-			\State $\text{CoQ}_{\text{FCI}}[s, a] \gets \sum_{i = 1}^{m} \left( f(x_{\pi_{(i)}}) - f(x_{\pi_{(i-1)}}) \right) \cdot g(A_i)$ \Comment{The Choquet Integral}
+		\State $\vec{A} \gets 1 - $ \Call{normalize}{$\vec{f}$}; \label{alg:fci_combinator:line:normalize}
+		\For {each possible action $a$ in state $s$} \label{alg:fci_combinator:line:fci:foreach:state_action}
+			\State $\vec{x} \gets \{\}$; \Comment {Contains the $Q$ values of action $a$ in state $s$ for all agents}
+			\For {each $Q$ in $\vec{K}$} \label{alg:fci_combinator:line:fci:foreach:state_action:x}
+				\State $\vec{x}.add(Q[s, a])$;\label{alg:fci_combinator:line:fci:foreach:state_action:x:loop}
+			\EndFor
+			\State $\text{CoQ}_{\text{FCI}}[s, a] \gets \sum_{i = 1}^{m} \left( f(x_{\pi_{(i)}}) - f(x_{\pi_{(i-1)}}) \right) \cdot g(\vec{A}_i)$ \Comment{The Choquet Integral} \label{alg:fci_combinator:line:fci}
 		\EndFor
 	\EndFor
 \Statex
@@ -104,6 +103,16 @@
 
 ورودی‌های الگوریتم
 \ref{alg:fci_combinator}
-به ترتیب مجموعه‌ای از جداول $Q$ و ماتریس‌های ارجاع(\رفمت) به ازای کلیه‌ی عامل‌ها می‌باشد بطوری که در ازای هر جدول $Q$ یک ماتریس \رفمت\ متناظر وجود دارد. خروجی این الگوریتم یک جدول $Q$ می‌باشد که از ترکیب جداول $Q$ ورودی با درنظر گرفتن میزان خبرگی هرکدام از عامل‌ها که توسط ماتریس‌های \رفمت\ آن‌ها تعیین می‌شود. الگوریتم
+به ترتیب مجموعه‌ای از جداول $Q$ و ماتریس‌های ارجاع(\رفمت) تمامی عامل‌ها می‌باشد بطوری که در ازای هر جدول $Q$ یک ماتریس \رفمت\ متناظر وجود دارد. خروجی این الگوریتم یک جدول $Q$ می‌باشد که از ترکیب جداول $Q$ ورودی با درنظر گرفتن میزان خبرگی هرکدام از عامل‌ها که توسط ماتریس‌های \رفمت\ آن‌ها تعیین می‌شود. الگوریتم
 \ref{alg:fci_combinator}
-به ازای کلیه‌ی موقعیت‌ها (خط ۲) ابتدا مقادیر \رفمت\ کلیه‌ی عامل‌ها در ناحیه‌ای که آن موقعیت در آن واقع است، استخراج می‌شود و در متغییر $f$ ذخیره می‌شود (خطوط ۵ و ۶) سپس در خط ۷ 
+به ازای کلیه‌ی موقعیت‌ها($s$ها در خط \ref{alg:fci_combinator:line:foreach:state}) ابتدا مقادیر \رفمت\ کلیه‌ی عامل‌ها در ناحیه‌ای که آن موقعیت در آن واقع است(که توسط تابع نگاشت $\phi(\cdot)$ بدست می‌آید) را استخراج می‌کند و در برداری بنام $\vec{f}$\زیرنویس{Factors} ذخیره می‌کند (خطوط \ref{alg:fci_combinator:line:refmat:foreach} و \ref{alg:fci_combinator:line:refmat:foreach:loop}) که در واقع میزان ارجاعات هرکدام از عامل‌ها در ناحیه‌ی $\phi(s)$ می‌باشد. بردار $\vec{f}$ معیاری برای سنجش میزان خبرگی کلی عامل‌ها در موقعیت $s$ است، طبق آنچه که در تعریف
+\ref{experties_definition}
+آمده است در هر ناحیه‌ عاملی خبره‌تر است که مقدار \رفمت\ مربوط به آن ناحیه از دیگر عامل‌ها کمتر باشد. در نتیجه در خط \ref{alg:fci_combinator:line:normalize} بعد از عادی‌سازی\زیرنویس{Normalize} مقادیر \رفمت\ عامل‌ها در ناحیه‌ی $\phi(s)$ یک مکمل‌ گیری صورت می‌گیرد تا عاملی که مقدار \رفمت\ کمتری دارد دارای بیشترین مقدار بعد از عادی‌سازی شود. در خط \ref{alg:fci_combinator:line:fci:foreach:state_action} به ازای کلیه‌ی عمل‌های ممکن در موقعیت $s$ ابتدا مقادیر $Q$ تک‌تک عامل‌ها را در موقعیت $s$ و عمل $a$ در خطوط \ref{alg:fci_combinator:line:fci:foreach:state_action:x} و \ref{alg:fci_combinator:line:fci:foreach:state_action:x:loop} در بردار $\vec{x}$ ذخیره می‌کنیم و در نهایت در خط \ref{alg:fci_combinator:line:fci} با استفاده از انتگرال فازی چوکت معرفی شده در \ref{eq:choquet_integral} مقدار $Q$ مشارکتی حاصل از میزان خبرگی بردار $\vec{A}$ و مقادیر $Q$‌های تک‌تک عامل‌ها در بردار $\vec{x}$ در موقعیت $s$ و عمل $a$ بدست محاسبه می‌شود.
+
+بطور خلاصه در الگوریتم \ref{alg:fci_combinator} دو بخش عمده دارد بخش اول مربوط استخراج میزان خبرگی عامل‌ها بگونه‌ای که عاملی که خبره‌تر از دارای مقدار خبرگی بیشتری باشد که این بخش در خطوط \ref{alg:fci_combinator:line:refmat:foreach} تا \ref{alg:fci_combinator:line:normalize} صورت می‌گیرد؛ بخش دیگر محاسبه‌ی مقادیر $Q$ مشارکتی کلیه‌ی عمل‌های ممکن در یک موقیت با درنظر گرفتن میزان خبرگی عامل‌ها و مقادیر $Q$ آن‌ها با استفاده از انتگرال فازی چوکت که در خطوط \ref{alg:fci_combinator:line:fci:foreach:state_action} تا \ref{alg:fci_combinator:line:fci} صورت می‌پذیرد.
+
+آنچه که در خط \ref{alg:fci_combinator:line:fci} الگوریتم \ref{alg:fci_combinator} مورد توجه واقع شود این است که توابع $f(\cdot)$ و $g(\cdot)$ چگونه تعریف باید تعریف شوند؟ برای تعیین تابع $f(\cdot)$ منطقی که در این پژوهش استفاده کردیم بدین صورت است که از آنجایی که خروجی تابع $g(\cdot)$   یک مقدار عددی\زیرنویس{Scalar} بدون واحد می‌باشد و همچنین برای اینکه خروجی انتگرال فازی خط \ref{alg:fci_combinator:line:fci} را بتوان به عنوان مقادیر جدول $Q$ مشارکتی جدید در نظر گرفت تا بتوانیم در خطوط \ref{alg:proposed:QCO_replacement} الگوریتم \ref{alg:proposed} به عنوان جدول $Q$ تک‌تک عامل‌ها جایگذاری کنیم باید خروجی انتگرال فازی خط \ref{alg:fci_combinator:line:fci} الگوریتم \ref{alg:fci_combinator} از جنس جدول‌های $Q$ عامل‌ها باشد در نتیجه تابع $f(\cdot)$ باید یک تابع خطی بصورت \ref{eq:fci_f_func} باشد تا خروجی انتگرال فازی همجنس مقادیر $\vec{x}$ باشد.
+\begin{equation}\label{eq:fci_f_func}
+f(\omega) = a\omega + b
+\end{equation}
+متغییر‌های $a$ و $b$ در \ref{eq:fci_f_func} می‌تواند به عنوان پارامترهای سازگار\زیرنویس{\مق{Addaptive Parameters}} در میزان کیفیت جدول $Q$ مشارکتی خروجی الگوریتم \ref{alg:fci_combinator} موثر واقع شود ولی با این‌حال در این پژوهش مقادیر $a$ و $b$ هردو به ترتیب مقادیر ثابت ۱ و صفر در نظر گرفته شده‌اند که یعنی از تابع همانی به عنوان تابع $f(\cdot)$ استفاده شده است.
