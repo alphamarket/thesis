@@ -1,6 +1,7 @@
 function plot_data()
-	[x, f1] = get_normal_data();
-	f2 = f1 ./ 2;
+    [~, fp] = get_normal_data();
+    f1 = circshift(fp, 50, 2);
+    f2 = fp ./ 2;
 	o1 = g_max(f1, f2);
 	o2 = g_mean(f1, f2);
 	o3 = g_k_mean(f1, f2);
