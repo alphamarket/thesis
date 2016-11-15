@@ -6,7 +6,7 @@ function compare()
     selected_action_picker = action_pickers{2};
 
     envs_ = {'prey', 'maze'};
-    methods_ = {'fci-k-mean', 'fci-mean', 'fci-max', 'wsum'};
+    methods_ = {'fci-k-mean', 'fci-mean', 'fci-max', 'wsum', 'fci-const-one'};
 
     il_path = 'il';
     sep_path = 'sep';
