@@ -11,13 +11,13 @@ configs = {
                     "--agents" : [3],
                     "--refmat-grind" : [4],
                     "--refmat-combinator" : ["fci-k-mean"],
-                    "--print-qtable-only": ['']
+                    "--output": ['qtable']
                 },
                 "maze" : {
                     "--agents" : [3],
                     "--refmat-grind" : [3],
                     "--refmat-combinator" : ["fci-k-mean"],
-                    "--print-qtable-only": ['']
+                    "--output": ['qtable']
                 }
             }
         },
@@ -25,11 +25,11 @@ configs = {
             "--env" : {
                 "prey" : {
                     "--agents" : [3],
-                    "--print-qtable-only": ['']
+                    "--output": ['qtable']
                 },
                 "maze" : {
                     "--agents" : [3],
-                    "--print-qtable-only": ['']
+                    "--output": ['qtable']
                 }
             }
         },
@@ -37,11 +37,11 @@ configs = {
             "--env" : {
                 "prey" : {
                     "--agents" : [1],
-                    "--print-qtable-only": ['']
+                    "--output": ['qtable']
                 },
                 "maze" : {
                     "--agents" : [1],
-                    "--print-qtable-only": ['']
+                    "--output": ['qtable']
                 }
             }
         }

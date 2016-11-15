@@ -3,6 +3,8 @@ import itertools, os;
 
 iters = 20;
 
+rl_action_advisor = "greedy"
+
 configs = {
     "--method" : {
         "refmat" : {
@@ -10,32 +12,38 @@ configs = {
                 "prey" : {
                     "--agents" : [3],
                     "--refmat-grind" : range(1, 18),
-                    "--refmat-combinator" : ["fci-k-mean", "fci-mean", "fci-max", "wsum"],
+                    "--refmat-combinator" : ["fci-k-mean", "fci-mean", "fci-max", "wsum", "fci-const-one"],
+                    "--rl-action-advisor" : [rl_action_advisor]
                 },
                 "maze" : {
                     "--agents" : [3],
                     "--refmat-grind" : range(1, 7),
-                    "--refmat-combinator" : ["fci-k-mean", "fci-mean", "fci-max", "wsum"],
+                    "--refmat-combinator" : ["fci-k-mean", "fci-mean", "fci-max", "wsum", "fci-const-one"],
+                    "--rl-action-advisor" : [rl_action_advisor]
                 }
             }
         },
         "sep" : {
             "--env" : {
                 "prey" : {
-                    "--agents" : [3]
+                    "--agents" : [3],
+                    "--rl-action-advisor" : [rl_action_advisor]
                 },
                 "maze" : {
-                    "--agents" : [3]
+                    "--agents" : [3],
+                    "--rl-action-advisor" : [rl_action_advisor]
                 }
             }
         },
         "il" : {
             "--env" : {
                 "prey" : {
-                    "--agents" : [1]
+                    "--agents" : [1],
+                    "--rl-action-advisor" : [rl_action_advisor]
                 },
                 "maze" : {
-                    "--agents" : [1]
+                    "--agents" : [1],
+                    "--rl-action-advisor" : [rl_action_advisor]
                 }
             }
         }
