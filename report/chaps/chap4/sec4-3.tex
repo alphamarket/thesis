@@ -53,11 +53,12 @@
 \Require \Call{size}{REFMAT} = \Call{size}{RCMAT}
 	\For {each element $r$ in REFMAT and its corresponding element $c$ in RCMAT}
 		\If {$r = 0$}
-			\State $r = c$;
+			\State Update $r = c$;
 		\Else
-			\State $c = r$;
+			\State Update $c = r$;
 		\EndIf
 	\EndFor
+	\State \Return REFMAT, RCMAT
 \EndProcedure
 \end{algorithmic}
 \end{latin}
