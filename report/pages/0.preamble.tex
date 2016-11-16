@@ -16,7 +16,7 @@
 \usepackage{zref-perpage}							% Reset footnote counter in each page
 \zmakeperpage[1]{footnote}
 
-\usepackage{currfile, tikz, import, url, subfigure, algorithm, algpascal}
+\usepackage{currfile, tikz, import, url, subfigure, algorithm, algpascal, booktabs, pifont, multirow}
 \usepackage[noend]{algpseudocode}
 \usepackage[justification=centering]{caption}
 \usepackage[numbers,sort&compress]{natbib}
@@ -24,10 +24,14 @@
 \usepackage[hidelinks]{hyperref}
 \usepackage[numbered,depth=subsection]{bookmark}
 
+% table rules in booktabs
+\setlength{\heavyrulewidth}{1.5pt}
+\setlength{\abovetopsep}{4pt}
+
 % uncomment to show margins:
 %\usepackage{showframe}
 
-\graphicspath{{images/}}
+\graphicspath{{images/}{images/data/}}
 
 % Set depth of TOC:
 % 	0: chapter, 1: section, 2: subsection
