@@ -9,9 +9,9 @@ configs = {
     "--method" : {
         "refmat" : {
             "--env" : {
-                "prey" : {
+                "maze" : {
                     "--agents" : [3],
-                    "--refmat-grind" : range(1, 4),
+                    "--refmat-grind" : range(4, 7),
                     "--refmat-combinator" : ["fci-k-mean", "fci-mean", "fci-max", "wsum", "fci-const-one"],
                     "--rl-action-advisor" : [rl_action_advisor]
                 }

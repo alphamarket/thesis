@@ -7,12 +7,14 @@ rl_action_advisor = "greedy"
 
 configs = {
     "--method" : {
-        "refmat" : {
+        "il" : {
             "--env" : {
+                "prey" : {
+                    "--agents" : [1],
+                    "--rl-action-advisor" : [rl_action_advisor]
+                },
                 "maze" : {
-                    "--agents" : [3],
-                    "--refmat-grind" : range(1, 7),
-                    "--refmat-combinator" : ["fci-k-mean", "fci-mean", "fci-max", "wsum", "fci-const-one"],
+                    "--agents" : [1],
                     "--rl-action-advisor" : [rl_action_advisor]
                 }
             }
