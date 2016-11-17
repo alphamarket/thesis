@@ -5,7 +5,7 @@ function compare()
 
     selected_action_picker = action_pickers{2};
 
-    envs_ = {'prey', 'maze'};
+    envs_ = {'maze', 'prey'};
     methods_ = {'fci-k-mean', 'fci-mean', 'fci-max', 'wsum', 'fci-const-one'};
 
     il_path = 'il';
@@ -60,7 +60,7 @@ function compare()
         opt = {sep_path, il_path};
         for i = 1:size(opt, 2)
             path_ = sprintf('%s/method/%s/env/%s', selected_action_picker, opt{i}, envs_{e});
-            data(end+1, :) = load(sprintf('%s/--iters 20 --env %s --method %s --agents %i.mat', path_, envs_{e}, opt{i}, agents{i}), '-ascii');
+            data(end+1, :) = load(sprintf('%s/--iters 20 --env %s --method %s --agents %i --rl-action-advisor %s.mat', path_, envs_{e}, opt{i}, agents{i}, selected_action_picker), '-ascii');
             min_legends{end+1} = upper(sprintf('%s (%.3f)', opt{i}, data(end, end)));
         end
         for i = 1:size(min_legends, 2)
