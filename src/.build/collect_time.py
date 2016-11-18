@@ -4,6 +4,8 @@ import time, itertools, os;
 iters = 20
 max_trials = 100;
 
+rl_action_advisor = "greedy"
+
 configs = {
     "--method" : {
         "refmat" : {
@@ -13,12 +15,14 @@ configs = {
                     "--refmat-grind" : [4],
                     "--trials" : range(1, max_trials + 1),
                     "--refmat-combinator" : ["fci-k-mean"],
+                    "--rl-action-advisor" : [rl_action_advisor]
                 },
                 "maze" : {
                     "--agents" : [3],
                     "--refmat-grind" : [3],
                     "--trials" : range(1, max_trials + 1),
                     "--refmat-combinator" : ["fci-k-mean"],
+                    "--rl-action-advisor" : [rl_action_advisor]
                 }
             }
         },
@@ -26,11 +30,13 @@ configs = {
             "--env" : {
                 "prey" : {
                     "--agents" : [3],
-                    "--trials" : range(1, max_trials + 1)
+                    "--trials" : range(1, max_trials + 1),
+                    "--rl-action-advisor" : [rl_action_advisor]
                 },
                 "maze" : {
                     "--agents" : [3],
-                    "--trials" : range(1, max_trials + 1)
+                    "--trials" : range(1, max_trials + 1),
+                    "--rl-action-advisor" : [rl_action_advisor]
                 }
             }
         },
@@ -38,11 +44,13 @@ configs = {
             "--env" : {
                 "prey" : {
                     "--agents" : [1],
-                    "--trials" : range(1, max_trials + 1)
+                    "--trials" : range(1, max_trials + 1),
+                    "--rl-action-advisor" : [rl_action_advisor]
                 },
                 "maze" : {
                     "--agents" : [1],
-                    "--trials" : range(1, max_trials + 1)
+                    "--trials" : range(1, max_trials + 1),
+                    "--rl-action-advisor" : [rl_action_advisor]
                 }
             }
         }
@@ -90,7 +98,6 @@ for idx, c in enumerate(commands):
 print "\n------------\n"
 
 for k, v in times.iteritems():
-    print k
     for k2, e in v.iteritems():
-        print "%s =" %k2, e, ";"
+        print "%s_%s =" %(k, k2), e, ";"
         print
