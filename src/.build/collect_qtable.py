@@ -3,10 +3,9 @@ import itertools, os;
 
 iters = 20;
 
-tau = [.4, 1e+100]
-epsilon = [.2, 1]
+param = ['--tau', [.4, 1e+100]]
 qtable = 'qtable-max'
-rl_action_advisor = "greedy"
+rl_action_advisor = "boltzmann"
 
 configs = {
     "--method" : {
@@ -17,8 +16,7 @@ configs = {
                     "--refmat-grind" : [4],
                     "--refmat-combinator" : ["fci-k-mean"],
                     "--output": [qtable],
-                    "--tau": tau,
-                    "--epsilon": epsilon,
+                    param[0]: param[1],
                     "--rl-action-advisor" : [rl_action_advisor]
                 },
                 "maze" : {
@@ -26,8 +24,7 @@ configs = {
                     "--refmat-grind" : [3],
                     "--refmat-combinator" : ["fci-k-mean"],
                     "--output": [qtable],
-                    "--tau": tau,
-                    "--epsilon": epsilon,
+                    param[0]: param[1],
                     "--rl-action-advisor" : [rl_action_advisor]
                 }
             }
@@ -37,15 +34,13 @@ configs = {
                 "prey" : {
                     "--agents" : [3],
                     "--output": [qtable],
-                    "--tau": tau,
-                    "--epsilon": epsilon,
+                    param[0]: param[1],
                     "--rl-action-advisor" : [rl_action_advisor]
                 },
                 "maze" : {
                     "--agents" : [3],
                     "--output": [qtable],
-                    "--tau": tau,
-                    "--epsilon": epsilon,
+                    param[0]: param[1],
                     "--rl-action-advisor" : [rl_action_advisor]
                 }
             }
@@ -55,15 +50,13 @@ configs = {
                 "prey" : {
                     "--agents" : [1],
                     "--output": [qtable],
-                    "--tau": tau,
-                    "--epsilon": epsilon,
+                    param[0]: param[1],
                     "--rl-action-advisor" : [rl_action_advisor]
                 },
                 "maze" : {
                     "--agents" : [1],
                     "--output": [qtable],
-                    "--tau": tau,
-                    "--epsilon": epsilon,
+                    param[0]: param[1],
                     "--rl-action-advisor" : [rl_action_advisor]
                 }
             }
