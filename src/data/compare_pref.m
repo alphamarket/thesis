@@ -5,7 +5,8 @@ function compare_pref()
     action_pickers = {'boltzmann', 'greedy'};
 
     selected_type = types{1};
-    selected_action_picker = action_pickers{2};
+    selected_action_picker_index = 1;
+    selected_action_picker = action_pickers{selected_action_picker_index};
 
     envs_ = {'maze', 'prey'};
     methods_ = {'fci-k-mean', 'fci-mean', 'fci-max', 'wsum', 'fci-const-one'};
@@ -44,7 +45,6 @@ function compare_pref()
             close, open_hidden_fig()
             plot(data', 'LineWidth', 2), grid
             legend(legend_);
-            title(sprintf('The grind comparison of `%s` method over `%s` with `%s` as action picker method', methods_{m}, envs_{e}, selected_action_picker));
             xlabel('Trials')
             ylabel('Avg. Moves');
             savefig(sprintf('%s/%s-%s-grind-compare.fig', path_, envs_{e}, methods_{m}))
@@ -57,7 +57,6 @@ function compare_pref()
         legend(min_legends)
         xlabel('Trials')
         ylabel('Avg. Moves');
-        title(sprintf('The methods comparison over `%s` with `%s` as action picker method', methods_{m}, envs_{e}, selected_action_picker));
         path_ = sprintf('%s/%s/%s/env/%s', selected_action_picker, selected_type, refmat_path, envs_{e});
         savefig(sprintf('%s/%s.%s.compare.fig', path_, envs_{e}, selected_type))
         print(sprintf('%s/%s.%s.compare.png', path_, envs_{e}, selected_type), '-r300', '-dpng')
@@ -82,7 +81,6 @@ function compare_pref()
         legend(min_legends)
         xlabel('Trials')
         ylabel('Avg. Moves');
-        title(sprintf('The REFMAT/SEP/IL comparison over `%s` with `%s` as action picker method', envs_{e}, selected_action_picker));
         path_ = sprintf('%s', selected_action_picker);
         savefig(sprintf('%s/%s.%s.compare.fig', path_, envs_{e}, selected_type))
         print(sprintf('%s/%s.%s.compare.png', path_, envs_{e}, selected_type), '-r300', '-dpng')

@@ -1,19 +1,11 @@
 function compare_qmax()
     clc, clear, close all
 
-    types = {'qtable-max'};
     envs_ = {'maze', 'prey'};
     action_pickers = {'boltzmann', 'greedy'};
 
-    selected_type = types{1};
-    selected_action_picker_index = 2;
+    selected_action_picker_index = 1;
     selected_action_picker = action_pickers{selected_action_picker_index};
-
-    methods_ = {'fci-k-mean'};
-
-    il_path = 'il';
-    sep_path = 'sep';
-    refmat_path = 'refmat';
 
     files_ = {
     {
@@ -57,7 +49,7 @@ function compare_qmax()
         j = 1;
         for i =1:length(files)
             if(length(regexp(files{i}, sprintf('--env %s', selected_env), 'match')) == 0), continue; end
-            data(end+1, :) = mean(load(sprintf('%s/%s%s', selected_action_picker, selected_type, files{i}), '-ascii'));
+            data(end+1, :) = mean(load(sprintf('%s/qtable-max%s', selected_action_picker, files{i}), '-ascii'));
             legends{end + 1} = '';
             if(length(regexp(files{i}, '\[randwalk\]', 'match')) > 0)
                 legends{end} = 'RAND-WALK ';
@@ -71,7 +63,6 @@ function compare_qmax()
         legend(legends, 'Location', 'northwest')
         xlabel('Trials')
         ylabel('Avg. Moves');
-        title(sprintf('The maximum Q table value over `%s` env with `%s` as action picker method.', selected_env, selected_action_picker));
         path_ = sprintf('%s', selected_action_picker);
         savefig(sprintf('%s/%s.qtable.max.compare.fig', path_, selected_env))
         print(sprintf('%s/%s.qtable.max.compare.png', path_, selected_env), '-r300', '-dpng')

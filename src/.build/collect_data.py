@@ -9,6 +9,6 @@ end_script   = 9
 assert start_script <= end_script <= 9 and start_script >= 0, 'Invalid range!'
 
 for i in range(start_script, end_script + 1):
-    os.system('nohup %s/collect_data_%i.py&' %(pwd, i, pwd, i));
-    print "Executing `./collect_data_%i.py`" %(i, i)
+    os.system('nohup %s/collect_data_%i.py&' %(pwd, i));
+    print "Executing `./collect_data_%i.py`" %(i)
     time.sleep(1);
