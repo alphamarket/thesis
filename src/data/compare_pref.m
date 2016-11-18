@@ -5,7 +5,7 @@ function compare_pref()
     action_pickers = {'boltzmann', 'greedy'};
 
     selected_type = types{1};
-    selected_action_picker_index = 1;
+    selected_action_picker_index = 2;
     selected_action_picker = action_pickers{selected_action_picker_index};
 
     envs_ = {'maze', 'prey'};

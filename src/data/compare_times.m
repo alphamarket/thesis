@@ -3,10 +3,10 @@ function compare_times()
 
     action_pickers = {'boltzmann', 'greedy'};
 
-    selected_action_picker_index = 1;
+    selected_action_picker_index = 2;
     selected_action_picker = action_pickers{selected_action_picker_index};
 
-    path_ = sprintf('%s', selected_action_picker);
+    path_ = sprintf('%s', selected_action_picker)
     addpath(sprintf('%s/times', selected_action_picker))
 
     times_data
