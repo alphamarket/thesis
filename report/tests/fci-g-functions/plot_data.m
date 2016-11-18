@@ -1,14 +1,14 @@
 function plot_data()
     [~, fp] = get_normal_data();
-    f1 = circshift(fp, 50, 2);
+    f1 = circshift(fp, 25, 2);
     f2 = fp ./ 2;
 	o1 = g_max(f1, f2);
 	o2 = g_mean(f1, f2);
 	o3 = g_k_mean(f1, f2);
 	o4 = g_const_one(f1, f2);
     m = {'-','--','*','x','+','-.','^','v','>','<','p','h'};
-    % figure('units','normalized','outerposition',[0 0 1 1])
-    figure, hold on, grid on, ylim([0, 1.25]), xlim([0, length(f1)]);
+    close, open_hidden_fig(),
+    hold on, grid on, ylim([0, 1.25]), xlim([0, length(f1)]);
     set(gca, 'Xtick', 0:5:10000)
     set(gca, 'Ytick', 0:.1:10000)
     set(gca, 'LineStyleOrder',m, 'NextPlot','replacechildren', 'LineWidth', 2);
@@ -25,6 +25,12 @@ function plot_data()
     	hold on
     	plot(a(:, i), m{i}, 'Color', c(i, :), 'LineWidth', 2)
     end
-    % plot(, 'LineWidth', 2);
-    title('The effects of g(\cdot) functions over a distribution space');
-    legend('Distribution# 1', 'Distribution# 2', 'Max', 'Mean', 'K-Mean', 'Const-One');
+    legend('Distribution# 1', 'Distribution# 2', 'Max', 'Mean', 'K-Mean', 'Const-One', 'Location', 'northwest');
+    savefig('fci-g-functions.fig')
+    print('fci-g-functions.png', '-r300', '-dpng')
+
+function open_hidden_fig()
+    figure('units','normalized','outerposition',[0 0 1 1])
+    set(gcf, 'Visible', 'off')
+    m = {'-','--','*','x','+','-.','^','v','>','<','p','h'};
+    set(gca, 'LineStyleOrder',m, 'NextPlot','replacechildren', 'LineWidth', 2)

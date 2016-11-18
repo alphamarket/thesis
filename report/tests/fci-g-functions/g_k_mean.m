@@ -6,5 +6,5 @@ function o = g_k_mean(f1, f2)
         for k = 1:length(a)
             o(i) = o(i) + a(k) * k;
         end
-        o(i) = o(i) / sum([1:length(a)]);
+        o(i) = o(i) / (sum([1:length(a)]) - 1);
     end
