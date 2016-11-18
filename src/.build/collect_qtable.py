@@ -3,6 +3,11 @@ import itertools, os;
 
 iters = 20;
 
+tau = [.4, 1e+100]
+epsilon = [.2, 1]
+qtable = 'qtable-max'
+rl_action_advisor = "greedy"
+
 configs = {
     "--method" : {
         "refmat" : {
@@ -11,13 +16,19 @@ configs = {
                     "--agents" : [3],
                     "--refmat-grind" : [4],
                     "--refmat-combinator" : ["fci-k-mean"],
-                    "--output": ['qtable']
+                    "--output": [qtable],
+                    "--tau": tau,
+                    "--epsilon": epsilon,
+                    "--rl-action-advisor" : [rl_action_advisor]
                 },
                 "maze" : {
                     "--agents" : [3],
                     "--refmat-grind" : [3],
                     "--refmat-combinator" : ["fci-k-mean"],
-                    "--output": ['qtable']
+                    "--output": [qtable],
+                    "--tau": tau,
+                    "--epsilon": epsilon,
+                    "--rl-action-advisor" : [rl_action_advisor]
                 }
             }
         },
@@ -25,11 +36,17 @@ configs = {
             "--env" : {
                 "prey" : {
                     "--agents" : [3],
-                    "--output": ['qtable']
+                    "--output": [qtable],
+                    "--tau": tau,
+                    "--epsilon": epsilon,
+                    "--rl-action-advisor" : [rl_action_advisor]
                 },
                 "maze" : {
                     "--agents" : [3],
-                    "--output": ['qtable']
+                    "--output": [qtable],
+                    "--tau": tau,
+                    "--epsilon": epsilon,
+                    "--rl-action-advisor" : [rl_action_advisor]
                 }
             }
         },
@@ -37,11 +54,17 @@ configs = {
             "--env" : {
                 "prey" : {
                     "--agents" : [1],
-                    "--output": ['qtable']
+                    "--output": [qtable],
+                    "--tau": tau,
+                    "--epsilon": epsilon,
+                    "--rl-action-advisor" : [rl_action_advisor]
                 },
                 "maze" : {
                     "--agents" : [1],
-                    "--output": ['qtable']
+                    "--output": [qtable],
+                    "--tau": tau,
+                    "--epsilon": epsilon,
+                    "--rl-action-advisor" : [rl_action_advisor]
                 }
             }
         }

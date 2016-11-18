@@ -3,16 +3,35 @@ import itertools, os;
 
 iters = 20;
 
+agents = [2, 3, 5, 10, 20]
 rl_action_advisor = "greedy"
 
 configs = {
     "--method" : {
         "refmat" : {
             "--env" : {
+                "prey" : {
+                    "--agents" : agents,
+                    "--refmat-grind" : [4],
+                    "--refmat-combinator" : ["fci-k-mean"],
+                    "--rl-action-advisor" : [rl_action_advisor]
+                },
                 "maze" : {
-                    "--agents" : [3],
-                    "--refmat-grind" : range(4, 7),
-                    "--refmat-combinator" : ["fci-k-mean", "fci-mean", "fci-max", "wsum", "fci-const-one"],
+                    "--agents" : agents,
+                    "--refmat-grind" : [3],
+                    "--refmat-combinator" : ["fci-k-mean"],
+                    "--rl-action-advisor" : [rl_action_advisor]
+                }
+            }
+        },
+        "sep" : {
+            "--env" : {
+                "prey" : {
+                    "--agents" : agents,
+                    "--rl-action-advisor" : [rl_action_advisor]
+                },
+                "maze" : {
+                    "--agents" : agents,
                     "--rl-action-advisor" : [rl_action_advisor]
                 }
             }
@@ -35,10 +54,9 @@ def build_commands(configs):
 
 commands = build_commands(configs);
 
-
 for idx, c in enumerate(commands):
     redir_dir  = "../data/%s" %c[1]
-    redir_file = "'%s/%s.mat'" %(redir_dir, c[0])
+    redir_file = "'%s/%s.qtable.mat'" %(redir_dir, c[0])
     exe = "make -j8 -l8 && ./thesis %s" %(c[0]);
     print "[%.2f%%] executing: `\033[33m%s\033[m`" %((idx + 1) * 100. / len(commands), exe)
     print "output file: `\033[33m%s\033[m`" %redir_file
