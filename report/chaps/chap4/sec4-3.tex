@@ -186,7 +186,7 @@ f(\omega) = a\omega + b
 	\ElsIf {\Call{length}{$\vec{A}_i$} = 0}
 		\State \Return 0;
 	\Else
-		\State \Return ${\sum\limits_{j=i, k = 1}^{m, \Call{\text{length}}{\vec{A}_i}}  k \cdot \vec{A}_i(j) \over {\sum\limits_{j=1}^{\Call{\text{length}}{\vec{A}_i}} j}}$;
+		\State \Return ${\sum\limits_{j=i, k = 1}^{m, \Call{\text{length}}{\vec{A}_i}}  k \cdot \vec{A}_i(j) \over {(\sum\limits_{j=1}^{\Call{\text{length}}{\vec{A}_i}} j) - 1}}$;
 	\EndIf
 \EndProcedure
 \end{algorithmic}
