@@ -26,6 +26,9 @@
 % the theorem styling
 \theoremstyle{theorem}
 \newtheorem{theorem}{تئوری}[chapter]
+% the hypothesis styling
+\theoremstyle{hypo}
+\newtheorem{hypo}{فرضیه}[chapter]
 % reset the definition# at every chapter
 \let\OldChapter\chapter
-\renewcommand{\chapter}{\setcounter{definition}{0}\setcounter{theorem}{0}\OldChapter}
+\renewcommand{\chapter}{\setcounter{definition}{0}\setcounter{theorem}{0}\setcounter{hypo}{0}\OldChapter}

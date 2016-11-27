@@ -1,5 +1,5 @@
 \قسمت{یادگیری مشارکتی $Q$ با استفاده از ماتریس ارجاع و انتگرال فازی}
-آنچه که تا به اکنون در مورد روش پیشنهادی این پژوهش آورده شده، معرفی یک معیار خبرگی که در برعکس بسیاری از معیارهای خبرگی که تا به کنون معرفی شده است\مرجع{ahmadabadi2000expertness, pakizeh2013multi, mohammad2015speedup} در تمامی موقعیت‌های دنیای واقعی به وفور مشاهده می‌شود و آن ارائه این تئوری است عامل خبره‌تر برای رسیدن به یک مجموعه از اهداف تلاش نسبی کمتری نسبت به دیگر عامل‌ها با خبرگی کمتر در شرایط یکسان می‌کند. حال که معیاری برای میزان خبرگی عامل‌ها در اختیار داریم چالش بعدی برای بهبود کیفیت و سرعت یادگیری مشارکتی ارائه‌ی روشی برای ترکیب دانش‌های عامل‌ها از محیط (جداول $Q$ آن‌ها) با استفاده از معیار ارائه شده می‌باشد. روش ترکیب باید بگونه‌ای باشد که کیفیت و سرعت یادگیری مشارکتی عامل‌ها را در طی زمان نسبت زمانی که عامل‌ها بدون مشارکت یاد می‌گیرند بهتر کند. همچنین کیفیت و سرعت یادگیری همبستگی مستقیمی داشته باشند با تعداد عامل‌هایی که درحال اشتراک گذاری هستند؛ به عبارت دیگر در صورت افزایش تعداد عامل‌هایی که دانش‌های خود را به اشتراک می‌گذارند مدل ترکیب کننده‌ی دانش‌های آن‌ عامل‌ها باید بتواند دانش‌ بهتری تولید کند که نهایتا منجر به بهتر شدن کیفیت و سرعت کلی یادگیری عامل‌ها شود.\بند
+آنچه که تا به اکنون در مورد روش پیشنهادی این پژوهش آورده شده، معرفی یک معیار خبرگی که در برعکس بسیاری از معیارهای خبرگی که تا به کنون معرفی شده است\مرجع{ahmadabadi2000expertness, pakizeh2013multi, mohammad2015speedup} در تمامی موقعیت‌های دنیای واقعی به وفور مشاهده می‌شود و آن ارائه این فرضیه است عامل خبره‌تر برای رسیدن به یک مجموعه از اهداف تلاش نسبی کمتری نسبت به دیگر عامل‌ها با خبرگی کمتر در شرایط یکسان می‌کند. حال که معیاری برای میزان خبرگی عامل‌ها در اختیار داریم چالش بعدی برای بهبود کیفیت و سرعت یادگیری مشارکتی ارائه‌ی روشی برای ترکیب دانش‌های عامل‌ها از محیط (جداول $Q$ آن‌ها) با استفاده از معیار ارائه شده می‌باشد. روش ترکیب باید بگونه‌ای باشد که کیفیت و سرعت یادگیری مشارکتی عامل‌ها را در طی زمان نسبت زمانی که عامل‌ها بدون مشارکت یاد می‌گیرند بهتر کند. همچنین کیفیت و سرعت یادگیری همبستگی مستقیمی داشته باشند با تعداد عامل‌هایی که درحال اشتراک گذاری هستند؛ به عبارت دیگر در صورت افزایش تعداد عامل‌هایی که دانش‌های خود را به اشتراک می‌گذارند مدل ترکیب کننده‌ی دانش‌های آن‌ عامل‌ها باید بتواند دانش‌ بهتری تولید کند که نهایتا منجر به بهتر شدن کیفیت و سرعت کلی یادگیری عامل‌ها شود.\بند
 در این پژوهش ما انتگرال فازی را به عنوان مدل ترکیب کننده‌ی دانش‌های عامل‌ها پیشنهاد می‌دهیم. دلیل انتخاب این مدل ویژگی‌های منحصر به فردی است که این مدل کننده در اختیار دارد که مدل را کاملا مناسب برای ترکیب دانش‌ عامل‌ها می‌کند؛ که در بخش‌های آتی فصل این ویژگی‌ها و دلایل مناسب بودن آن‌ها برای ترکیب دانش عامل‌ها آورده شده است. لازم به یاد‌آوری است که همانطور که در قسمت
 \ref{SEC:FI_PREVIEW}
 این پایان‌نامه آورده شده است ما از به دلایل فنی از انتگرال فازی چوکت استفاده می‌کنیم که در بخش‌ های بعدی این دلایل نیز بطور مفصل شرح داده می‌شود.
@@ -7,7 +7,15 @@
 \زیرقسمت{الگوریتم پیشنهادی}
 در این قسمت به معرفی الگوریتم پیشنهادی می‌پردازیم. آنچه که در الگوریتم
 \ref{alg:proposed}
-آمده است به دو قسمت تشکیل شده است، یک قسمت که مربوط یادگیری مستقل (خطوط ۵ تا ۱۰) و قسمت دیگری مربوط به یادگیری مشارکتی (خطوط ۱۲ تا ۱۵) می‌باشد. ورودی الگوریتم تعداد عامل‌ها می‌باشد و در ابتدا ماتریس‌های $Q$ و \رفمت\ و \رسمت\ مقداردهی می‌شود. سپس تا زمانی که یادگیری پایان نیافته است ابتدا عامل‌ها در قسمت یادگیری مستقل به صورت جدا گانه در محیط فعالیت می‌کنند که رویه‌های آورده شده در خطوط ۵ تا ۸ و همچنین خط ۱۰ همان الگوریتم یادگیری $Q$ متعارف می‌باشد\مرجع{sutton1998reinforcement}. در قسمت یادگیری مستقل تنها خط ۹ می‌باشد که در روش پیشنهادی به شبه‌کد اضافه شده است و این تنها یک وظیفه‌ی بسیار ساده را انجام می‌دهد و آن شمارش میزان حضور عامل در هر کدام از نواحی از پیش تعیین شده است؛ $\phi(\cdot)$ یک تابع نگاشت از یک موقعیت به یک ناحیه از محیط می‌باشد.\بند
+آمده است به دو قسمت تشکیل شده است، یک قسمت که مربوط یادگیری مستقل (خطوط
+\ref{alg:proposed:il_start} تا \ref{alg:proposed:il_end})
+و قسمت دیگری مربوط به یادگیری مشارکتی (خطوط
+\ref{alg:proposed:co_start} تا \ref{alg:proposed:co_end})
+می‌باشد. ورودی الگوریتم تعداد عامل‌ها می‌باشد و در ابتدا ماتریس‌های $Q$ و \رفمت\ و \رسمت\ مقداردهی می‌شود. سپس تا زمانی که یادگیری پایان نیافته است ابتدا عامل‌ها در قسمت یادگیری مستقل به صورت جدا گانه در محیط فعالیت می‌کنند که رویه‌های آورده شده در خطوط
+\ref{alg:proposed:q_start} تا \ref{alg:proposed:q_end}
+همان الگوریتم یادگیری $Q$ متعارف می‌باشد\مرجع{sutton1998reinforcement}. در قسمت یادگیری مستقل تنها خط
+\ref{alg:proposed:update_refmat}
+می‌باشد که در روش پیشنهادی به شبه‌کد اضافه شده است و این تنها یک وظیفه‌ی بسیار ساده را انجام می‌دهد و آن شمارش میزان حضور عامل در هر کدام از نواحی از پیش تعیین شده است؛ $\phi(\cdot)$ یک تابع نگاشت از یک موقعیت به یک ناحیه از محیط می‌باشد.\بند
 
 \begin{algorithm}[t]\setstretch{1.2}
 \caption{\rl{الگوریتم پیشنهادی یادگیری مشارکتی برمبنای ماتریس \رفمت\ و انتگرال فازی}}\label{alg:proposed}
@@ -15,41 +23,51 @@
 \begin{algorithmic}[1]
 \Procedure{REFMAT-COOPERATIVE-LEARNING}{$m$}
 \Require $m > 1$ \Comment {The number of agents.}
-\Ensure {Intialize the $Q$ matrix}
-\Ensure {Intialize the $\text{RCMAT} \gets 0$}
+\Ensure {Intialize the $Q$ matrix};
+\Ensure {Intialize the $\text{RCMAT} \gets 0$};
+\Ensure {Intialize the $\text{REFMAT} \gets 0$};
 \While {not End Of Learning}
-	\State {$\text{REFMAT} \gets 0$}
 	\If {In individual learning mode} %\Comment {Individual learing mode for each agent \textbf{independently}.}
-		\State {Visit the state $s$;}
+		\State {Visit the state $s$;} \label{alg:proposed:q_start}
+		\label{alg:proposed:il_start}
 		\State {Select an action $a$ based on an action selection policy;} %\Comment{e.g base on Boltzmann, $\epsilon$-greedy, etc.}
 		\State {Carry out the $a$ and observe a reward $r$ at the new state $s'$;}
 		\State {$Q[s,a] \gets Q[s,a] + \alpha (r + \lambda \max\limits_{a'}(Q[s',a']) - Q[s,a])$;}
-		\State {Increment $\text{REFMAT}(\phi(s'))$ by one;} %\Comment{Update the region $r$'s REFMAT value where $s'$ is in it.}
-		\State {$s \gets s'$;}		
+		\State {$s \gets s'$;} \label{alg:proposed:q_end}
+		\State {Increment $\text{REFMAT}(\phi(s))$ by one;} \label{alg:proposed:update_refmat}
+		\label{alg:proposed:il_end}
 	\ElsIf {In cooperative learning mode}
-		\State REFMAT, RCMAT $\gets$ \Call{Swap}{REFMAT, RCMAT};
-		\State $\text{CoQ}_{\text{FCI}} \gets$ \Call{FCI\_Combiner}{All agents' Q and REFMAT matrices};
-		\For {each agent $i \gets 1, m$} 
-			\State $Q_i \gets \text{CoQ}_{\text{FCI}}$; \label{alg:proposed:QCO_replacement}
+		\State $\vec{K} \gets \{\}$; \label{alg:proposed:co_start}
+		\State $\vec{R} \gets \{\}$;
+		\For {each agent $i \gets 1, m$}
+			\State $\text{REFMAT}_i$, $\text{RCMAT}_i$ $\gets$ \Call{Conditional\_Swap}{$\text{REFMAT}_i$, $\text{RCMAT}_i$};
+			\State $\vec{K}.add(Q_i)$;
+			\State $\vec{R}.add(\text{REFMAT}_i)$;
 		\EndFor
+		\State $Q \gets$ \Call{FCI\_Combiner}{$\vec{K}$, $\vec{R}$}; \label{alg:proposed:FCI_Combiner}
+		\label{alg:proposed:QCO_replacement}
+		\State {$\text{REFMAT} \gets 0$};
+		\label{alg:proposed:co_end}
 	\EndIf
-\EndWhile 
+\EndWhile
 \EndProcedure
 \end{algorithmic}
 \end{latin}
 \end{algorithm}
 
-بعد از طی یادگیری مستقل عامل‌ها به قسمت اشتراک گذاری دانش‌های خود(جداول $Q$) می‌رسند (خطوط ۱۲ تا ۱۵). در قسمت یادگیری مشترک ابتدا طبق آنچه که در در قسمت آورده شده است جداول \رفمت\ و \رسمت\ به صورت مشترک بروزرسانی می‌شود و سپس جداول $Q$ و \رفمت\ تمامی عامل‌ها به مدل ترکیب کننده فازی معرفی شده در این پژوهش فرستاده می‌شود و مدل ترکیب کننده فازی وظیفه‌ی استخراج یک دانش جدید با در نظر گرفتن ورودی‌های آن برای جایگزینی دانش قابلی عامل‌ها می‌باشد.
+بعد از طی یادگیری مستقل عامل‌ها به قسمت اشتراک گذاری دانش‌های خود(جداول $Q$) می‌رسند (خطوط
+\ref{alg:proposed:co_start} تا \ref{alg:proposed:co_end}).
+در قسمت یادگیری مشترک ابتدا طبق آنچه که در در قسمت آورده شده است جداول \رفمت\ و \رسمت\ به صورت مشترک بروزرسانی می‌شود و سپس جداول $Q$ و \رفمت\ تمامی عامل‌ها به مدل ترکیب کننده فازی معرفی شده در این پژوهش فرستاده می‌شود و مدل ترکیب کننده فازی وظیفه‌ی استخراج یک دانش جدید با در نظر گرفتن ورودی‌های آن برای جایگزینی دانش قابلی عامل‌ها را دارد.
 
-الگوریتم تابع بسیار ساده می‌باشد و مقادیر غیر صفر ماتریس ارجاع را در ماتریس خاطره کپی می‌کند و مقادیر صفر ماتریس ارجاع را از ماتریس خاطره جایگزین می‌کند. این تابع در الگوریتم
+الگوریتم تابع \مق{Conditional\_Swap($\cdot$)} بسیار ساده می‌باشد و مقادیر غیر صفر ماتریس ارجاع را در ماتریس خاطره کپی می‌کند و مقادیر صفر ماتریس ارجاع را از ماتریس خاطره جایگزین می‌کند. این تابع در الگوریتم
 \ref{alg:swap_func}
 آمده است.
 
 \begin{algorithm}[t]\setstretch{1.2}
-\caption{تابع \مق{Swap} معرفی شده در الگوریتم \ref{alg:proposed}}\label{alg:swap_func}
+\caption{تابع \مق{Conditional\_Swap} معرفی شده در الگوریتم \ref{alg:proposed}}\label{alg:swap_func}
 \begin{latin}
 \begin{algorithmic}[1]
-\Procedure{Swap}{REFMAT, RCMAT}
+\Procedure{Conditional\_Swap}{REFMAT, RCMAT}
 \Require \Call{size}{REFMAT} = \Call{size}{RCMAT}
 	\For {each element $r$ in REFMAT and its corresponding element $c$ in RCMAT}
 		\If {$r = 0$}
@@ -66,9 +84,13 @@
 
 در این پژوهش در دوقسمت نوآوری صورت گرفته است، قسمت اول ارائه‌ی معیاری جدید برای سنجش معیار خبرگی که طبق تعریف
 \ref{experties_definition}
-این معیار در خط ۹ الگوریتم
+این معیار در خط
+\ref{alg:proposed:update_refmat}
+الگوریتم
 \ref{alg:proposed}
-پیاده‌سازی شده است؛ نوآوری دوم نحوه‌ی ترکیب اطلاعات دانش عامل‌ها با استفاده از انتگرال فازی که در خط ۱۳ الگوریتم
+پیاده‌سازی شده است؛ نوآوری دوم نحوه‌ی ترکیب اطلاعات دانش عامل‌ها با استفاده از انتگرال فازی که در خط
+\ref{alg:proposed:FCI_Combiner}
+الگوریتم
 \ref{alg:proposed}
 و شرح جزییات پیاده‌سازی آن در الگوریتم
 \ref{alg:fci_combinator}
@@ -83,14 +105,14 @@
 \Ensure {Initialize $\text{CoQ}_{\text{FCI}}$}
 	\For {each state $s$} \label{alg:fci_combinator:line:foreach:state}
 		\State $\vec{f} \gets \{\}$; \Comment {Contains the normalized valued of REFMATs' value for state $s$ for all agents}
-		\For {each REFMAT in $\vec{R}$}\label{alg:fci_combinator:line:refmat:foreach}
-			\State $\vec{f}.add(\text{REFMAT}(\phi(s)))$;\label{alg:fci_combinator:line:refmat:foreach:loop}
+		\For {each $\text{REFMAT}_i$ in $\vec{R}$}\label{alg:fci_combinator:line:refmat:foreach}
+			\State $\vec{f}.add(\text{REFMAT}_i(\phi(s)))$;\label{alg:fci_combinator:line:refmat:foreach:loop}
 		\EndFor
 		\State $\vec{A} \gets 1 - $ \Call{normalize}{$\vec{f}$}; \label{alg:fci_combinator:line:normalize}
 		\For {each possible action $a$ in state $s$} \label{alg:fci_combinator:line:fci:foreach:state_action}
 			\State $\vec{x} \gets \{\}$; \Comment {Contains the $Q$ values of action $a$ in state $s$ for all agents}
-			\For {each $Q$ in $\vec{K}$} \label{alg:fci_combinator:line:fci:foreach:state_action:x}
-				\State $\vec{x}.add(Q[s, a])$;\label{alg:fci_combinator:line:fci:foreach:state_action:x:loop}
+			\For {each $Q_i$ in $\vec{K}$} \label{alg:fci_combinator:line:fci:foreach:state_action:x}
+				\State $\vec{x}.add(Q_i[s, a])$;\label{alg:fci_combinator:line:fci:foreach:state_action:x:loop}
 			\EndFor
 			\State $\text{CoQ}_{\text{FCI}}[s, a] \gets \sum_{i = 1}^{m} \left( f(x_{\pi_{(i)}}) - f(x_{\pi_{(i-1)}}) \right) \cdot g(\vec{A}_i)$ \Comment{The Choquet Integral} \label{alg:fci_combinator:line:fci}
 		\EndFor
@@ -105,7 +127,7 @@
 \ref{alg:fci_combinator}
 به ترتیب مجموعه‌ای از جداول $Q$ و ماتریس‌های ارجاع(\رفمت) تمامی عامل‌ها می‌باشد بطوری که در ازای هر جدول $Q$ یک ماتریس \رفمت\ متناظر وجود دارد. خروجی این الگوریتم یک جدول $Q$ می‌باشد که از ترکیب جداول $Q$ ورودی با درنظر گرفتن میزان خبرگی هرکدام از عامل‌ها که توسط ماتریس‌های \رفمت\ آن‌ها تعیین می‌شود. الگوریتم
 \ref{alg:fci_combinator}
-به ازای کلیه‌ی موقعیت‌ها($s$ها در خط \ref{alg:fci_combinator:line:foreach:state}) ابتدا مقادیر \رفمت\ کلیه‌ی عامل‌ها در ناحیه‌ای که آن موقعیت در آن واقع است(که توسط تابع نگاشت $\phi(\cdot)$ بدست می‌آید) را استخراج می‌کند و در برداری بنام $\vec{f}$\زیرنویس{Factors} ذخیره می‌کند (خطوط \ref{alg:fci_combinator:line:refmat:foreach} و \ref{alg:fci_combinator:line:refmat:foreach:loop}) که در واقع میزان ارجاعات هرکدام از عامل‌ها در ناحیه‌ی $\phi(s)$ می‌باشد. بردار $\vec{f}$ معیاری برای سنجش میزان خبرگی کلی عامل‌ها در موقعیت $s$ است، طبق آنچه که در تعریف
+به ازای کلیه‌ی موقعیت‌ها($s$ها در خط \ref{alg:fci_combinator:line:foreach:state}) ابتدا مقادیر \رفمت\ کلیه‌ی عامل‌ها در ناحیه‌ای که آن موقعیت در آن واقع است (که توسط تابع نگاشت $\phi(\cdot)$ بدست می‌آید) را استخراج می‌کند و در برداری بنام $\vec{f}$\زیرنویس{Factors} ذخیره می‌کند (خطوط \ref{alg:fci_combinator:line:refmat:foreach} و \ref{alg:fci_combinator:line:refmat:foreach:loop}) که در واقع میزان ارجاعات هرکدام از عامل‌ها در ناحیه‌ی $\phi(s)$ می‌باشد. بردار $\vec{f}$ معیاری برای سنجش میزان خبرگی کلی عامل‌ها در موقعیت $s$ است، طبق آنچه که در تعریف
 \ref{experties_definition}
 آمده است در هر ناحیه‌ عاملی خبره‌تر است که مقدار \رفمت\ مربوط به آن ناحیه از دیگر عامل‌ها کمتر باشد. در نتیجه در خط \ref{alg:fci_combinator:line:normalize} بعد از عادی‌سازی\زیرنویس{Normalize} مقادیر \رفمت\ عامل‌ها در ناحیه‌ی $\phi(s)$ یک مکمل‌ گیری صورت می‌گیرد تا عاملی که مقدار \رفمت\ کمتری دارد دارای بیشترین مقدار بعد از عادی‌سازی شود. در خط \ref{alg:fci_combinator:line:fci:foreach:state_action} به ازای کلیه‌ی عمل‌های ممکن در موقعیت $s$ ابتدا مقادیر $Q$ تک‌تک عامل‌ها را در موقعیت $s$ و عمل $a$ در خطوط \ref{alg:fci_combinator:line:fci:foreach:state_action:x} و \ref{alg:fci_combinator:line:fci:foreach:state_action:x:loop} در بردار $\vec{x}$ ذخیره می‌کنیم و در نهایت در خط \ref{alg:fci_combinator:line:fci} با استفاده از انتگرال فازی چوکت معرفی شده در \ref{eq:choquet_integral} مقدار $Q$ مشارکتی حاصل از میزان خبرگی بردار $\vec{A}$ و مقادیر $Q$‌های تک‌تک عامل‌ها در بردار $\vec{x}$ در موقعیت $s$ و عمل $a$ بدست محاسبه می‌شود.
 
