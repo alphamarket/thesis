@@ -191,7 +191,7 @@ f(\omega) = a\omega + b
 	\ElsIf {\Call{length}{$\vec{A}_i$} = 0}
 		\State \Return 0;
 	\Else
-		\State \Return ${\sum\limits_{j=i}^m \vec{A}_i(j) \over \Call{\text{length}}{\vec{A}_i}}$;
+		\State \Return ${\sum\limits_{j=i}^{\Call{\text{length}}{\vec{B}_i} + i} \vec{A}_i(j) \over \Call{\text{length}}{\vec{A}_i}}$;
 	\EndIf
 \EndProcedure
 \end{algorithmic}
@@ -208,7 +208,8 @@ f(\omega) = a\omega + b
 	\ElsIf {\Call{length}{$\vec{A}_i$} = 0}
 		\State \Return 0;
 	\Else
-		\State \Return ${\sum\limits_{j=i, k = 1}^{m, \Call{\text{length}}{\vec{A}_i}}  k \cdot \vec{A}_i(j) \over {(\sum\limits_{j=1}^{\Call{\text{length}}{\vec{A}_i}} j) - 1}}$;
+		\State $\vec{B}_i = \Call{Sort-Ascending}{\vec{A}_i}$;
+		\State \Return ${\sum\limits_{j=i, k = 1}^{\Call{\text{length}}{\vec{B}_i} + i, \Call{\text{length}}{\vec{B}_i}}  k \cdot \vec{B}_i(j) \over {(\sum\limits_{j=1}^{\Call{\text{length}}{\vec{B}_i}} j) - 1}}$;
 	\EndIf
 \EndProcedure
 \end{algorithmic}
@@ -217,4 +218,4 @@ f(\omega) = a\omega + b
 
 در الگوریتم \ref{alg:g:const-one} به ازای هر ورودی دلخواد مقدار ثابت ۱ به عنوان خروجی برگشت داده می‌شود، این بدین معنی است که ارزش افزوده‌ی هرنوع ترکیب اطلاعاتی(خبرگی) برای ما دارای حداکثر ارزش می‌باشد و این مساله باعث می‌شود که نتیجه‌ی انتگرال فازی خط \ref{alg:fci_combinator:line:fci} الگوریتم \ref{alg:fci_combinator} مقداری معادل با مقدار خبره‌ترین عامل(عاملی که کمترین پرسه را در محیط مربوطه داشته) را به عنوان مقدار جدید جدول $Q$ مشارکتی تولید کند.
 
-در الگوریتم \ref{alg:g:max} میزان خبرگی خبره‌ترین عامل به عنوان خروجی تابع $g(\cdot)$ برگشت داده می‌شود. در الگوریتم \ref{alg:g:mean} خروجی، میانگین خبرگی عامل‌ها در نظر گرفته شده است و در الگوریتم \ref{alg:g:k-mean} طبق رابطه‌ی نوشته شده میانگین $k$ام میزان خبرگی‌ها به عنوان خروجی برمی‌گردد به طوری که بزرگترین خبرگی در عدد $k$ و کوچکترین خبرگی در عدد ۱ و هر آنچه که مابین این دو خبرگی وجود دارد در اندیس ترتیب مرتب شده آن‌ها ضرب می‌شود و میانگین این مجموع محاسبه می‌شود و برگشت داده می‌شود؛ توجه شود که ورودی‌های الگوریتم‌های \ref{alg:g:const-one} تا \ref{alg:g:k-mean} طبق آنچه که در \ref{eq:fi_choquet_perm_val} آمده است یک مجموعه‌ی مرتب می‌باشد.
+در الگوریتم \ref{alg:g:max} میزان خبرگی خبره‌ترین عامل به عنوان خروجی تابع $g(\cdot)$ برگشت داده می‌شود. در الگوریتم \ref{alg:g:mean} خروجی، میانگین خبرگی عامل‌ها در نظر گرفته شده است و در الگوریتم \ref{alg:g:k-mean} طبق رابطه‌ی نوشته شده میانگین $k$ام میزان خبرگی‌ها به عنوان خروجی برمی‌گردد به طوری که بزرگترین خبرگی در عدد $k$ و کوچکترین خبرگی در عدد ۱ و هر آنچه که مابین این دو خبرگی وجود دارد در اندیس ترتیب مرتب شده آن‌ها ضرب می‌شود و میانگین این مجموع محاسبه می‌شود و برگشت داده می‌شود.
