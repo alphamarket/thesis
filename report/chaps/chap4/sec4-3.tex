@@ -102,19 +102,19 @@
 \begin{algorithmic}[1]
 \Procedure{FCI\_Combiner}{$\vec{K}$, $\vec{R}$}
 \Require \Call{length}{$\vec{K}$} = \Call{length}{$\vec{R}$} = $m$
-\Ensure {Initialize $\text{CoQ}_{\text{FCI}}$}
+\Ensure {Initialize $\text{CoQ}_{\text{FCI}}$} \Comment {The cooperative Q table.}
 	\For {each state $s$} \label{alg:fci_combinator:line:foreach:state}
-		\State $\vec{f} \gets \{\}$; \Comment {Contains the normalized valued of REFMATs' value for state $s$ for all agents}
+		\State $\vec{f} \gets \{\}$; \Comment {Contains the normalized valued of REFMATs' value for state $s$ for all agents.}
 		\For {each $\text{REFMAT}_i$ in $\vec{R}$}\label{alg:fci_combinator:line:refmat:foreach}
 			\State $\vec{f}.add(\text{REFMAT}_i(\phi(s)))$;\label{alg:fci_combinator:line:refmat:foreach:loop}
 		\EndFor
 		\State $\vec{A} \gets 1 - $ \Call{normalize}{$\vec{f}$}; \label{alg:fci_combinator:line:normalize}
 		\For {each possible action $a$ in state $s$} \label{alg:fci_combinator:line:fci:foreach:state_action}
-			\State $\vec{x} \gets \{\}$; \Comment {Contains the $Q$ values of action $a$ in state $s$ for all agents}
+			\State $\vec{x} \gets \{\}$; \Comment {Contains the $Q$ values of action $a$ in state $s$ for all agents.}
 			\For {each $Q_i$ in $\vec{K}$} \label{alg:fci_combinator:line:fci:foreach:state_action:x}
 				\State $\vec{x}.add(Q_i[s, a])$;\label{alg:fci_combinator:line:fci:foreach:state_action:x:loop}
 			\EndFor
-			\State $\text{CoQ}_{\text{FCI}}[s, a] \gets \sum_{i = 1}^{m} \left( f(x_{\pi_{(i)}}) - f(x_{\pi_{(i-1)}}) \right) \cdot g(\vec{A}_i)$ \Comment{The Choquet Integral} \label{alg:fci_combinator:line:fci}
+			\State $\text{CoQ}_{\text{FCI}}[s, a] \gets \sum_{i = 1}^{m} \left( f(x_{\pi_{(i)}}) - f(x_{\pi_{(i-1)}}) \right) \cdot g(\vec{A}_i)$ \Comment{The Choquet Integral.} \label{alg:fci_combinator:line:fci}
 		\EndFor
 	\EndFor
 \State \Return $\text{CoQ}_{\text{FCI}}$;
@@ -191,7 +191,7 @@ f(\omega) = a\omega + b
 	\ElsIf {\Call{length}{$\vec{A}_i$} = 0}
 		\State \Return 0;
 	\Else
-		\State \Return ${\sum\limits_{j=i}^{\Call{\text{length}}{\vec{B}_i} + i} \vec{A}_i(j) \over \Call{\text{length}}{\vec{A}_i}}$;
+		\State \Return ${\sum\limits_{j=1}^{\Call{\text{length}}{\vec{A}_i}} \vec{A}_i(j) \over \Call{\text{length}}{\vec{A}_i}}$;
 	\EndIf
 \EndProcedure
 \end{algorithmic}
@@ -207,9 +207,11 @@ f(\omega) = a\omega + b
 		\State \Return 1;
 	\ElsIf {\Call{length}{$\vec{A}_i$} = 0}
 		\State \Return 0;
+	\ElsIf {\Call{length}{$\vec{A}_i$} = 1}
+		\State \Return $\vec{A}_i(1)$;
 	\Else
 		\State $\vec{B}_i = \Call{Sort-Ascending}{\vec{A}_i}$;
-		\State \Return ${\sum\limits_{j=i, k = 1}^{\Call{\text{length}}{\vec{B}_i} + i, \Call{\text{length}}{\vec{B}_i}}  k \cdot \vec{B}_i(j) \over {(\sum\limits_{j=1}^{\Call{\text{length}}{\vec{B}_i}} j) - 1}}$;
+		\State \Return $\min\{{\sum\limits_{k = 1}^{\Call{\text{length}}{\vec{B}_i}}  k \cdot \vec{B}_i(k) \over {(\sum\limits_{j=1}^{\Call{\text{length}}{\vec{B}_i}} j) - 1}}, 1\}$;
 	\EndIf
 \EndProcedure
 \end{algorithmic}
