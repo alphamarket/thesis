@@ -24,6 +24,24 @@
 \usepackage[hidelinks]{hyperref}
 \usepackage[numbered,depth=subsection]{bookmark}
 
+% colorify the table cell background
+\usepackage{xcolor,colortbl}
+
+% drawing flowcharts chap1
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows}
+\usetikzlibrary{calc, positioning}
+\tikzset{
+  a/.style={rectangle,draw},
+  -|/.style={to path={-| (\tikztotarget) \tikztonodes}},
+  |-|/.style={to path={
+      let \p{qrr@to@start}=(\tikztostart), \p{qrr@to@target}=(\tikztotarget) in
+      -- (\x{qrr@to@start},.5*\y{qrr@to@start}+.5*\y{qrr@to@target}) -- (\x{qrr@to@target},.5*\y{qrr@to@start}+.5*\y{qrr@to@target}) \tikztonodes -- (\tikztotarget)
+    }
+  }
+}
+
+
 % table rules in booktabs
 \setlength{\heavyrulewidth}{1.5pt}
 \setlength{\abovetopsep}{4pt}

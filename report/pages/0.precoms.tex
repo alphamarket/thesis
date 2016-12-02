@@ -32,3 +32,7 @@
 % reset the definition# at every chapter
 \let\OldChapter\chapter
 \renewcommand{\chapter}{\setcounter{definition}{0}\setcounter{theorem}{0}\setcounter{hypo}{0}\OldChapter}
+
+% the flowchart's process definition
+\tikzstyle{arrow} = [thick,->,>=stealth]
+\tikzstyle{block} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=white, opacity=1]
