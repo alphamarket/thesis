@@ -20,6 +20,17 @@ A \subseteq B \subseteq X \Rightarrow g(A) \leq g(B) \leq 1
 \end{equation}
 \end{enumerate}
 
+\begin{definition}[اندازه‌گیری‌های غیرافزایشی]\setstretch{\thebaselinestretch}\label{non_additive_definition}
+اگر فرض کنیم $(X, A)$ فضای قابل اندازه‌گیری باشد که $X$ مجموعه‌ی مرجع\زیرنویس{\مق{Reference Set}} و $A \subseteq X$، آنگاه تابع مجموعه‌ای مانند $\mu$ که $\mu: A \rightarrow [0, 1]$ اندازه‌گیر غیرافزایشی می‌گویند هرگاه شرایط زیر را ارضا کند\مرجع{torra2014non}.
+
+\begin{latin}
+\begin{itemize}
+\item $\mu(\emptyset) = 0, \hspace{10pt} \mu(X) = 1$
+\item $A \subseteq B \Rightarrow \mu(A) \leq \mu(B)$
+\end{itemize}
+\end{latin}
+\end{definition}
+
 مقادیر تابع $g$ یا توسط کارشناس ارائه می‌شود یا توسط یک تابعی مدل می‌شود، یکی از توابع معروف برای تخمین مقادیر تابع $g$ تابع اندازه‌گیری-$\lambda$ سوگنو\زیرنویس{\مق{Sugeno $\lambda$-Measure}} می‌باشد که به صورت زیر تعریف می‌شود\مرجع{leszczynski1985sugeno}.
 \begin{equation}\label{eq:sugeno-lambda-measure}
 g(\{x_1,\cdots,x_l\}) = {1 \over \lambda}\left[\prod_{i=1}^l(1 + \lambda g_i) - 1\right]
