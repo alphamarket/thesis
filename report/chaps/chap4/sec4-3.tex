@@ -1,15 +1,15 @@
 \قسمت{یادگیری مشارکتی $Q$ با استفاده از ماتریس ارجاع و انتگرال فازی}
-آنچه که تا به اکنون در مورد روش پیشنهادی این پژوهش آورده شده، معرفی یک معیار خبرگی که در برعکس بسیاری از معیارهای خبرگی که تا به کنون معرفی شده است\مرجع{ahmadabadi2000expertness, pakizeh2013multi, mohammad2015speedup} در تمامی موقعیت‌های دنیای واقعی به وفور مشاهده می‌شود و آن ارائه این فرضیه است عامل خبره‌تر برای رسیدن به یک مجموعه از اهداف تلاش نسبی کمتری نسبت به دیگر عامل‌ها با خبرگی کمتر در شرایط یکسان می‌کند. حال که معیاری برای میزان خبرگی عامل‌ها در اختیار داریم چالش بعدی برای بهبود کیفیت و سرعت یادگیری مشارکتی ارائه‌ی روشی برای ترکیب دانش‌های عامل‌ها از محیط (جداول $Q$ آن‌ها) با استفاده از معیار ارائه شده می‌باشد. روش ترکیب باید بگونه‌ای باشد که کیفیت و سرعت یادگیری مشارکتی عامل‌ها را در طی زمان نسبت زمانی که عامل‌ها بدون مشارکت یاد می‌گیرند بهتر کند. همچنین کیفیت و سرعت یادگیری همبستگی مستقیمی داشته باشند با تعداد عامل‌هایی که درحال اشتراک گذاری هستند؛ به عبارت دیگر در صورت افزایش تعداد عامل‌هایی که دانش‌های خود را به اشتراک می‌گذارند مدل ترکیب کننده‌ی دانش‌های آن‌ عامل‌ها باید بتواند دانش‌ بهتری تولید کند که نهایتا منجر به بهتر شدن کیفیت و سرعت کلی یادگیری عامل‌ها شود.\بند
-در این پژوهش ما انتگرال فازی را به عنوان مدل ترکیب کننده‌ی دانش‌های عامل‌ها پیشنهاد می‌دهیم. دلیل انتخاب این مدل ویژگی‌های منحصر به فردی است که این مدل کننده در اختیار دارد که مدل را کاملا مناسب برای ترکیب دانش‌ عامل‌ها می‌کند؛ که در بخش‌های آتی فصل این ویژگی‌ها و دلایل مناسب بودن آن‌ها برای ترکیب دانش عامل‌ها آورده شده است. لازم به یاد‌آوری است که همانطور که در قسمت
+آنچه که تا به اکنون در مورد روش پیشنهادی این پژوهش آورده شده، معرفی یک معیار خبرگی است، که در تمامی موقعیت‌های دنیای واقعی به وفور مشاهده می‌شود و آن ارائه این فرضیه است که عامل خبره‌تر برای رسیدن به یک مجموعه از اهداف تلاش نسبی کمتری نسبت به دیگر عامل‌ها با خبرگی کمتر در شرایط یکسان می‌کند. حال که معیاری برای میزان خبرگی عامل‌ها در اختیار داریم چالش بعدی برای بهبود کیفیت و سرعت یادگیری مشارکتی ارائه‌ی روشی برای ترکیب دانش‌های عامل‌ها از محیط (جداول $Q$ آن‌ها) با استفاده از معیار ارائه شده می‌باشد. روش ترکیب باید بگونه‌ای باشد که کیفیت و سرعت یادگیری مشارکتی عامل‌ها را در طی زمان نسبت به زمانی که عامل‌ها بدون مشارکت یاد می‌گیرند بهتر کند. همچنین کیفیت و سرعت یادگیری همبستگی مستقیمی داشته باشند با تعداد عامل‌هایی که درحال اشتراک گذاری هستند؛ به عبارت دیگر در صورت افزایش تعداد عامل‌هایی که دانش‌های خود را به اشتراک می‌گذارند مدل ترکیب کننده‌ی دانش‌های آن‌ عامل‌ها باید بتواند دانش‌ بهتری تولید کند که نهایتا منجر به بهتر شدن کیفیت و سرعت کلی یادگیری عامل‌ها شود.\بند
+در این پژوهش ما انتگرال فازی را به عنوان مدل ترکیب کننده‌ی دانش‌های عامل‌ها پیشنهاد می‌دهیم. دلیل انتخاب این مدل ویژگی‌های منحصر به فردی است که این مدل کننده در اختیار دارد که مدل را کاملا مناسب برای ترکیب دانش‌ عامل‌ها می‌کند. که در بخش‌های آتی فصل این ویژگی‌ها و دلایل مناسب بودن آن‌ها برای ترکیب دانش عامل‌ها آورده شده است. لازم به یاد‌آوری است که همانطور که در قسمت
 \ref{SEC:FI_PREVIEW}
-این پایان‌نامه آورده شده است ما از به دلایل فنی از انتگرال فازی چوکت استفاده می‌کنیم که در بخش‌ های بعدی این دلایل نیز بطور مفصل شرح داده می‌شود.
+این پایان‌نامه آورده شده است ما به دلایل فنی از انتگرال فازی چوکت استفاده می‌کنیم که در بخش‌ های بعدی این دلایل نیز بطور مفصل شرح داده می‌شود.
 
 \زیرقسمت{الگوریتم پیشنهادی}
 در این قسمت به معرفی الگوریتم پیشنهادی می‌پردازیم. آنچه که در الگوریتم
 \ref{alg:proposed}
-آمده است به دو قسمت تشکیل شده است، یک قسمت که مربوط یادگیری مستقل (خطوط
+آمده است از دو قسمت تشکیل شده است، یک قسمت مربوط به یادگیری مستقل (خطوط
 \ref{alg:proposed:il_start} تا \ref{alg:proposed:il_end})
-و قسمت دیگری مربوط به یادگیری مشارکتی (خطوط
+و قسمت دیگر مربوط به یادگیری مشارکتی (خطوط
 \ref{alg:proposed:co_start} تا \ref{alg:proposed:co_end})
 می‌باشد. ورودی الگوریتم تعداد عامل‌ها می‌باشد و در ابتدا ماتریس‌های $Q$ و \رفمت\ و \رسمت\ مقداردهی می‌شود. سپس تا زمانی که یادگیری پایان نیافته است ابتدا عامل‌ها در قسمت یادگیری مستقل به صورت جدا گانه در محیط فعالیت می‌کنند که رویه‌های آورده شده در خطوط
 \ref{alg:proposed:q_start} تا \ref{alg:proposed:q_end}
@@ -22,10 +22,10 @@
 \begin{latin}
 \begin{algorithmic}[1]
 \Procedure{REFMAT-COOPERATIVE-LEARNING}{$m$}
-\Require $m > 1$ \Comment {The number of agents.}
-\Ensure {Intialize the $Q$ matrix};
-\Ensure {Intialize the $\text{RCMAT} \gets 0$};
-\Ensure {Intialize the $\text{REFMAT} \gets 0$};
+\State \textbf{Require:} $m > 1$ \Comment {The number of agents.}
+\State \textbf{Ensure:} {Intialize the $Q$ matrix};
+\State \textbf{Ensure:} {Intialize the $\text{RCMAT} \gets 0$};
+\State \textbf{Ensure:} {Intialize the $\text{REFMAT} \gets 0$};
 \While {not End Of Learning}
 	\If {In individual learning mode} %\Comment {Individual learing mode for each agent \textbf{independently}.}
 		\State {Visit the state $s$;} \label{alg:proposed:q_start}
@@ -57,7 +57,7 @@
 
 بعد از طی یادگیری مستقل عامل‌ها به قسمت اشتراک گذاری دانش‌های خود(جداول $Q$) می‌رسند (خطوط
 \ref{alg:proposed:co_start} تا \ref{alg:proposed:co_end}).
-در قسمت یادگیری مشترک ابتدا طبق آنچه که در در قسمت آورده شده است جداول \رفمت\ و \رسمت\ به صورت مشترک بروزرسانی می‌شود و سپس جداول $Q$ و \رفمت\ تمامی عامل‌ها به مدل ترکیب کننده فازی معرفی شده در این پژوهش فرستاده می‌شود و مدل ترکیب کننده فازی وظیفه‌ی استخراج یک دانش جدید با در نظر گرفتن ورودی‌های آن برای جایگزینی دانش قابلی عامل‌ها را دارد.
+در قسمت یادگیری مشترک ابتدا طبق آنچه که در در بخش قبلی آورده شده است جداول \رفمت\ و \رسمت\ به صورت مشترک بروزرسانی می‌شود و سپس جداول $Q$ و \رفمت\ تمامی عامل‌ها به مدل ترکیب کننده فازی معرفی شده در این پژوهش فرستاده می‌شود و مدل ترکیب کننده فازی وظیفه‌ی استخراج یک دانش جدید با در نظر گرفتن ورودی‌های آن برای جایگزینی دانش قابلی عامل‌ها را دارد. لازم به ذکر است که الگوریتم \ref{alg:proposed} به صورت یک الگوریتم توزیع شده (غیر-متمرکز\زیرنویس{\مق{Decentralized}}) بروی هرعامل می‌باشد\مرجع{ahmadabadi2000expertness, pakizeh2013multi, mohammad2015speedup}.
 
 الگوریتم تابع \مق{Conditional\_Swap($\cdot$)} بسیار ساده می‌باشد و مقادیر غیر صفر ماتریس ارجاع را در ماتریس خاطره کپی می‌کند و مقادیر صفر ماتریس ارجاع را از ماتریس خاطره جایگزین می‌کند. این تابع در الگوریتم
 \ref{alg:swap_func}
@@ -67,17 +67,17 @@
 \caption{تابع \مق{Conditional\_Swap} معرفی شده در الگوریتم \ref{alg:proposed}}\label{alg:swap_func}
 \begin{latin}
 \begin{algorithmic}[1]
-\Procedure{Conditional\_Swap}{REFMAT, RCMAT}
-\Require \Call{size}{REFMAT} = \Call{size}{RCMAT}
+\Function{Conditional\_Swap}{REFMAT, RCMAT}
+\State \textbf{Require:} \Call{size}{REFMAT} = \Call{size}{RCMAT}
 	\For {each element $r$ in REFMAT and its corresponding element $c$ in RCMAT}
 		\If {$r = 0$}
-			\State Update $r = c$;
+			\State $r = c$;
 		\Else
-			\State Update $c = r$;
+			\State $c = r$;
 		\EndIf
 	\EndFor
 	\State \Return REFMAT, RCMAT
-\EndProcedure
+\EndFunction
 \end{algorithmic}
 \end{latin}
 \end{algorithm}
@@ -100,15 +100,15 @@
 \caption{تابع \مق{FCI\_Combiner} معرفی شده در الگوریتم \ref{alg:proposed}}\label{alg:fci_combinator}
 \begin{latin}
 \begin{algorithmic}[1]
-\Procedure{FCI\_Combiner}{$\vec{K}$, $\vec{R}$}
-\Require \Call{length}{$\vec{K}$} = \Call{length}{$\vec{R}$} = $m$
-\Ensure {Initialize $\text{CoQ}_{\text{FCI}}$} \Comment {The cooperative Q table.}
+\Function{FCI\_Combiner}{$\vec{K}$, $\vec{R}$}
+\State \textbf{Require:} \Call{length}{$\vec{K}$} = \Call{length}{$\vec{R}$} = $m$
+\State \textbf{Ensure:} {Initialize $\text{CoQ}_{\text{FCI}}$} \Comment {The cooperative Q table.}
 	\For {each state $s$} \label{alg:fci_combinator:line:foreach:state}
-		\State $\vec{f} \gets \{\}$; \Comment {Contains the normalized valued of REFMATs' value for state $s$ for all agents.}
+		\State $\vec{a} \gets \{\}$; \Comment {Contains the normalized values of REFMATs for state $s$ for all agents.}
 		\For {each $\text{REFMAT}_i$ in $\vec{R}$}\label{alg:fci_combinator:line:refmat:foreach}
-			\State $\vec{f}.add(\text{REFMAT}_i(\phi(s)))$;\label{alg:fci_combinator:line:refmat:foreach:loop}
+			\State $\vec{a}.add(\text{REFMAT}_i(\phi(s)))$;\label{alg:fci_combinator:line:refmat:foreach:loop}
 		\EndFor
-		\State $\vec{A} \gets 1 - $ \Call{normalize}{$\vec{f}$}; \label{alg:fci_combinator:line:normalize}
+		\State $\vec{A} \gets 1 - $ \Call{normalize}{$\vec{a}$}; \label{alg:fci_combinator:line:normalize}
 		\For {each possible action $a$ in state $s$} \label{alg:fci_combinator:line:fci:foreach:state_action}
 			\State $\vec{x} \gets \{\}$; \Comment {Contains the $Q$ values of action $a$ in state $s$ for all agents.}
 			\For {each $Q_i$ in $\vec{K}$} \label{alg:fci_combinator:line:fci:foreach:state_action:x}
@@ -118,7 +118,7 @@
 		\EndFor
 	\EndFor
 \State \Return $\text{CoQ}_{\text{FCI}}$;
-\EndProcedure
+\EndFunction
 \end{algorithmic}
 \end{latin}
 \end{algorithm}
@@ -151,7 +151,7 @@ f(\omega) = a\omega + b
 \caption{الگوریتم \مق{Const-One} برای تخمین تابع $g(\cdot)$ در الگوریتم \ref{alg:fci_combinator}}\label{alg:g:const-one}
 \begin{latin}
 \begin{algorithmic}[1]
-\Procedure{Const-One}{$\vec{A}_i$}
+\Function{Const-One}{$\vec{A}_i$}
 	\If {\Call{length}{$\vec{A}_i$} $\geq m$}
 		\State \Return 1;
 	\ElsIf {\Call{length}{$\vec{A}_i$} = 0}
@@ -159,7 +159,7 @@ f(\omega) = a\omega + b
 	\Else
 		\State \Return $1$;
 	\EndIf
-\EndProcedure
+\EndFunction
 \end{algorithmic}
 \end{latin}
 \end{algorithm}
@@ -168,7 +168,7 @@ f(\omega) = a\omega + b
 \caption{الگوریتم \مق{Max} برای تخمین تابع $g(\cdot)$ در الگوریتم \ref{alg:fci_combinator}}\label{alg:g:max}
 \begin{latin}
 \begin{algorithmic}[1]
-\Procedure{Max}{$\vec{A}_i$}
+\Function{Max}{$\vec{A}_i$}
 	\If {\Call{length}{$\vec{A}_i$} $\geq m$}
 		\State \Return 1;
 	\ElsIf {\Call{length}{$\vec{A}_i$} = 0}
@@ -176,7 +176,7 @@ f(\omega) = a\omega + b
 	\Else
 		\State \Return $\max\limits_{\vec{A}_i}$;
 	\EndIf
-\EndProcedure
+\EndFunction
 \end{algorithmic}
 \end{latin}
 \end{algorithm}
@@ -185,7 +185,7 @@ f(\omega) = a\omega + b
 \caption{الگوریتم \مق{Mean} برای تخمین تابع $g(\cdot)$ در الگوریتم \ref{alg:fci_combinator}}\label{alg:g:mean}
 \begin{latin}
 \begin{algorithmic}[1]
-\Procedure{Mean}{$\vec{A}_i$}
+\Function{Mean}{$\vec{A}_i$}
 	\If {\Call{length}{$\vec{A}_i$} $\geq m$}
 		\State \Return 1;
 	\ElsIf {\Call{length}{$\vec{A}_i$} = 0}
@@ -193,7 +193,7 @@ f(\omega) = a\omega + b
 	\Else
 		\State \Return ${\sum\limits_{j=1}^{\Call{\text{length}}{\vec{A}_i}} \vec{A}_i(j) \over \Call{\text{length}}{\vec{A}_i}}$;
 	\EndIf
-\EndProcedure
+\EndFunction
 \end{algorithmic}
 \end{latin}
 \end{algorithm}
@@ -202,7 +202,7 @@ f(\omega) = a\omega + b
 \caption{الگوریتم \مق{K-Mean} برای تخمین تابع $g(\cdot)$ در الگوریتم \ref{alg:fci_combinator}}\label{alg:g:k-mean}
 \begin{latin}
 \begin{algorithmic}[1]
-\Procedure{K-Mean}{$\vec{A}_i$}
+\Function{K-Mean}{$\vec{A}_i$}
 	\If {\Call{length}{$\vec{A}_i$} $\geq m$}
 		\State \Return 1;
 	\ElsIf {\Call{length}{$\vec{A}_i$} = 0}
@@ -213,7 +213,7 @@ f(\omega) = a\omega + b
 		\State $\vec{B}_i = \Call{Sort-Ascending}{\vec{A}_i}$;
 		\State \Return $\min\{{\sum\limits_{k = 1}^{\Call{\text{length}}{\vec{B}_i}}  k \cdot \vec{B}_i(k) \over {(\sum\limits_{j=1}^{\Call{\text{length}}{\vec{B}_i}} j) - 1}}, 1\}$;
 	\EndIf
-\EndProcedure
+\EndFunction
 \end{algorithmic}
 \end{latin}
 \end{algorithm}
