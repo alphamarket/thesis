@@ -8,3 +8,4 @@ function o = g_k_mean(f1, f2)
         end
         o(i) = o(i) / (sum([1:length(a)]) - 1);
     end
+    o = min(o, 1);
