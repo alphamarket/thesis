@@ -3,7 +3,7 @@ import itertools, os;
 
 iters = 20;
 
-rl_action_advisor = "greedy"
+rl_action_advisor = "boltzmann"
 
 configs = {
     "--method" : {
@@ -11,10 +11,12 @@ configs = {
             "--env" : {
                 "prey" : {
                     "--agents" : [3],
+                    "--refmat-combinator" : ["fci-k-mean", "fci-mean", "fci-max", "wsum", "fci-const-one"],
                     "--rl-action-advisor" : [rl_action_advisor]
                 },
                 "maze" : {
                     "--agents" : [3],
+                    "--refmat-combinator" : ["fci-k-mean", "fci-mean", "fci-max", "wsum", "fci-const-one"],
                     "--rl-action-advisor" : [rl_action_advisor]
                 }
             }
