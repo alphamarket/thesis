@@ -18,7 +18,7 @@ public:
     {
         flag_workflow();
         assert(agents.size() != 0);
-        if(method == "sep") this->sep_combiner(agents);
+        if(method == "sep") this->sep_combiner(agents, second_method);
         else if(method == "refmat") this->refmat_combiner(agents, second_method);
         else if(method == "sep-refmat") {
             this->sep_combiner(agents);
@@ -28,10 +28,10 @@ public:
     }
 protected:
     /**
-     * @brief The SEP combiner
+     * @brief The SEP-FCI combiner
      */
     template<size_t state_dim, size_t action_dim>
-    void sep_combiner(vector<agent<state_dim, action_dim>>& agents, const string& = "") {
+    void sep_combiner(vector<agent<state_dim, action_dim>>& agents, const string& method = "") {
         flag_workflow();
         for_each(agents.begin(), agents.end(), [](const auto& a) {
             if(a.template get_plugin<plugin_SEP>() == nullptr)
@@ -60,6 +60,19 @@ protected:
                 _min = min(_min, seps[i]->data()[e]);
             i = _min, e++;
         });
+        // combiner methods manifest
+        unordered_map<string, fci_combiner_func_t> method_manifest = {
+            {"wsum", nullptr},
+            {"fci-max", fci::combiner_max},
+            {"fci-mean", fci::combiner_mean},
+            {"fci-k-mean", fci::combiner_k_mean},
+            {"fci-const-one", fci::combiner_const_one},
+        };
+        if(!method_manifest.count(method))
+            raise_error("undefined fci method `"+method+"`");
+
+        // fetch the combiner methone
+        auto fci_combine_method = method_manifest.at(method);
         // get all states indices
         auto li = combined_sep.template list_indices<state_dim>();
         // for each indices
@@ -84,12 +97,30 @@ protected:
             }
             // calculate the Qco values from agents' Qs
             for(size_t i = 0; i < 2; i++) {
-                for(auto _g : g[i]) {
+                if(method == "wsum") {
+                    for(auto _g : g[i]) {
+                        size_t k = 0;
+                        auto q = Qs[_g]->slice(ii);
+                        scalar w = 1 / g[i].size();
+                        if(gw[i] != 0) w = (shocks[_g]->slice(ii).sum()) / gw[i];
+                        QCO[i].slice_ref(ii).for_each([&w, &q, &k](auto* i) { *i += w * q.data()[k++]; });
+                    }
+                } else {
                     size_t k = 0;
-                    auto q = Qs[_g]->slice(ii);
-                    scalar w = 1 / g[i].size();
-                    if(gw[i] != 0) w = (shocks[_g]->slice(ii).sum()) / gw[i];
-                    QCO[i].slice_ref(ii).for_each([&w, &q, &k](auto* i) { *i += w * q.data()[k++]; });
+                    vector<scalar> factors;
+                    vector<matrix<scalar, action_dim>> qs;
+                    for(auto _g : g[i]) {
+                        factors.push_back(1. / g[i].size());
+                        qs.push_back(Qs[_g]->slice(ii));
+                        if(gw[i] != 0)
+                            factors.back() = scalar(shocks[_g]->slice(ii).sum()) / gw[i];
+                    }
+                    QCO[i].slice_ref(ii).for_each([&factors, &qs, &k, &fci_combine_method](auto* i) {
+                        vector<scalar> q;
+                        for(auto& _q : qs) q.push_back(_q.data()[k]);
+                        *i += fci::combine(q, factors, fci_combine_method);
+                        k += 1;
+                    });
                 }
             }
             // assign the computed Qco to the agents
