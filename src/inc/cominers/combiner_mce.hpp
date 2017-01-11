@@ -27,6 +27,7 @@ protected:
             Ws.push_back(a.template get_plugin<plugin_MCE>()->get_criterias());
             Qs.push_back(&a.learner->Q);
         }
+        cerr << __FUNCTION__ << " [ " << __LINE__ << " ]\n";
         // re-allocate the CoQ matrix with the size
         CoQ.resize(agents.back().learner->Q.size());
 
@@ -47,6 +48,7 @@ protected:
         // fetch the combiner methone
         auto fci_combine_method = method_manifest.at(method);
 
+        cerr << __FUNCTION__ << " [ " << __LINE__ << " ]\n";
         // foreach criteria
         for(size_t criteria = 0; criteria < Ws.front().size(); criteria++) {
             // create the sub-Q matrices
@@ -87,11 +89,11 @@ protected:
                 });
             }
         }
-
+        cerr << __FUNCTION__ << " [ " << __LINE__ << " ]\n";
         // sum all sub-Qs and use it as CoQ for each agent
         for(const auto& subq : subQs) CoQ += subq;
         for(const auto& a : agents) a.template get_plugin<plugin_MCE>()->_CoQ = CoQ;
-        Ws.size();
+        cerr << __FUNCTION__ << " [ " << __LINE__ << " ]\n";
     }
 };
 

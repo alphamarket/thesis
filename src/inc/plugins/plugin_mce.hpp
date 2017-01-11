@@ -96,37 +96,44 @@ public:
      */
     void notify_add_event(agent_t* const in)
     {
+        cerr << __FUNCTION__ << " [ " << __LINE__ << " ]\n";
         this->_CoQ.resize(in->learner->Q.size());
         this->_gradian.push_back(0);
         this->_CoQ = 0;
+        cerr << __FUNCTION__ << " [ " << __LINE__ << " ]\n";
     }
     /**
      * @brief notify_enter_event on every learning cycle start we forward the gradian counters
      */
     void notify_enter_event(agent_t* const)
     {
+        cerr << __FUNCTION__ << " [ " << __LINE__ << " ]\n";
         this->_normal.clear();
         this->_absolute.clear();
         this->_negative.clear();
         this->_positive.clear();
         this->_distance.clear();
         this->_gradian = { this->_gradian.back() };
+        cerr << __FUNCTION__ << " [ " << __LINE__ << " ]\n";
     }
     /**
      * @brief notify_init_event at the begining of each cycle, re-init the variables
      */
     void notify_init_event(agent_t* const)
     {
+        cerr << __FUNCTION__ << " [ " << __LINE__ << " ]\n";
         this->_normal.push_back(0);
         this->_positive.push_back(0);
         this->_negative.push_back(0);
         this->_absolute.push_back(0);
+        cerr << __FUNCTION__ << " [ " << __LINE__ << " ]\n";
     }
     /**
      * @brief notify_on_event on every move update the ref counter
      */
     void notify_on_event(agent_t* const in)
     {
+        cerr << __FUNCTION__ << " [ " << __LINE__ << " ]\n";
         // pick from CoQ table using boltzmann
 
         // pick a random action
@@ -138,6 +145,7 @@ public:
         // get current state for the plugin call
         in->_current_state = in->world->get_current_state();
 
+        cerr << __FUNCTION__ << " [ " << __LINE__ << " ]\n";
         // update the criterias
 
         // update the normal criteria
@@ -151,23 +159,26 @@ public:
         else
             // update the negative criteria
             this->_negative.back() += -in->_current_reward;
+        cerr << __FUNCTION__ << " [ " << __LINE__ << " ]\n";
     }
     /**
      * @brief notify_deinit_event after each cycle, recall or update the recall memory
      */
     void notify_deinit_event(agent_t* const in)
     {
+        cerr << __FUNCTION__ << " [ " << __LINE__ << " ]\n";
         this->_distance.push_back(in->template get_plugin<plugin_count_hop>()->hops.back());
-        cerr << in->template get_plugin<plugin_count_hop>()->hops.size() << " ";
+        cerr << __FUNCTION__ << " [ " << __LINE__ << " ]\n";
     }
     /**
      * @brief notify_exit_event printing the reference counts at the end of learning cycles
      */
     void notify_exit_event(agent_t* const)
     {
+        cerr << __FUNCTION__ << " [ " << __LINE__ << " ]\n";
         this->_gradian.push_back(this->_normal.back());
         this->calc_criterias();
-        cerr << endl;
+        cerr << __FUNCTION__ << " [ " << __LINE__ << " ]\n";
     }
 };
 
