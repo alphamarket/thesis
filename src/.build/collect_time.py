@@ -14,14 +14,14 @@ configs = {
                     "--agents" : [3],
                     "--refmat-grind" : [4],
                     "--trials" : range(1, max_trials + 1),
-                    "--refmat-combinator" : ["fci-k-mean"],
+                    "--fci-combinator" : ["fci-k-mean"],
                     "--rl-action-advisor" : [rl_action_advisor]
                 },
                 "maze" : {
                     "--agents" : [3],
                     "--refmat-grind" : [3],
                     "--trials" : range(1, max_trials + 1),
-                    "--refmat-combinator" : ["fci-k-mean"],
+                    "--fci-combinator" : ["fci-k-mean"],
                     "--rl-action-advisor" : [rl_action_advisor]
                 }
             }

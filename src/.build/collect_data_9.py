@@ -12,7 +12,7 @@ configs = {
                 "prey" : {
                     "--agents" : [3],
                     "--refmat-grind" : range(16, 19),
-                    "--refmat-combinator" : ["fci-k-mean", "fci-mean", "fci-max", "wsum", "fci-const-one"],
+                    "--fci-combinator" : ["fci-k-mean", "fci-mean", "fci-max", "wsum", "fci-const-one"],
                     "--rl-action-advisor" : [rl_action_advisor]
                 }
             }

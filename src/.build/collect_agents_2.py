@@ -13,7 +13,7 @@ configs = {
                 "maze" : {
                     "--agents" : agents,
                     "--refmat-grind" : [3],
-                    "--refmat-combinator" : ["fci-k-mean"],
+                    "--fci-combinator" : ["fci-k-mean"],
                     "--rl-action-advisor" : [rl_action_advisor]
                 }
             }

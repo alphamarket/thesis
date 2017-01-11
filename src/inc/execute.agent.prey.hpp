@@ -1,7 +1,6 @@
 #ifndef EXECUTE_AGENT_PREY_HPP
 #define EXECUTE_AGENT_PREY_HPP
 
-
 #include "inc/stdafx.hpp"
 #include "inc/agent.hpp"
 #include "inc/combine.hpp"
@@ -9,6 +8,7 @@
 #include "inc/agent.plugins.hpp"
 #include "inc/learner.hunter.hpp"
 #include "inc/plugins/plugin_sep.hpp"
+#include "inc/plugins/plugin_mce.hpp"
 #include "inc/plugins/plugin_count_hop.hpp"
 #include "inc/plugins/plugin_reset_agent.hpp"
 #include "inc/plugins/plugin_checkpoints.hpp"

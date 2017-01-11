@@ -14,7 +14,7 @@ configs = {
                 "prey" : {
                     "--agents" : [3],
                     "--refmat-grind" : [4],
-                    "--refmat-combinator" : ["fci-k-mean"],
+                    "--fci-combinator" : ["fci-k-mean"],
                     "--output": [qtable],
                     param[0]: param[1],
                     "--rl-action-advisor" : [rl_action_advisor]
@@ -22,7 +22,7 @@ configs = {
                 "maze" : {
                     "--agents" : [3],
                     "--refmat-grind" : [3],
-                    "--refmat-combinator" : ["fci-k-mean"],
+                    "--fci-combinator" : ["fci-k-mean"],
                     "--output": [qtable],
                     param[0]: param[1],
                     "--rl-action-advisor" : [rl_action_advisor]

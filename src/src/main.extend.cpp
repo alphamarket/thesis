@@ -69,17 +69,17 @@ po::variables_map process_args(int argc, char** argv) {
                     ->notifier(prob_checker("epsilon")),
              "The greedy action picker exploration rate, should be in range of [0,1].")
 
-            ("refmat-combinator",
+            ("fci-combinator",
                 po::value<string>()
                     ->default_value("fci-k-mean")
-                    ->notifier(avail_options("refmat-combinator", {"fci-k-mean", "fci-mean", "fci-max", "fci-const-one", "wsum"})),
+                    ->notifier(avail_options("fci-combinator", {"fci-k-mean", "fci-mean", "fci-max", "fci-const-one", "wsum"})),
              "The REFMAT combinator method, could be [fci-k-mean, fci-mean, fci-max, fci-const-one, wsum].")
 
             ("method",
                 po::value<string>()
                     ->default_value("il")
-                    ->notifier(avail_options("method", {"refmat", "sep", "il", "sep-refmat"})),
-             "The combiner method, could be [refmat, sep, il, sep-refmat].")
+                    ->notifier(avail_options("method", {"refmat", "sep", "il", "sep-refmat", "mce"})),
+             "The combiner method, could be [refmat, sep, il, sep-refmat, mce].")
 
             ("env",
                 po::value<string>()

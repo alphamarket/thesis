@@ -37,14 +37,6 @@ protected:
         _executing = 0,
         _threaded = 0;
     /**
-     * @brief the learning params
-     */
-    scalar
-        _tau,
-        _beta,
-        _gamma,
-        _epsilon;
-    /**
      * @brief _action_advisor_method The action advisor method
      */
     action_advisor_method_t _action_advisor_method;
@@ -59,6 +51,14 @@ protected:
 
 public:
     /**
+     * @brief the learning params
+     */
+    scalar
+        _tau,
+        _beta,
+        _gamma,
+        _epsilon;
+    /**
      * @brief _prev_q Previous Q value
      */
     scalar _prev_q = 0;
@@ -69,7 +69,7 @@ public:
     /**
      * @brief _prev_state The previous state
      */
-    state_t<state_dim> _prev_state ;
+    state_t<state_dim> _prev_state;
     /**
      * @brief _prev_action The previous action
      */

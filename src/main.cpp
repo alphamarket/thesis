@@ -38,7 +38,7 @@ int main(int argc, char** argv) {
                         data,  iter,
                         AGENT_COUNT, TRIALS, CYCLES,
                         opt["beta"].as<scalar>(), opt["gamma"].as<scalar>(), opt["tau"].as<scalar>(), opt["epsilon"].as<scalar>(),
-                        opt["method"].as<string>(), opt["refmat-combinator"].as<string>(),
+                        opt["method"].as<string>(), opt["fci-combinator"].as<string>(),
                         opt["refmat-grind"].as<size_t>(),
                         opt
                     );
@@ -47,7 +47,7 @@ int main(int argc, char** argv) {
                         data,  iter,
                         AGENT_COUNT, TRIALS, CYCLES,
                         opt["beta"].as<scalar>(), opt["gamma"].as<scalar>(), opt["tau"].as<scalar>(), opt["epsilon"].as<scalar>(),
-                        opt["method"].as<string>(), opt["refmat-combinator"].as<string>(),
+                        opt["method"].as<string>(), opt["fci-combinator"].as<string>(),
                         opt["refmat-grind"].as<size_t>(),
                         opt
                     );
