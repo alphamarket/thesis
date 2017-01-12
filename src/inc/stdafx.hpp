@@ -52,6 +52,7 @@ typedef double scalar;
 
 #ifdef OS_UNIX
 #   define clear_screen() system("clear")
+#   define highpass(x) (*x *= max(0.8, frand()))
 #else
 #   ifdef OS_WIN
 #       define clear_screen() system("cls")

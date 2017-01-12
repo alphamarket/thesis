@@ -51,35 +51,34 @@ protected:
         for(size_t criteria = 0; criteria < Ws.front().size(); criteria++) {
             // create the sub-Q matrices
             subQs.push_back(qtable_t(Qs.front()->size()));
+            subQs.back() = 0;
 
             vector<scalar> factors;
-            // compute the impact factors of each agant with current criteria
+            // compute the impact factors of each agant
             {
                 size_t k = 0;
                 matrix1D_t<scalar> aref({ agents.size() });
-                for(auto& w : Ws) aref[k++] = (w[criteria] + 1);
-                factors = aref.normalize().to_vector();
+                for(auto w : Ws) aref[k++] = (w[criteria]);
+                aref -= aref.min() - 1;
+                aref /= aref.sum();
+                factors = aref.to_vector();
             }
-            // foreach state
-            for(auto ii : li) {
+            for(auto ii : CoQ.template list_indices<state_dim>()) {
                 size_t k = 0;
-                // Q value for every actions of current state of all agents
                 vector<vector<scalar>> qa;
                 for(auto q : Qs) qa.push_back(q->slice(ii).to_vector());
-                // for each action in this state
-                subQs.back().slice_ref(ii).for_each([&k, &qa, &factors, &fci_combine_method, method](auto* i) {
+                subQs.back().slice_ref(ii).for_each([&](auto* i){
                     vector<scalar> q;
                     for(auto qq : qa) q.push_back(qq[k]);
                     // now we have:
-                    //      Q value for current state/action/agent       [q]
-                    //      Criteria value for current state/agent       [factors]
+                    //      Q value for current state/action/agent  [q]
+                    //      Ref value for current state/agent       [factors]
                     // calculate the combined value for current state/action
                     if(fci_combine_method != nullptr)
                         *i = fci::combine(q, factors, fci_combine_method);
-                    // do the weighted sum
                     else if(method == "wsum") {
-                        for(size_t j = 0; j < q.size(); j++)
-                            *i += q[j] * factors[j];
+                        // do the weighted sum
+                        for(size_t j = 0; j < q.size(); j++) *i += q[j] * factors[j];
                     } else
                         raise_error("undefined method `"+method+"`");
                     assert(!isnan(*i));

@@ -72,7 +72,6 @@ public:
     void notify_add_event(agent_t* const in)
     {
         this->_CoQ.resize(in->learner->Q.size());
-        this->_CoQ = 0;
     }
     /**
      * @brief notify_enter_event on every learning cycle start we forward the gradian counters
@@ -85,16 +84,18 @@ public:
     void notify_on_event(agent_t* const in)
     {
         // pick from CoQ table using boltzmann
-        // reset the agent's location to its previous location
-        in->world->set_current_state(in->_prev_state);
-        // pick a random action
-        in->_prev_action = {in->learner->advise_boltzmann(this->_CoQ.slice(in->_prev_state), in->_tau)};
-        // move the action
-        in->world->make_move(in->_prev_action);
-        // get the reward
-        in->_current_reward = in->world->get_current_block()._value;
-        // get current state for the plugin call
-        in->_current_state = in->world->get_current_state();
+        if(!in->world->get_current_block()._is_terminal) {
+            // reset the agent's location to its previous location
+            in->world->set_current_state(in->_prev_state);
+            // pick a random action
+            in->_prev_action = {in->learner->advise_boltzmann(this->_CoQ.slice(in->_prev_state), in->_tau)};
+            // move the action
+            in->world->make_move(in->_prev_action);
+            // get the reward
+            in->_current_reward = in->world->get_current_block()._value;
+            // get current state for the plugin call
+            in->_current_state = in->world->get_current_state();
+        }
 
         this->_normal += in->_current_reward;
         this->_gradian += in->_current_reward;
