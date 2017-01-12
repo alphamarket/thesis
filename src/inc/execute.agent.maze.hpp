@@ -8,7 +8,6 @@
 #include "inc/learner.maze.hpp"
 #include "inc/agent.plugins.hpp"
 #include "inc/plugins/plugin_sep.hpp"
-#include "inc/plugins/plugin_mce.hpp"
 #include "inc/plugins/plugin_count_hop.hpp"
 #include "inc/plugins/plugin_reset_agent.hpp"
 #include "inc/plugins/plugin_checkpoints.hpp"

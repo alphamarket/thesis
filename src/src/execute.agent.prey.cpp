@@ -46,8 +46,6 @@ void execute_agent_prey(
             plugins.back().push_back(new plugin_SEP<hunter_prey::STATE_DIM, hunter_prey::ACTION_DIM>());
         if(method == "refmat" || method == "sep-refmat")
             plugins.back().push_back(new plugin_reference_counter<hunter_prey::STATE_DIM, hunter_prey::ACTION_DIM>(grind));
-        if(method == "mce")
-            plugins.back().push_back(new plugin_MCE<hunter_prey::STATE_DIM, hunter_prey::ACTION_DIM>());
         // needs to be added after plugin_SEP
         plugins.back().push_back(new plugin_reset_agent<hunter_prey::STATE_DIM, hunter_prey::ACTION_DIM>());
     }

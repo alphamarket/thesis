@@ -61,8 +61,6 @@ void execute_agent_maze(matrix3D_t<scalar>& data,
             plugins.back().push_back(new plugin_SEP<maze::STATE_DIM, maze::ACTION_DIM>());
         if(method == "refmat" || method == "sep-refmat")
             plugins.back().push_back(new plugin_reference_counter<maze::STATE_DIM, maze::ACTION_DIM>(grind));
-        if(method == "mce")
-            plugins.back().push_back(new plugin_MCE<maze::STATE_DIM, maze::ACTION_DIM>());
         // needs to be added after plugin_SEP
         plugins.back().push_back(new plugin_reset_agent<maze::STATE_DIM, maze::ACTION_DIM>());
     }

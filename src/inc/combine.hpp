@@ -2,12 +2,11 @@
 #define COMBINER_HPP
 
 #include "stdafx.hpp"
-#include "cominers/combiner_mce.hpp"
 #include "cominers/combiner_sep.hpp"
 #include "cominers/combiner_refmat.hpp"
 
 class combine
-    : combiner_mce, combiner_sep, combiner_refmat
+    : combiner_sep, combiner_refmat
 {
 public:
     template<size_t state_dim, size_t action_dim>
@@ -18,8 +17,6 @@ public:
             raise_error("The agents' size cannot be zero!");
         if(method == "sep")
             this->sep_combiner(agents, second_method);
-        else if(method == "mce")
-            this->mce_combiner(agents, second_method);
         else if(method == "refmat")
             this->refmat_combiner(agents, second_method);
         else if(method == "sep-refmat") {

@@ -78,8 +78,8 @@ po::variables_map process_args(int argc, char** argv) {
             ("method",
                 po::value<string>()
                     ->default_value("il")
-                    ->notifier(avail_options("method", {"refmat", "sep", "il", "sep-refmat", "mce"})),
-             "The combiner method, could be [refmat, sep, il, sep-refmat, mce].")
+                    ->notifier(avail_options("method", {"refmat", "sep", "il", "sep-refmat"})),
+             "The combiner method, could be [refmat, sep, il, sep-refmat].")
 
             ("env",
                 po::value<string>()
