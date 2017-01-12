@@ -32,7 +32,7 @@ int main(int argc, char** argv) {
     matrix3D_t<scalar> data({ ITERS, AGENT_COUNT, TRIALS * CYCLES });
 
     // execute for each iteration and collect the data
-    for(size_t iter = 0; iter < ITERS; iter++)
+    for(size_t iter = 0; iter < ITERS; iter++) {
         if(opt["env"].as<string>() == "maze")
             execute_agent_maze(
                         data,  iter,
@@ -51,6 +51,9 @@ int main(int argc, char** argv) {
                         opt["refmat-grind"].as<size_t>(),
                         opt
                     );
+        fprintf(stderr, "\r> %.1f%% of iterations done!", scalar(iter) / ITERS * 100);
+    }
+    fprintf(stderr, "\n");
     // if didn't ask for printing Q-Tables? then print avg. moves
     if(opt["output"].as<string>() == "avg-moves") {
         // try to average data over AGENTS and ITERs
