@@ -53,7 +53,7 @@ int main(int argc, char** argv) {
                     );
         fprintf(stderr, "\r> %.1f%% of iterations done!", scalar(iter) / ITERS * 100);
     }
-    fprintf(stderr, "\n");
+    fprintf(stderr, "\r> 100%% of iterations done. \n");
     // if didn't ask for printing Q-Tables? then print avg. moves
     if(opt["output"].as<string>() == "avg-moves") {
         // try to average data over AGENTS and ITERs

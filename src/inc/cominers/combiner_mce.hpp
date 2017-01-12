@@ -73,17 +73,12 @@ protected:
                     // now we have:
                     //      Q value for current state/action/agent       [q]
                     //      Criteria value for current state/agent       [factors]
-                    // getting WSS based on least expert POV
-                    auto min_index = distance(factors.begin(), min_element(factors.begin(), factors.end()));
                     // calculate the combined value for current state/action
                     if(fci_combine_method != nullptr)
-                        *i = fci::combine(
-                                vector<scalar>(q.begin() + min_index, q.end()),
-                                vector<scalar>(factors.begin() + min_index, factors.end()),
-                                fci_combine_method);
+                        *i = fci::combine(q, factors, fci_combine_method);
                     // do the weighted sum
                     else if(method == "wsum") {
-                        for(size_t j = min_index; j < q.size(); j++)
+                        for(size_t j = 0; j < q.size(); j++)
                             *i += q[j] * factors[j];
                     } else
                         raise_error("undefined method `"+method+"`");
