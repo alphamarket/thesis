@@ -16,6 +16,7 @@ protected:
      */
     template<size_t state_dim, size_t action_dim>
     void mce_combiner(vector<agent<state_dim, action_dim>>& agents, const string& method = "") {
+        flag_workflow();
         typedef matrix<scalar, state_dim + action_dim> qtable_t;
 
         qtable_t CoQ;
@@ -59,7 +60,6 @@ protected:
                 for(auto& w : Ws) aref[k++] = (w[criteria] + 1);
                 factors = aref.normalize().to_vector();
             }
-            scalar factors_sum = accumulate(factors.begin(), factors.end(), 0.0);
             // foreach state
             for(auto ii : li) {
                 size_t k = 0;
@@ -67,18 +67,24 @@ protected:
                 vector<vector<scalar>> qa;
                 for(auto q : Qs) qa.push_back(q->slice(ii).to_vector());
                 // for each action in this state
-                subQs.back().slice_ref(ii).for_each([&k, &qa, &factors, &fci_combine_method, method, factors_sum](auto* i) {
+                subQs.back().slice_ref(ii).for_each([&k, &qa, &factors, &fci_combine_method, method](auto* i) {
                     vector<scalar> q;
                     for(auto qq : qa) q.push_back(qq[k]);
                     // now we have:
                     //      Q value for current state/action/agent       [q]
                     //      Criteria value for current state/agent       [factors]
+                    // getting WSS based on least expert POV
+                    auto min_index = distance(factors.begin(), min_element(factors.begin(), factors.end()));
                     // calculate the combined value for current state/action
                     if(fci_combine_method != nullptr)
-                        *i = fci::combine(q, factors, fci_combine_method);
+                        *i = fci::combine(
+                                vector<scalar>(q.begin() + min_index, q.end()),
+                                vector<scalar>(factors.begin() + min_index, factors.end()),
+                                fci_combine_method);
+                    // do the weighted sum
                     else if(method == "wsum") {
-                        // do the weighted sum
-                        for(size_t j = 0; j < q.size(); j++) *i += q[j] * factors[j] / factors_sum;
+                        for(size_t j = min_index; j < q.size(); j++)
+                            *i += q[j] * factors[j];
                     } else
                         raise_error("undefined method `"+method+"`");
                     assert(!isnan(*i));
@@ -86,8 +92,9 @@ protected:
                 });
             }
         }
-        // sum all sub-Qs and use it as CoQ for each agent
+        // sum all sub-Qs as the new CoQ
         for(const auto& subq : subQs) CoQ += subq;
+        // use the new CoQ as agents' CoQ
         for(const auto& a : agents) a.template get_plugin<plugin_MCE>()->_CoQ = CoQ;
     }
 };

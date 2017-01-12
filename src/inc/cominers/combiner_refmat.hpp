@@ -15,7 +15,7 @@ protected:
      * @brief The refmat method combiner
      */
     template<size_t state_dim, size_t action_dim>
-    void refmat_combiner(vector<agent<state_dim, action_dim>>& agents, const string& method = "")  {
+    void refmat_combiner(vector<agent<state_dim, action_dim>>& agents, const string& method = "") {
         flag_workflow();
         for_each(agents.begin(), agents.end(), [](const auto& a) {
             if(a.template get_plugin<plugin_reference_counter>() == nullptr)
