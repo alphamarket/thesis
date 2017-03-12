@@ -24,6 +24,9 @@
 \usepackage[hidelinks]{hyperref}
 \usepackage[numbered,depth=subsection]{bookmark}
 
+% change the algorithm numbering style
+\makeatletter \renewcommand\thealgorithm{\arabic{algorithm}-\thechapter} \@addtoreset{algorithm}{chapter} \makeatother
+
 % colorify the table cell background
 \usepackage{xcolor,colortbl}
 
